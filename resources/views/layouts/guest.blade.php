@@ -24,6 +24,9 @@
     <link href="{{asset('assets/lib/animate/animate.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/lib/lightbox/css/lightbox.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-utbXrZyyZTbzFqLkR4+qKfUl3rj2UOKsGvqCVHKk9TqXwghRJ7C+1j9FoHzrh6c6FZQzR9fqO9Wl5VRZCIb3Bw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-pbBaeyWfZ7NNc9oMxRzGKbQQ7pRPlPbYxvJNR9RQKTeQ0L7fGV4VPQF7zVPZlg++s9IGz1pUl3Vqvxa3R/2+Lw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -49,10 +52,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link active">Beranda</a>
-                <a href="about.html" class="nav-item nav-link">Tentang</a>
-<a href="/sejarah" class="nav-item nav-link">Sejarah</a>
-                <a href="project.html" class="nav-item nav-link">Organisasi</a>
+            <a href="/" class="nav-item nav-link active">Beranda</a>
+            <a href="/about" class="nav-item nav-link">Tentang</a>
+            <a href="/sejarah" class="nav-item nav-link">Sejarah</a>
+            <a href="/organisasi" class="nav-item nav-link">Organisasi</a>
             </div>
         </div>
     </nav>

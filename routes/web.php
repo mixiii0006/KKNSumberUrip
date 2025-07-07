@@ -22,3 +22,11 @@ require __DIR__.'/auth.php';
 Route::get('/sejarah', function () {
     return view('sejarah');
 });
+
+Route::get('/about', function () {
+    return view('about');
+});
+
+Route::get('/organisasi', function () {
+    return view('organisasi');
+});

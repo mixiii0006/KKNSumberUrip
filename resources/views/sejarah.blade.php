@@ -1,8 +1,9 @@
 <x-guest-layout>
     <style>
         .steps-container {
-            max-width: 700px;
+            max-width: 1200px;
             margin: 40px auto;
+            padding: 20px;
             display: grid;
             grid-template-columns: 150px 1fr 150px;
             grid-gap: 20px 40px;
