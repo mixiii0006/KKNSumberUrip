@@ -51,7 +51,7 @@
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="index.html" class="nav-item nav-link active">Beranda</a>
                 <a href="about.html" class="nav-item nav-link">Tentang</a>
-                <a href="service.html" class="nav-item nav-link">Sejarah</a>
+<a href="/sejarah" class="nav-item nav-link">Sejarah</a>
                 <a href="project.html" class="nav-item nav-link">Organisasi</a>
             </div>
         </div>
