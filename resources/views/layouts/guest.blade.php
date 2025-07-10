@@ -24,8 +24,6 @@
     <link href="{{asset('assets/lib/animate/animate.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/lib/lightbox/css/lightbox.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-utbXrZyyZTbzFqLkR4+qKfUl3rj2UOKsGvqCVHKk9TqXwghRJ7C+1j9FoHzrh6c6FZQzR9fqO9Wl5VRZCIb3Bw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-pbBaeyWfZ7NNc9oMxRzGKbQQ7pRPlPbYxvJNR9RQKTeQ0L7fGV4VPQF7zVPZlg++s9IGz1pUl3Vqvxa3R/2+Lw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
     <!-- Customized Bootstrap Stylesheet -->
@@ -134,7 +132,7 @@
 
 
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{asset('assets/lib/wow/wow.min.js')}}"></script>
     <script src="{{asset('assets/lib/easing/easing.min.js')}}"></script>
