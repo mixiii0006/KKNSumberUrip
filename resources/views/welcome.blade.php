@@ -4,7 +4,7 @@
         <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
-                    <img class="w-100" src="{{asset('assets/img/carousel-1.jpg')}}" alt="Image">
+                    <img class="w-100" src="{{asset('assets/img/beranda1.jpg')}}" alt="Image">
                     <div class="carousel-caption">
                         <div class="container">
                             <div class="row justify-content-center">
@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img class="w-100" src="{{asset('assets/img/carousel-2.jpg')}}" alt="Image">
+                    <img class="w-100" src="{{asset('assets/img/beranda2.jpg')}}" alt="Image">
                     <div class="carousel-caption">
                         <div class="container">
                             <div class="row justify-content-center">
@@ -99,11 +99,11 @@
         <div class="container">
             <div class="row g-5 align-items-end">
                 <div class="col-lg-3 col-md-5 wow fadeInUp" data-wow-delay="0.1s">
-                    <img class="img-fluid rounded" data-wow-delay="0.1s" src="img/about.jpg">
+                    <img class="img-fluid rounded" data-wow-delay="0.1s" src="{{asset('assets/img/beranda7.jpg')}}" >
                 </div>
                 <div class="col-lg-6 col-md-7 wow fadeInUp" data-wow-delay="0.3s">
                     <h1 class="display-1 text-primary mb-0">25</h1>
-                    <p class="text-primary mb-4">Year of Experience</p>
+                    <p class="text-primary mb-4">Desa Suumber Urip</p>
                     <h1 class="display-5 mb-4">We Make Your Home Like A Garden</h1>
                     <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
                     <a class="btn btn-primary py-3 px-4" href="">Explore More</a>
@@ -164,7 +164,7 @@
             <div class="row g-5 align-items-center">
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                     <p class="fs-5 fw-bold text-primary">Why Choosing Us!</p>
-                    <h1 class="display-5 mb-4">Few Reasons Why People Choosing Us!</h1>
+                    <h1 class="display-5 mb-4">Budaya Desa Sumber Urip</h1>
                     <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
                     <a class="btn btn-primary py-3 px-4" href="">Explore More</a>
                 </div>
@@ -211,7 +211,7 @@
         <div class="container">
             <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
                 <p class="fs-5 fw-bold text-primary">Our Services</p>
-                <h1 class="display-5 mb-5">Services That We Offer For You</h1>
+                <h1 class="display-5 mb-5">Wisata Desa Sumber Urip</h1>
             </div>
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -310,54 +310,58 @@
     <!-- Service End -->
 
 
-    <!-- Quote Start -->
-    <div class="container-fluid quote my-5 py-5" data-parallax="scroll" data-image-src="img/carousel-2.jpg">
+    <!-- Leaflet Map Start -->
+    <div class="container-fluid my-5 py-5">
         <div class="container py-5">
-            <div class="row justify-content-center">
-                <div class="col-lg-7">
-                    <div class="bg-white rounded p-4 p-sm-5 wow fadeIn" data-wow-delay="0.5s">
-                        <h1 class="display-5 text-center mb-5">Get A Free Quote</h1>
-                        <div class="row g-3">
-                            <div class="col-sm-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control bg-light border-0" id="gname" placeholder="Gurdian Name">
-                                    <label for="gname">Your Name</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-floating">
-                                    <input type="email" class="form-control bg-light border-0" id="gmail" placeholder="Gurdian Email">
-                                    <label for="gmail">Your Email</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control bg-light border-0" id="cname" placeholder="Child Name">
-                                    <label for="cname">Your Mobile</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control bg-light border-0" id="cage" placeholder="Child Age">
-                                    <label for="cage">Service Type</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <textarea class="form-control bg-light border-0" placeholder="Leave a message here" id="message" style="height: 100px"></textarea>
-                                    <label for="message">Message</label>
-                                </div>
-                            </div>
-                            <div class="col-12 text-center">
-                                <button class="btn btn-primary py-3 px-4" type="submit">Submit Now</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <h1 class="display-5 text-center mb-4">Peta Desa Sumber Urip</h1>
+            <div id="map" style="height: 500px; width: 100%;" class="wow fadeIn" data-wow-delay="0.5s"></div>
         </div>
     </div>
-    <!-- Quote End -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var map = L.map('map').setView([-3.477, 102.648], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Define polygon coordinates for custom colored mapped areas (example polygons)
+            var polygons = [
+                {
+                    coords: [
+                        [-3.430, 102.630],
+                        [-3.460, 102.640],
+                        [-3.470, 102.660],
+                        [-3.480, 102.670],
+                        [-3.490, 102.660],
+                        [-3.500, 102.650],
+                        [-3.495, 102.640],
+                        [-3.490, 102.630],
+                        [-3.485, 102.620],
+                        [-3.480, 102.610],
+                        [-3.470, 102.600],
+                        [-3.460, 102.605],
+                        [-3.450, 102.610]
+                    ],
+                    color: '#ff7800',
+                    fillColor: '#ff7800',
+                    fillOpacity: 0.5
+                }
+                // Add more polygons as needed
+            ];
+
+            polygons.forEach(function(polygon) {
+                L.polygon(polygon.coords, {
+                    color: polygon.color,
+                    fillColor: polygon.fillColor,
+                    fillOpacity: polygon.fillOpacity
+                }).addTo(map);
+            });
+        });
+    </script>
+    <!-- Leaflet Map End -->
 
 
     <!-- Projects Start -->
