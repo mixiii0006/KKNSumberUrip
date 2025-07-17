@@ -1,32 +1,36 @@
-<?php
+ <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SejarahController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-require __DIR__.'/auth.php';
-
-Route::get('/sejarah', function () {
-    return view('sejarah');
-});
+})->name('welcome');
 
 Route::get('/about', function () {
     return view('about');
 });
 
+Route::get('/sejarah', [SejarahController::class, 'publicIndex'])->name('sejarah.public');
+
 Route::get('/organisasi', function () {
     return view('organisasi');
 });
+
+Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
+
+    Route::resource('sejarah', SejarahController::class)->except(['show', 'index']);
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+});
+
+require __DIR__.'/auth.php';
+
+// Remove or redirect /dashboard route
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');

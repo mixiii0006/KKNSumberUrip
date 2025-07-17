@@ -54,6 +54,17 @@
             <a href="/about" class="nav-item nav-link">Tentang</a>
             <a href="/sejarah" class="nav-item nav-link">Sejarah</a>
             <a href="/organisasi" class="nav-item nav-link">Organisasi</a>
+            @auth
+                <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                    @csrf
+                    <button type="submit" class="nav-item nav-link btn btn-link" style="display:inline; padding:0; border:none; background:none; cursor:pointer;">
+                        Logout
+                    </button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="nav-item nav-link">Login</a>
+                <a href="{{ route('register') }}" class="nav-item nav-link">Register</a>
+            @endauth
             </div>
         </div>
     </nav>

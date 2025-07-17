@@ -87,35 +87,70 @@
         .step-3-content { grid-column: 2 / 4; grid-row: 3; }
         .step-4-content { grid-column: 1 / 3; grid-row: 4; }
         .step-4-number { grid-column: 3; grid-row: 4; }
+        .crud-buttons {
+            margin-top: 10px;
+        }
+        .crud-buttons a, .crud-buttons form {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .crud-buttons a {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+        .crud-buttons button {
+            background: none;
+            border: none;
+            color: #dc2626;
+            cursor: pointer;
+            padding: 0;
+            font: inherit;
+            text-decoration: underline;
+        }
+        .add-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            background-color: #22c55e;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+        .add-button:hover {
+            background-color: #16a34a;
+        }
     </style>
 
+    @auth
+        @if(Auth::user()->is_admin)
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-right">
+                <a href="{{ route('sejarah.create') }}" class="add-button">Tambah Sejarah</a>
+            </div>
+        @endif
+    @endauth
+
     <div class="steps-container">
-        <div class="step-number step-1-number step-1">01</div>
-        <div class="step-content step-1-content">
-            <h5>Step One</h5>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </div>
-
-        <div class="step-content step-2-content">
-            <h5>Step Two</h5>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </div>
-        <div class="step-number step-2-number step-2">02</div>
-
-        <div class="step-number step-3-number step-3">03</div>
-        <div class="step-content step-3-content">
-            <h5>Step Three</h5>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-        </div>
-
-        <div class="step-content step-4-content">
-            <h5>Step Four</h5>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </div>
-        <div class="step-number step-4-number step-4">04</div>
+        @foreach($sejarahs as $index => $sejarah)
+            <div class="step-number step-{{ $index + 1 }}-number step-{{ $index + 1 }}">
+                {{ str_pad($sejarah->tahun, 2, '0', STR_PAD_LEFT) }}
+            </div>
+            <div class="step-content step-{{ $index + 1 }}-content">
+                <h5>{{ $sejarah->tahun }}</h5>
+                <p>{{ $sejarah->deskripsi }}</p>
+                @auth
+                    @if(Auth::user()->is_admin)
+                        <div class="crud-buttons">
+                            <a href="{{ route('sejarah.edit', $sejarah->id) }}">Edit</a>
+                            <form action="{{ route('sejarah.destroy', $sejarah->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?');" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit">Hapus</button>
+                            </form>
+                        </div>
+                    @endif
+                @endauth
+            </div>
+        @endforeach
     </div>
 </x-guest-layout>
