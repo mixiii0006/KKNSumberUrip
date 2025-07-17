@@ -79,14 +79,16 @@
             color: #999;
         }
         /* Grid placement for steps */
-        .step-1-number { grid-column: 1; grid-row: 1; }
-        .step-1-content { grid-column: 2 / 4; grid-row: 1; }
-        .step-2-content { grid-column: 1 / 3; grid-row: 2; }
-        .step-2-number { grid-column: 3; grid-row: 2; }
-        .step-3-number { grid-column: 1; grid-row: 3; }
-        .step-3-content { grid-column: 2 / 4; grid-row: 3; }
-        .step-4-content { grid-column: 1 / 3; grid-row: 4; }
-        .step-4-number { grid-column: 3; grid-row: 4; }
+        @for ($i = 0; $i < count($sejarahs); $i++)
+            .step-{{ $i + 1 }}-number {
+                grid-column: {{ $i % 2 == 0 ? 1 : 3 }};
+                grid-row: {{ floor($i / 2) + 1 }};
+            }
+            .step-{{ $i + 1 }}-content {
+                grid-column: 2 / 4;
+                grid-row: {{ floor($i / 2) + 1 }};
+            }
+        @endfor
         .crud-buttons {
             margin-top: 10px;
         }
@@ -120,7 +122,67 @@
         .add-button:hover {
             background-color: #16a34a;
         }
-    </style>
+    
+        .steps-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .step-item.left {
+            flex-direction: row;
+        }
+        .step-item.right {
+            flex-direction: row-reverse;
+        }
+        .step-number {
+            background-color: #d9534f;
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+            border-radius: 8px;
+            padding: 20px;
+            width: 150px;
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            user-select: none;
+            line-height: 1.1;
+            white-space: nowrap;
+            height: 100%;
+            min-height: unset;
+            min-height: fit-content;
+        }
+        .step-number.step-2 {
+            background-color: #337ab7;
+        }
+        .step-number.step-3 {
+            background-color: #f0ad4e;
+        }
+        .step-number.step-4 {
+            background-color: #5cb85c;
+        }
+        .step-content {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            font-size: 1rem;
+            color: #333;
+            position: relative;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>    
 
     @auth
         @if(Auth::user()->is_admin)
@@ -132,24 +194,26 @@
 
     <div class="steps-container">
         @foreach($sejarahs as $index => $sejarah)
-            <div class="step-number step-{{ $index + 1 }}-number step-{{ $index + 1 }}">
-                {{ str_pad($sejarah->tahun, 2, '0', STR_PAD_LEFT) }}
-            </div>
-            <div class="step-content step-{{ $index + 1 }}-content">
-                <h5>{{ $sejarah->tahun }}</h5>
-                <p>{{ $sejarah->deskripsi }}</p>
-                @auth
-                    @if(Auth::user()->is_admin)
-                        <div class="crud-buttons">
-                            <a href="{{ route('sejarah.edit', $sejarah->id) }}">Edit</a>
-                            <form action="{{ route('sejarah.destroy', $sejarah->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?');" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit">Hapus</button>
-                            </form>
-                        </div>
-                    @endif
-                @endauth
+            <div class="step-item {{ $index % 2 == 0 ? 'left' : 'right' }}">
+                <div class="step-number step-{{ ($index % 4) + 1 }}-number step-{{ ($index % 4) + 1 }}">
+                    {{ str_pad($sejarah->tahun, 2, '0', STR_PAD_LEFT) }}
+                </div>
+                <div class="step-content">
+                    <h5>{{ $sejarah->tahun }}</h5>
+                    <p>{{ $sejarah->deskripsi }}</p>
+                    @auth
+                        @if(Auth::user()->is_admin)
+                            <div class="crud-buttons">
+                                <a href="{{ route('sejarah.edit', $sejarah->id) }}">Edit</a>
+                                <form action="{{ route('sejarah.destroy', $sejarah->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus data ini?');" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit">Hapus</button>
+                                </form>
+                            </div>
+                        @endif
+                    @endauth
+                </div>
             </div>
         @endforeach
     </div>
