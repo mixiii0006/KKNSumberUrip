@@ -209,50 +209,101 @@
             <p>Debug: is_admin? {{ auth()->check() ? (auth()->user()->is_admin ? 'Yes' : 'No') : 'N/A' }}</p>
         </div>
 
-        <div class="org-top">
-            <button class="org-nav-button org-nav-prev" id="org-prev">&#10094;</button>
-            <div class="org-description" id="org-description">
-                <h2>{{ strtoupper($instansiKeys[$currentIndex] ?? '') }}</h2>
-                <p>Deskripsi untuk instansi {{ $instansiKeys[$currentIndex] ?? '' }} akan ditampilkan di sini.</p>
-                @auth
-                    @if(Auth::user()->is_admin)
-                        <a href="{{ route('organisasi.create') }}" class="add-button">Tambah Anggota</a>
-                    @endif
-                @endauth
-            </div>
-            <div class="org-logo-container" id="org-logo">
-                LOGO {{ strtoupper($instansiKeys[$currentIndex] ?? '') }}
-            </div>
-            <button class="org-nav-button org-nav-next" id="org-next">&#10095;</button>
-        </div>
-
-        <div class="anggota-section">
-            <div class="anggota-title">Anggota</div>
-            <div class="member-list" id="member-list">
-                @foreach ($organisasiGrouped[$instansiKeys[$currentIndex]] as $anggota)
-                    <div class="member-card">
-                        <div class="member-photo"></div>
-                        <div class="member-name">{{ $anggota->nama }}</div>
-                        <div class="member-desc">
-                            Jabatan: {{ $anggota->jabatan }}<br>
-                            NIP: {{ $anggota->nip ?? '-' }}
+        @auth
+            @if(Auth::user()->is_admin)
+                <div class="add-anggota-form" style="margin-bottom: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+                    <h3>Tambah Anggota Organisasi</h3>
+                    <form method="POST" action="{{ route('organisasi.store') }}">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="nama" class="block font-medium text-sm text-gray-700">Nama</label>
+                            <input id="nama" name="nama" type="text" value="{{ old('nama') }}" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
+                            @error('nama')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
-                        @auth
-                            @if(auth()->user()->is_admin)
-                                <div class="crud-buttons">
-                                    <a href="{{ route('organisasi.edit', ['organisasi' => $anggota->id]) }}" class="btn btn-warning">Edit</a>
-                                    <form action="{{ route('organisasi.destroy', ['organisasi' => $anggota->id]) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus anggota ini?')">Hapus</button>
-                                    </form>
-                                </div>
-                            @endif
-                        @endauth
-                    </div>
-                @endforeach
+
+                        <div class="mb-4">
+                            <label for="instansi" class="block font-medium text-sm text-gray-700">Instansi</label>
+                            <select id="instansi" name="instansi" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                                <option value="perangkat" {{ old('instansi') == 'perangkat' ? 'selected' : '' }}>Perangkat</option>
+                                <option value="pokdarwis" {{ old('instansi') == 'pokdarwis' ? 'selected' : '' }}>Pokdarwis</option>
+                                <option value="bpd" {{ old('instansi') == 'bpd' ? 'selected' : '' }}>BPD</option>
+                                <option value="bumdes" {{ old('instansi') == 'bumdes' ? 'selected' : '' }}>BUMDes</option>
+                                <option value="bma" {{ old('instansi') == 'bma' ? 'selected' : '' }}>BMA</option>
+                            </select>
+                            @error('instansi')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="jabatan" class="block font-medium text-sm text-gray-700">Jabatan</label>
+                            <input id="jabatan" name="jabatan" type="text" value="{{ old('jabatan') }}" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
+                            @error('jabatan')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="nip" class="block font-medium text-sm text-gray-700">NIP</label>
+                            <input id="nip" name="nip" type="text" value="{{ old('nip') }}" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
+                            @error('nip')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="flex items-center justify-end mt-4">
+                            <button type="submit" class="btn btn-primary px-4 py-2 rounded">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            @endif
+        @endauth
+
+        @if(count($instansiKeys) > 0)
+            <div class="org-top">
+                <button class="org-nav-button org-nav-prev" id="org-prev">&#10094;</button>
+                <div class="org-description" id="org-description">
+                    <h2>{{ strtoupper($instansiKeys[$currentIndex]) }}</h2>
+                    <p>Deskripsi untuk instansi {{ $instansiKeys[$currentIndex] }} akan ditampilkan di sini.</p>
+                </div>
+                <div class="org-logo-container" id="org-logo">
+                    LOGO {{ strtoupper($instansiKeys[$currentIndex]) }}
+                </div>
+                <button class="org-nav-button org-nav-next" id="org-next">&#10095;</button>
             </div>
-        </div>
+
+            <div class="anggota-section">
+                <div class="anggota-title">Anggota</div>
+                <div class="member-list" id="member-list">
+                    @foreach ($organisasiGrouped[$instansiKeys[$currentIndex]] as $anggota)
+                        <div class="member-card">
+                            <div class="member-photo"></div>
+                            <div class="member-name">{{ $anggota->nama }}</div>
+                            <div class="member-desc">
+                                Jabatan: {{ $anggota->jabatan }}<br>
+                                NIP: {{ $anggota->nip ?? '-' }}
+                            </div>
+                            @auth
+                                @if(auth()->user()->is_admin)
+                                    <div class="crud-buttons">
+                                        <a href="{{ route('organisasi.edit', ['organisasi' => $anggota->id]) }}" class="btn btn-warning">Edit</a>
+                                        <form action="{{ route('organisasi.destroy', ['organisasi' => $anggota->id]) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus anggota ini?')">Hapus</button>
+                                        </form>
+                                    </div>
+                                @endif
+                            @endauth
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @else
+            <p>Tidak ada data organisasi yang tersedia.</p>
+        @endif
     </div>
 
     <script>
