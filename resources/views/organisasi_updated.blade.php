@@ -201,11 +201,49 @@
     <div class="org-container">
         @php
             $instansiKeys = $organisasiGrouped->keys()->toArray();
+            $instansiData = $instansis->mapWithKeys(function($instansi) {
+                return [$instansi->id => [
+                    'name' => $instansi->name,
+                    'description' => $instansi->description,
+                    'photo' => $instansi->photo ? asset('storage/' . $instansi->photo) : null,
+                ]];
+            })->toArray();
             $currentIndex = 0;
         @endphp
 
         @auth
             @if(Auth::user()->is_admin)
+                <div class="add-instansi-form" style="margin-bottom: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+                    <h3>Tambah Instansi</h3>
+                    <form method="POST" action="{{ route('instansi.store') }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="name" class="block font-medium text-sm text-gray-700">Nama Instansi</label>
+                            <input id="name" name="name" type="text" value="{{ old('name') }}" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
+                            @error('name')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label for="description" class="block font-medium text-sm text-gray-700">Deskripsi</label>
+                            <textarea id="description" name="description" rows="4" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">{{ old('description') }}</textarea>
+                            @error('description')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label for="photo" class="block font-medium text-sm text-gray-700">Foto Instansi</label>
+                            <input id="photo" name="photo" type="file" accept="image/*" class="block mt-1 w-full" />
+                            @error('photo')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="flex items-center justify-end mt-4">
+                            <button type="submit" class="btn btn-primary px-4 py-2 rounded">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+
                 <div class="add-anggota-form" style="margin-bottom: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
                     <h3>Tambah Anggota Organisasi</h3>
                     <form method="POST" action="{{ route('organisasi.store') }}">
@@ -219,15 +257,16 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="instansi" class="block font-medium text-sm text-gray-700">Instansi</label>
-                            <select id="instansi" name="instansi" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
-                                <option value="perangkat" {{ old('instansi') == 'perangkat' ? 'selected' : '' }}>Perangkat</option>
-                                <option value="pokdarwis" {{ old('instansi') == 'pokdarwis' ? 'selected' : '' }}>Pokdarwis</option>
-                                <option value="bpd" {{ old('instansi') == 'bpd' ? 'selected' : '' }}>BPD</option>
-                                <option value="bumdes" {{ old('instansi') == 'bumdes' ? 'selected' : '' }}>BUMDes</option>
-                                <option value="bma" {{ old('instansi') == 'bma' ? 'selected' : '' }}>BMA</option>
+                            <label for="instansi_id" class="block font-medium text-sm text-gray-700">Instansi</label>
+                            <select id="instansi_id" name="instansi_id" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                                <option value="">-- Pilih Instansi --</option>
+                                @foreach ($instansis ?? [] as $instansi)
+                                    <option value="{{ $instansi->id }}" {{ old('instansi_id') == $instansi->id ? 'selected' : '' }}>
+                                        {{ $instansi->name }}
+                                    </option>
+                                @endforeach
                             </select>
-                            @error('instansi')
+                            @error('instansi_id')
                                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
@@ -260,11 +299,26 @@
             <div class="org-top" style="position: relative; display: flex; align-items: center; justify-content: flex-start; gap: 20px;">
                 <button class="org-nav-button org-nav-prev" id="org-prev" style="border: 1px solid #4CAF50; color: #4CAF50; font-weight: bold; font-size: 1.5rem; width: 40px; height: 40px; border-radius: 5px; margin-right: 10px; z-index: 20; position: relative;">&#10094;</button>
                 <div class="org-description" id="org-description" style="flex: 1; position: relative; padding-left: 50px; padding-right: 50px;">
-                    <h2>{{ strtoupper($instansiKeys[$currentIndex]) }}</h2>
-                    <p>Deskripsi untuk instansi {{ $instansiKeys[$currentIndex] }} akan ditampilkan di sini.</p>
+                    <h2 id="instansi-name"></h2>
+                    <div id="instansi-description" style="margin-top: 10px;"></div>
+                    @auth
+                <div id="instansi-admin-actions" style="margin-top: 10px;">
+                    @auth
+                        @if(auth()->user()->is_admin)
+                            <a href="{{ route('instansi.edit', $instansiKeys[0]) }}" class="btn btn-warning mr-2">Edit</a>
+                            <form action="{{ route('instansi.destroy', $instansiKeys[0]) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus instansi ini?');" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Hapus</button>
+                            </form>
+                        @endif
+                    @endauth
                 </div>
-                <div class="org-logo-container" id="org-logo" style="width: 300px; height: 300px;">
-                    LOGO {{ strtoupper($instansiKeys[$currentIndex]) }}
+                    @endauth
+                </div>
+                <div class="org-logo-container" id="org-logo" style="width: 300px; height: 300px; position: relative;">
+                    <img id="instansi-photo" src="" alt="" style="width: 100%; height: 100%; border-radius: 12px; object-fit: cover; display: none;" />
+                    <div id="instansi-photo-placeholder" style="color: white; font-weight: bold; font-size: 1.5rem; display: flex; justify-content: center; align-items: center; height: 100%; border-radius: 12px; background: linear-gradient(135deg, #2e7d32, #81c784);"></div>
                 </div>
                 <button class="org-nav-button org-nav-next" id="org-next" style="border: 1px solid #4CAF50; color: #4CAF50; font-weight: bold; font-size: 1.5rem; width: 40px; height: 40px; border-radius: 5px; margin-left: 10px; z-index: 20; position: relative;">&#10095;</button>
             </div>
@@ -273,67 +327,116 @@
                 <div class="anggota-title">Anggota</div>
                 <button class="org-nav-button org-nav-prev" id="member-prev" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 10;">&#10094;</button>
                 <div class="member-list" id="member-list" style="scroll-behavior: smooth; margin: 0 40px;">
-                    @foreach ($organisasiGrouped[$instansiKeys[$currentIndex]] as $anggota)
-                        <div class="member-card">
-                            <div class="member-photo"></div>
-                            <div class="member-name">{{ $anggota->nama }}</div>
-                            <div class="member-desc">
-                                Jabatan: {{ $anggota->jabatan }}<br>
-                                NIP: {{ $anggota->nip ?? '-' }}
-                            </div>
-                            @auth
-                                @if(auth()->user()->is_admin)
-                                    <div class="crud-buttons">
-                                        <a href="{{ route('organisasi.edit', ['organisasi' => $anggota->id]) }}" class="btn btn-warning">Edit</a>
-                                        <form action="{{ route('organisasi.destroy', ['organisasi' => $anggota->id]) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus anggota ini?')">Hapus</button>
-                                        </form>
-                                    </div>
-                                @endif
-                            @endauth
-                        </div>
-                    @endforeach
+                    <!-- Member cards will be rendered dynamically -->
                 </div>
                 <button class="org-nav-button org-nav-next" id="member-next" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10;">&#10095;</button>
             </div>
         @else
             <p>Tidak ada data organisasi yang tersedia.</p>
         @endif
+
+        @auth
+            @if(auth()->user()->is_admin)
+                <div class="instansi-list" style="margin-top: 40px;">
+                    <h3>Daftar Instansi</h3>
+                    <table class="min-w-full bg-white rounded shadow">
+                        <thead>
+                            <tr>
+                                <th class="py-2 px-4 border-b">Nama</th>
+                                <th class="py-2 px-4 border-b">Deskripsi</th>
+                                <th class="py-2 px-4 border-b">Foto</th>
+                                <th class="py-2 px-4 border-b">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($instansis as $instansi)
+                            <tr>
+                                <td class="py-2 px-4 border-b">{{ $instansi->name }}</td>
+                                <td class="py-2 px-4 border-b">{{ $instansi->description }}</td>
+                                <td class="py-2 px-4 border-b">
+                                    @if($instansi->photo)
+                                        <img src="{{ asset('storage/' . $instansi->photo) }}" alt="{{ $instansi->name }}" class="w-20 h-20 object-cover rounded" />
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td class="py-2 px-4 border-b">
+                                    <a href="{{ route('instansi.edit', $instansi->id) }}" class="btn btn-warning mr-2">Edit</a>
+                                    <form action="{{ route('instansi.destroy', $instansi->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus instansi ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+        @endauth
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const instansiKeys = @json($instansiKeys);
+            const instansiData = @json($instansiData);
+            console.log('instansiKeys:', instansiKeys);
+            console.log('instansiData:', instansiData);
+            const organisasiGrouped = @json($organisasiGrouped);
+            console.log('organisasiGrouped:', organisasiGrouped);
             let currentIndex = 0;
 
             const orgDescription = document.getElementById('org-description');
             const orgLogo = document.getElementById('org-logo');
+            const instansiNameElem = document.getElementById('instansi-name');
+            const instansiDescriptionElem = document.getElementById('instansi-description');
+            const instansiPhotoElem = document.getElementById('instansi-photo');
+            const instansiPhotoPlaceholder = document.getElementById('instansi-photo-placeholder');
             const memberList = document.getElementById('member-list');
             const prevBtn = document.getElementById('org-prev');
             const nextBtn = document.getElementById('org-next');
             const orgContainer = document.querySelector('.org-container');
 
             function renderOrg(index) {
-                const instansi = instansiKeys[index];
-                const anggota = @json($organisasiGrouped);
+                const instansiId = instansiKeys[index];
+                const instansi = instansiData[instansiId];
+                const anggota = organisasiGrouped;
 
-                // Update description and logo
-                orgDescription.querySelector('h2').textContent = instansi.toUpperCase();
-                orgDescription.querySelector('p').textContent = `Deskripsi untuk instansi ${instansi} akan ditampilkan di sini.`;
-                orgLogo.textContent = `LOGO ${instansi.toUpperCase()}`;
+                console.log('Rendering instansi:', instansi);
+                console.log('Rendering anggota:', anggota[instansiId]);
+
+                // Update instansi name and description
+                instansiNameElem.textContent = instansi.name;
+                instansiDescriptionElem.textContent = instansi.description || 'Deskripsi tidak tersedia.';
+
+                // Update instansi photo or placeholder
+                if (instansi.photo) {
+                    instansiPhotoElem.src = instansi.photo;
+                    instansiPhotoElem.style.display = 'block';
+                    instansiPhotoPlaceholder.style.display = 'none';
+                } else {
+                    instansiPhotoElem.style.display = 'none';
+                    instansiPhotoPlaceholder.style.display = 'flex';
+                    instansiPhotoPlaceholder.textContent = instansi.name.charAt(0).toUpperCase();
+                }
 
                 // Clear member list
                 memberList.innerHTML = '';
 
                 // Add anggota cards
-                anggota[instansi].forEach(member => {
+                anggota[instansiId].forEach(member => {
                     const card = document.createElement('div');
                     card.className = 'member-card';
 
-                    const photo = document.createElement('div');
+                    const photo = document.createElement('img');
                     photo.className = 'member-photo';
+                    photo.alt = member.nama;
+                    if (member.photo) {
+                        photo.src = `/storage/${member.photo}`;
+                    } else {
+                        photo.src = 'https://via.placeholder.com/140x110?text=No+Photo';
+                    }
                     card.appendChild(photo);
 
                     const name = document.createElement('div');

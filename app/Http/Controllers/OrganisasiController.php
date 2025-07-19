@@ -19,8 +19,9 @@ class OrganisasiController extends Controller
      */
     public function index()
     {
-        $organisasi = Organisasi::all()->groupBy('instansi');
-        return view('organisasi_updated', ['organisasiGrouped' => $organisasi]);
+        $organisasi = Organisasi::with('instansi')->get()->groupBy('instansi_id');
+        $instansis = \App\Models\Instansi::all()->keyBy('id');
+        return view('organisasi_updated', ['organisasiGrouped' => $organisasi, 'instansis' => $instansis]);
     }
 
     /**
@@ -28,7 +29,8 @@ class OrganisasiController extends Controller
      */
     public function create()
     {
-        return view('organisasi.create');
+        $instansis = \App\Models\Instansi::all();
+        return view('organisasi.create', compact('instansis'));
     }
 
     /**
@@ -38,10 +40,16 @@ class OrganisasiController extends Controller
     {
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'instansi' => 'required|in:perangkat,pokdarwis,bpd,bumdes,bma',
+            'instansi_id' => 'required|exists:instansis,id',
             'jabatan' => 'required|string|max:255',
             'nip' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('organisasi_photos', 'public');
+            $validated['photo'] = $path;
+        }
 
         Organisasi::create($validated);
 
@@ -53,7 +61,8 @@ class OrganisasiController extends Controller
      */
     public function edit(Organisasi $organisasi)
     {
-        return view('organisasi.edit', compact('organisasi'));
+        $instansis = \App\Models\Instansi::all();
+        return view('organisasi.edit', compact('organisasi', 'instansis'));
     }
 
     /**
@@ -63,7 +72,7 @@ class OrganisasiController extends Controller
     {
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'instansi' => 'required|in:perangkat,pokdarwis,bpd,bumdes,bma',
+            'instansi_id' => 'required|exists:instansis,id',
             'jabatan' => 'required|string|max:255',
             'nip' => 'nullable|string|max:255',
         ]);

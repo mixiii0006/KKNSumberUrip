@@ -1,49 +1,61 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Tambah Anggota Organisasi') }}
-        </h2>
-    </x-slot>
+<x-guest-layout>
+    <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+        <div class="bg-white shadow sm:rounded-lg p-6">
+            <h2 class="text-2xl font-semibold mb-6">Tambah Anggota Organisasi</h2>
+            <form method="POST" action="{{ route('organisasi.store') }}" enctype="multipart/form-data">
+                @csrf
 
-    <div class="py-12 max-w-3xl mx-auto">
-        <form method="POST" action="{{ route('organisasi.store') }}">
-            @csrf
+                <div class="mb-4">
+                    <label for="nama" class="block font-medium text-sm text-gray-700">Nama</label>
+                    <input id="nama" name="nama" type="text" value="{{ old('nama') }}" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
+                    @error('nama')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <div class="mb-4">
-                <x-input-label for="nama" :value="__('Nama')" />
-                <x-text-input id="nama" class="block mt-1 w-full" type="text" name="nama" :value="old('nama')" required autofocus />
-                <x-input-error :messages="$errors->get('nama')" class="mt-2" />
-            </div>
+                <div class="mb-4">
+                    <label for="instansi_id" class="block font-medium text-sm text-gray-700">Instansi</label>
+                    <select id="instansi_id" name="instansi_id" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                        <option value="">-- Pilih Instansi --</option>
+                        @foreach ($instansis as $instansi)
+                            <option value="{{ $instansi->id }}" {{ old('instansi_id') == $instansi->id ? 'selected' : '' }}>
+                                {{ $instansi->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('instansi_id')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <div class="mb-4">
-                <x-input-label for="instansi" :value="__('Instansi')" />
-                <select id="instansi" name="instansi" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" required>
-                    <option value="perangkat" {{ old('instansi') == 'perangkat' ? 'selected' : '' }}>Perangkat</option>
-                    <option value="pokdarwis" {{ old('instansi') == 'pokdarwis' ? 'selected' : '' }}>Pokdarwis</option>
-                    <option value="bpd" {{ old('instansi') == 'bpd' ? 'selected' : '' }}>BPD</option>
-                    <option value="bumdes" {{ old('instansi') == 'bumdes' ? 'selected' : '' }}>BUMDes</option>
-                    <option value="bma" {{ old('instansi') == 'bma' ? 'selected' : '' }}>BMA</option>
-                </select>
-                <x-input-error :messages="$errors->get('instansi')" class="mt-2" />
-            </div>
+                <div class="mb-4">
+                    <label for="jabatan" class="block font-medium text-sm text-gray-700">Jabatan</label>
+                    <input id="jabatan" name="jabatan" type="text" value="{{ old('jabatan') }}" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
+                    @error('jabatan')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <div class="mb-4">
-                <x-input-label for="jabatan" :value="__('Jabatan')" />
-                <x-text-input id="jabatan" class="block mt-1 w-full" type="text" name="jabatan" :value="old('jabatan')" required />
-                <x-input-error :messages="$errors->get('jabatan')" class="mt-2" />
-            </div>
+                <div class="mb-4">
+                    <label for="nip" class="block font-medium text-sm text-gray-700">NIP</label>
+                    <input id="nip" name="nip" type="text" value="{{ old('nip') }}" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
+                    @error('nip')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <div class="mb-4">
-                <x-input-label for="nip" :value="__('NIP')" />
-                <x-text-input id="nip" class="block mt-1 w-full" type="text" name="nip" :value="old('nip')" />
-                <x-input-error :messages="$errors->get('nip')" class="mt-2" />
-            </div>
+                <div class="mb-4">
+                    <label for="photo" class="block font-medium text-sm text-gray-700">Foto Anggota</label>
+                    <input id="photo" name="photo" type="file" accept="image/*" class="block mt-1 w-full" />
+                    @error('photo')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <x-primary-button>
-                    {{ __('Simpan') }}
-                </x-primary-button>
-            </div>
-        </form>
+                <div class="flex items-center justify-end mt-4">
+                    <button type="submit" class="btn btn-primary px-4 py-2 rounded">Simpan</button>
+                </div>
+            </form>
+        </div>
     </div>
-</x-app-layout>
+</x-guest-layout>

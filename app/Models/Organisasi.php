@@ -8,8 +8,14 @@ class Organisasi extends Model
 {
     protected $fillable = [
         'nama',
-        'instansi',
+        'instansi_id',
         'jabatan',
         'nip',
+        'photo',
     ];
+
+    public function instansi()
+    {
+        return $this->belongsTo(Instansi::class);
+    }
 }

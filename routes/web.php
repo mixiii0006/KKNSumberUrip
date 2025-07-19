@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SejarahController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrganisasiController;
+use App\Http\Controllers\InstansiController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,8 +16,6 @@ Route::get('/about', function () {
 
 Route::get('/sejarah', [SejarahController::class, 'publicIndex'])->name('sejarah.public');
 
-use App\Http\Controllers\OrganisasiController;
-
 Route::get('/organisasi', [OrganisasiController::class, 'index'])->name('organisasi.index');
 
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
@@ -24,27 +24,7 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
 
     Route::resource('sejarah', SejarahController::class)->except(['show', 'index']);
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-});
-
-Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
-
-    Route::resource('organisasi', OrganisasiController::class)->except(['index']);
-
-    Route::resource('sejarah', SejarahController::class)->except(['show', 'index']);
-
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-});
-
-Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
-
-    Route::resource('sejarah', SejarahController::class)->except(['show', 'index']);
+    Route::resource('instansi', InstansiController::class);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
