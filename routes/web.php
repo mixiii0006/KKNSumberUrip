@@ -16,7 +16,7 @@ Route::get('/sejarah', [SejarahController::class, 'publicIndex'])->name('sejarah
 
 use App\Http\Controllers\OrganisasiController;
 
-Route::get('/organisasi', [OrganisasiController::class, 'index'])->name('organisasi.index')->middleware('auth');
+Route::get('/organisasi', [OrganisasiController::class, 'index'])->name('organisasi.index');
 
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
 

@@ -204,11 +204,6 @@
             $currentIndex = 0;
         @endphp
 
-        <div>
-            <p>Debug: Authenticated? {{ auth()->check() ? 'Yes' : 'No' }}</p>
-            <p>Debug: is_admin? {{ auth()->check() ? (auth()->user()->is_admin ? 'Yes' : 'No') : 'N/A' }}</p>
-        </div>
-
         @auth
             @if(Auth::user()->is_admin)
                 <div class="add-anggota-form" style="margin-bottom: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
@@ -262,21 +257,22 @@
         @endauth
 
         @if(count($instansiKeys) > 0)
-            <div class="org-top">
-                <button class="org-nav-button org-nav-prev" id="org-prev">&#10094;</button>
-                <div class="org-description" id="org-description">
+            <div class="org-top" style="position: relative; display: flex; align-items: center; justify-content: flex-start; gap: 20px;">
+                <button class="org-nav-button org-nav-prev" id="org-prev" style="border: 1px solid #4CAF50; color: #4CAF50; font-weight: bold; font-size: 1.5rem; width: 40px; height: 40px; border-radius: 5px; margin-right: 10px; z-index: 20; position: relative;">&#10094;</button>
+                <div class="org-description" id="org-description" style="flex: 1; position: relative; padding-left: 50px; padding-right: 50px;">
                     <h2>{{ strtoupper($instansiKeys[$currentIndex]) }}</h2>
                     <p>Deskripsi untuk instansi {{ $instansiKeys[$currentIndex] }} akan ditampilkan di sini.</p>
                 </div>
-                <div class="org-logo-container" id="org-logo">
+                <div class="org-logo-container" id="org-logo" style="width: 300px; height: 300px;">
                     LOGO {{ strtoupper($instansiKeys[$currentIndex]) }}
                 </div>
-                <button class="org-nav-button org-nav-next" id="org-next">&#10095;</button>
+                <button class="org-nav-button org-nav-next" id="org-next" style="border: 1px solid #4CAF50; color: #4CAF50; font-weight: bold; font-size: 1.5rem; width: 40px; height: 40px; border-radius: 5px; margin-left: 10px; z-index: 20; position: relative;">&#10095;</button>
             </div>
 
             <div class="anggota-section">
                 <div class="anggota-title">Anggota</div>
-                <div class="member-list" id="member-list">
+                <button class="org-nav-button org-nav-prev" id="member-prev" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 10;">&#10094;</button>
+                <div class="member-list" id="member-list" style="scroll-behavior: smooth; margin: 0 40px;">
                     @foreach ($organisasiGrouped[$instansiKeys[$currentIndex]] as $anggota)
                         <div class="member-card">
                             <div class="member-photo"></div>
@@ -300,6 +296,7 @@
                         </div>
                     @endforeach
                 </div>
+                <button class="org-nav-button org-nav-next" id="member-next" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10;">&#10095;</button>
             </div>
         @else
             <p>Tidak ada data organisasi yang tersedia.</p>
@@ -316,6 +313,7 @@
             const memberList = document.getElementById('member-list');
             const prevBtn = document.getElementById('org-prev');
             const nextBtn = document.getElementById('org-next');
+            const orgContainer = document.querySelector('.org-container');
 
             function renderOrg(index) {
                 const instansi = instansiKeys[index];
@@ -402,6 +400,79 @@
             nextBtn.addEventListener('click', () => {
                 currentIndex = (currentIndex + 1) % instansiKeys.length;
                 renderOrg(currentIndex);
+            });
+
+            const memberPrevBtn = document.getElementById('member-prev');
+            const memberNextBtn = document.getElementById('member-next');
+
+            memberPrevBtn.addEventListener('click', () => {
+                memberList.scrollBy({ left: -150, behavior: 'smooth' });
+            });
+
+            memberNextBtn.addEventListener('click', () => {
+                memberList.scrollBy({ left: 150, behavior: 'smooth' });
+            });
+
+            // Swipe detection variables
+            let startX = 0;
+            let isDragging = false;
+
+            orgContainer.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            });
+
+            orgContainer.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                const currentX = e.touches[0].clientX;
+                const diffX = currentX - startX;
+
+                // Threshold for swipe
+                if (Math.abs(diffX) > 50) {
+                    if (diffX > 0) {
+                        // Swipe right - previous instansi
+                        currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
+                    } else {
+                        // Swipe left - next instansi
+                        currentIndex = (currentIndex + 1) % instansiKeys.length;
+                    }
+                    renderOrg(currentIndex);
+                    isDragging = false;
+                }
+            });
+
+            orgContainer.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+
+            // Mouse drag support for desktop
+            orgContainer.addEventListener('mousedown', (e) => {
+                startX = e.clientX;
+                isDragging = true;
+            });
+
+            orgContainer.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const currentX = e.clientX;
+                const diffX = currentX - startX;
+
+                if (Math.abs(diffX) > 50) {
+                    if (diffX > 0) {
+                        currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
+                    } else {
+                        currentIndex = (currentIndex + 1) % instansiKeys.length;
+                    }
+                    renderOrg(currentIndex);
+                    isDragging = false;
+                }
+            });
+
+            orgContainer.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            orgContainer.addEventListener('mouseleave', () => {
+                isDragging = false;
             });
 
             renderOrg(currentIndex);

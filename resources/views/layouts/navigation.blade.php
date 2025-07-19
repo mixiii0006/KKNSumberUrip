@@ -17,9 +17,9 @@
                     </x-nav-link>
                     @auth
                         @if(Auth::user()->is_admin)
-                            <x-nav-link :href="route('sejarah.index')" :active="request()->routeIs('sejarah.index')">
+                            {{-- <x-nav-link :href="route('sejarah.index')" :active="request()->routeIs('sejarah.index')">
                                 {{ __('Manage Sejarah') }}
-                            </x-nav-link>
+                            </x-nav-link> --}}
                         @endif
                     @endauth
                 </div>
