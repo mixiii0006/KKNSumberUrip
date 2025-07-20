@@ -13,4 +13,8 @@ class Artikel extends Model
         'penulis',
         'tanggal_publish',
     ];
+
+    protected $casts = [
+        'tanggal_publish' => 'datetime',
+    ];
 }

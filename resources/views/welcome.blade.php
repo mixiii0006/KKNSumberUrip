@@ -310,6 +310,45 @@
     <!-- Service End -->
 
 
+    <!-- Articles Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <p class="fs-5 fw-bold text-primary">Artikel Terbaru</p>
+                <h1 class="display-5 mb-5">Berita dan Informasi Desa</h1>
+                @if(Auth::check() && Auth::user()->is_admin)
+                    <div class="mb-4 text-end">
+                        <a href="{{ route('artikels.create') }}" class="btn btn-success">Tambah Artikel</a>
+                    </div>
+                @endif
+            </div>
+            <div class="row g-4">
+                @foreach ($artikels as $artikel)
+                    <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="service-item rounded d-flex h-100 flex-column">
+                            <div class="service-text rounded p-4 flex-grow-1">
+                                <a href="{{ route('artikels.show', $artikel->slug) }}" class="text-primary h5 d-block mb-3">{{ $artikel->judul }}</a>
+                                <p class="text-muted mb-3">{!! Str::limit(strip_tags($artikel->isi), 100) !!}</p>
+                                <p class="text-secondary mb-3 small">Penulis: {{ $artikel->penulis ?? 'Admin' }} | {{ $artikel->tanggal_publish->format('d M Y') }}</p>
+                                @if(Auth::check() && Auth::user()->is_admin)
+                                    <div class="mt-auto">
+                                        <a href="{{ route('artikels.edit', $artikel->id) }}" class="btn btn-warning btn-sm me-2">Edit</a>
+                                        <form action="{{ route('artikels.destroy', $artikel->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus artikel ini?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                        </form>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    <!-- Articles End -->
+
     <!-- Leaflet Map Start -->
     <div class="container-fluid my-5 py-5">
         <div class="container py-5">
