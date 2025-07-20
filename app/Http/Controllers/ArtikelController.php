@@ -48,7 +48,7 @@ class ArtikelController extends Controller
 
         Artikel::create($validated);
 
-        return redirect()->route('artikels.index')->with('success', 'Artikel berhasil ditambahkan.');
+        return redirect()->route('welcome')->with('success', 'Artikel berhasil ditambahkan.');
     }
 
     // Admin: show edit form
@@ -71,7 +71,7 @@ class ArtikelController extends Controller
 
         $artikel->update($validated);
 
-        return redirect()->route('artikels.index')->with('success', 'Artikel berhasil diperbarui.');
+        return redirect()->route('welcome')->with('success', 'Artikel berhasil diperbarui.');
     }
 
     // Admin: delete artikel
@@ -79,6 +79,6 @@ class ArtikelController extends Controller
     {
         $artikel->delete();
 
-        return redirect()->route('artikels.index')->with('success', 'Artikel berhasil dihapus.');
+        return redirect()->route('welcome')->with('success', 'Artikel berhasil dihapus.');
     }
 }
