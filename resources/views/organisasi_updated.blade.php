@@ -199,54 +199,87 @@
     </style>
 
     <div class="org-container">
-        @php
-            $instansiKeys = $organisasiGrouped->keys()->toArray();
-            $instansiData = $instansis->mapWithKeys(function($instansi) {
-                return [$instansi->id => [
-                    'name' => $instansi->name,
-                    'description' => $instansi->description,
-                    'photo' => $instansi->photo ? asset('storage/' . $instansi->photo) : null,
-                ]];
-            })->toArray();
-            $currentIndex = 0;
-        @endphp
+@php
+    $instansiKeys = $organisasiGrouped->keys()->toArray();
+    $instansiData = $instansis->mapWithKeys(function($instansi) {
+        return [$instansi->id => [
+            'name' => $instansi->name,
+            'description' => $instansi->description,
+            'photo' => $instansi->photo ? asset('storage/' . $instansi->photo) : null,
+        ]];
+    })->toArray();
+    $currentIndex = 0;
+@endphp
 
-        @auth
-            @if(Auth::user()->is_admin)
-                <div class="add-instansi-form" style="margin-bottom: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
-                    <h3>Tambah Instansi</h3>
-                    <form method="POST" action="{{ route('instansi.store') }}" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-4">
-                            <label for="name" class="block font-medium text-sm text-gray-700">Nama Instansi</label>
-                            <input id="name" name="name" type="text" value="{{ old('name') }}" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
-                            @error('name')
-                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="mb-4">
-                            <label for="description" class="block font-medium text-sm text-gray-700">Deskripsi</label>
-                            <textarea id="description" name="description" rows="4" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">{{ old('description') }}</textarea>
-                            @error('description')
-                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="mb-4">
-                            <label for="photo" class="block font-medium text-sm text-gray-700">Foto Instansi</label>
-                            <input id="photo" name="photo" type="file" accept="image/*" class="block mt-1 w-full" />
-                            @error('photo')
-                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="flex items-center justify-end mt-4">
-                            <button type="submit" class="btn btn-primary px-4 py-2 rounded">Simpan</button>
-                        </div>
-                    </form>
+<script>
+    let currentIndex = 0;
+    let instansiKeys = @json($instansiKeys);
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const instansiEditBtn = document.getElementById('instansi-edit-btn');
+        const orgPrevBtn = document.getElementById('org-prev');
+        const orgNextBtn = document.getElementById('org-next');
+
+        function updateEditLink(index) {
+            if (instansiEditBtn) {
+                instansiEditBtn.href = `/instansi/${instansiKeys[index]}/edit`;
+            }
+        }
+
+        orgPrevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
+            updateEditLink(currentIndex);
+        });
+
+        orgNextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % instansiKeys.length;
+            updateEditLink(currentIndex);
+        });
+
+        // Initialize edit link on page load
+        updateEditLink(currentIndex);
+    });
+</script>
+
+@auth
+    @if(Auth::user()->is_admin)
+        <div class="add-instansi-form" style="margin-bottom: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+            <h3>Tambah Instansi</h3>
+            <form method="POST" action="{{ route('instansi.store') }}" enctype="multipart/form-data">
+                @csrf
+                <div class="mb-4">
+                    <label for="name" class="block font-medium text-sm text-gray-700">Nama Instansi</label>
+                    <input id="name" name="name" type="text" value="{{ old('name') }}" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
+                    @error('name')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
+                <div class="mb-4">
+                    <label for="description" class="block font-medium text-sm text-gray-700">Deskripsi</label>
+                    <textarea id="description" name="description" rows="4" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">{{ old('description') }}</textarea>
+                    @error('description')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="mb-4">
+                    <label for="photo" class="block font-medium text-sm text-gray-700">Foto Instansi</label>
+                    <input id="photo" name="photo" type="file" accept="image/*" class="block mt-1 w-full" />
+                    @error('photo')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div class="flex items-center justify-end mt-4">
+                    <button type="submit" class="btn btn-primary px-4 py-2 rounded">Simpan</button>
+                </div>
+            </form>
+        </div>
+
 
                 <div class="add-anggota-form" style="margin-bottom: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
                     <h3>Tambah Anggota Organisasi</h3>
-                    <form method="POST" action="{{ route('organisasi.store') }}">
+                    <form method="POST" action="{{ route('organisasi.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-4">
                             <label for="nama" class="block font-medium text-sm text-gray-700">Nama</label>
@@ -287,6 +320,14 @@
                             @enderror
                         </div>
 
+                        <div class="mb-4">
+                            <label for="photo" class="block font-medium text-sm text-gray-700">Foto Anggota</label>
+                            <input id="photo" name="photo" type="file" accept="image/*" class="block mt-1 w-full" />
+                            @error('photo')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <div class="flex items-center justify-end mt-4">
                             <button type="submit" class="btn btn-primary px-4 py-2 rounded">Simpan</button>
                         </div>
@@ -295,27 +336,179 @@
             @endif
         @endauth
 
-        @if(count($instansiKeys) > 0)
-            <div class="org-top" style="position: relative; display: flex; align-items: center; justify-content: flex-start; gap: 20px;">
-                <button class="org-nav-button org-nav-prev" id="org-prev" style="border: 1px solid #4CAF50; color: #4CAF50; font-weight: bold; font-size: 1.5rem; width: 40px; height: 40px; border-radius: 5px; margin-right: 10px; z-index: 20; position: relative;">&#10094;</button>
-                <div class="org-description" id="org-description" style="flex: 1; position: relative; padding-left: 50px; padding-right: 50px;">
-                    <h2 id="instansi-name"></h2>
-                    <div id="instansi-description" style="margin-top: 10px;"></div>
-                    @auth
-                <div id="instansi-admin-actions" style="margin-top: 10px;">
-                    @auth
-                        @if(auth()->user()->is_admin)
-                            <a href="{{ route('instansi.edit', $instansiKeys[0]) }}" class="btn btn-warning mr-2">Edit</a>
-                            <form action="{{ route('instansi.destroy', $instansiKeys[0]) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus instansi ini?');" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Hapus</button>
-                            </form>
-                        @endif
-                    @endauth
-                </div>
-                    @endauth
-                </div>
+@if(count($instansiKeys) > 0)
+    <div class="org-top" style="position: relative; display: flex; align-items: center; justify-content: flex-start; gap: 20px;">
+        <button class="org-nav-button org-nav-prev" id="org-prev" style="border: 1px solid #4CAF50; color: #4CAF50; font-weight: bold; font-size: 1.5rem; width: 40px; height: 40px; border-radius: 5px; margin-right: 10px; z-index: 20; position: relative;">&#10094;</button>
+        <div class="org-description" id="org-description" style="flex: 1; position: relative; padding-left: 50px; padding-right: 50px;">
+            <h2 id="instansi-name"></h2>
+            <div id="instansi-description" style="margin-top: 10px;"></div>
+            @auth
+        <div id="instansi-admin-actions" style="margin-top: 10px;">
+            @auth
+                @if(auth()->user()->is_admin)
+                    <a href="#" id="instansi-edit-btn" class="btn btn-warning mr-2">Edit</a>
+                    
+                @endif
+            @endauth
+        </div>
+            @endauth
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const instansiKeys = @json($instansiKeys);
+                const instansiData = @json($instansiData);
+                let currentIndex = 0;
+
+                function renderOrg(index) {
+                    if (!instansiKeys || instansiKeys.length === 0) {
+                        // No instansi keys available, skip rendering
+                        return;
+                    }
+                    if (index < 0 || index >= instansiKeys.length) {
+                        // Index out of bounds, skip rendering
+                        return;
+                    }
+                const instansiId = instansiKeys[index];
+                const instansi = instansiData[instansiId];
+                const anggota = @json($organisasiGrouped);
+
+                if (!instansi || typeof instansi === 'undefined' || instansi === null) {
+                    // If instansi data is undefined or null, skip rendering
+                    console.warn('Instansi data undefined for index:', index, 'instansiId:', instansiId);
+                    // Try to find a valid instansi to render instead
+                    for (let i = 0; i < instansiKeys.length; i++) {
+                        const altInstansi = instansiData[instansiKeys[i]];
+                        if (altInstansi && altInstansi.name) {
+                            currentIndex = i;
+                            renderOrg(i);
+                            updateEditLink(i);
+                            return;
+                        }
+                    }
+                    return;
+                }
+
+                // Update instansi name and description
+                document.getElementById('instansi-name').textContent = instansi.name;
+                document.getElementById('instansi-description').textContent = instansi.description || 'Deskripsi tidak tersedia.';
+
+                    // Update instansi photo or placeholder
+                    const instansiPhotoElem = document.getElementById('instansi-photo');
+                    const instansiPhotoPlaceholder = document.getElementById('instansi-photo-placeholder');
+                    if (instansi.photo) {
+                        instansiPhotoElem.src = instansi.photo;
+                        instansiPhotoElem.style.display = 'block';
+                        instansiPhotoPlaceholder.style.display = 'none';
+                    } else {
+                        instansiPhotoElem.style.display = 'none';
+                        instansiPhotoPlaceholder.style.display = 'flex';
+                        instansiPhotoPlaceholder.textContent = instansi.name.charAt(0).toUpperCase();
+                    }
+
+                    // Clear member list
+                    const memberList = document.getElementById('member-list');
+                    memberList.innerHTML = '';
+
+                    // Add anggota cards
+                    (anggota[instansiId] || []).forEach(member => {
+                        if (!member.nama) return; // Skip empty member data
+
+                        const card = document.createElement('div');
+                        card.className = 'member-card';
+
+                        const photo = document.createElement('img');
+                        photo.className = 'member-photo';
+                        photo.alt = member.nama;
+                        if (member.photo) {
+                            photo.src = member.photo.startsWith('http') ? member.photo : `/storage/${member.photo}`;
+                        } else {
+                            photo.src = 'https://via.placeholder.com/140x110?text=No+Photo';
+                        }
+                        card.appendChild(photo);
+
+                        const name = document.createElement('div');
+                        name.className = 'member-name';
+                        name.textContent = member.nama;
+                        card.appendChild(name);
+
+                        const desc = document.createElement('div');
+                        desc.className = 'member-desc';
+                        desc.innerHTML = `Jabatan: ${member.jabatan}<br>NIP: ${member.nip || '-'}`;
+                        card.appendChild(desc);
+
+                        @auth
+                            @if(auth()->user()->is_admin)
+                                const crudDiv = document.createElement('div');
+                                crudDiv.className = 'crud-buttons';
+
+                                const editLink = document.createElement('a');
+                                editLink.href = `/organisasi/${member.id}/edit`;
+                                editLink.className = 'btn btn-warning';
+                                editLink.textContent = 'Edit';
+                                crudDiv.appendChild(editLink);
+
+                                const deleteForm = document.createElement('form');
+                                deleteForm.action = `/organisasi/${member.id}`;
+                                deleteForm.method = 'POST';
+                                deleteForm.style.display = 'inline';
+
+                                const csrfInput = document.createElement('input');
+                                csrfInput.type = 'hidden';
+                                csrfInput.name = '_token';
+                                csrfInput.value = '{{ csrf_token() }}';
+                                deleteForm.appendChild(csrfInput);
+
+                                const methodInput = document.createElement('input');
+                                methodInput.type = 'hidden';
+                                methodInput.name = '_method';
+                                methodInput.value = 'DELETE';
+                                deleteForm.appendChild(methodInput);
+
+                                const deleteButton = document.createElement('button');
+                                deleteButton.type = 'submit';
+                                deleteButton.className = 'btn btn-danger';
+                                deleteButton.textContent = 'Hapus';
+                                deleteButton.onclick = function() {
+                                    return confirm('Yakin ingin menghapus anggota ini?');
+                                };
+                                deleteForm.appendChild(deleteButton);
+
+                                crudDiv.appendChild(deleteForm);
+                                card.appendChild(crudDiv);
+                            @endif
+                        @endauth
+
+                        memberList.appendChild(card);
+                    });
+                }
+
+                // Navigation buttons
+                document.getElementById('org-prev').addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
+                    renderOrg(currentIndex);
+                    updateEditLink(currentIndex);
+                });
+
+                document.getElementById('org-next').addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % instansiKeys.length;
+                    renderOrg(currentIndex);
+                    updateEditLink(currentIndex);
+                });
+
+                // Update edit link
+                const instansiEditBtn = document.getElementById('instansi-edit-btn');
+                function updateEditLink(index) {
+                    if (instansiEditBtn) {
+                        instansiEditBtn.href = `/instansi/${instansiKeys[index]}/edit`;
+                    }
+                }
+
+                // Initial render
+                renderOrg(currentIndex);
+                updateEditLink(currentIndex);
+            });
+        </script>
                 <div class="org-logo-container" id="org-logo" style="width: 300px; height: 300px; position: relative;">
                     <img id="instansi-photo" src="" alt="" style="width: 100%; height: 100%; border-radius: 12px; object-fit: cover; display: none;" />
                     <div id="instansi-photo-placeholder" style="color: white; font-weight: bold; font-size: 1.5rem; display: flex; justify-content: center; align-items: center; height: 100%; border-radius: 12px; background: linear-gradient(135deg, #2e7d32, #81c784);"></div>
@@ -335,46 +528,6 @@
             <p>Tidak ada data organisasi yang tersedia.</p>
         @endif
 
-        @auth
-            @if(auth()->user()->is_admin)
-                <div class="instansi-list" style="margin-top: 40px;">
-                    <h3>Daftar Instansi</h3>
-                    <table class="min-w-full bg-white rounded shadow">
-                        <thead>
-                            <tr>
-                                <th class="py-2 px-4 border-b">Nama</th>
-                                <th class="py-2 px-4 border-b">Deskripsi</th>
-                                <th class="py-2 px-4 border-b">Foto</th>
-                                <th class="py-2 px-4 border-b">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($instansis as $instansi)
-                            <tr>
-                                <td class="py-2 px-4 border-b">{{ $instansi->name }}</td>
-                                <td class="py-2 px-4 border-b">{{ $instansi->description }}</td>
-                                <td class="py-2 px-4 border-b">
-                                    @if($instansi->photo)
-                                        <img src="{{ asset('storage/' . $instansi->photo) }}" alt="{{ $instansi->name }}" class="w-20 h-20 object-cover rounded" />
-                                    @else
-                                        -
-                                    @endif
-                                </td>
-                                <td class="py-2 px-4 border-b">
-                                    <a href="{{ route('instansi.edit', $instansi->id) }}" class="btn btn-warning mr-2">Edit</a>
-                                    <form action="{{ route('instansi.destroy', $instansi->id) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus instansi ini?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Hapus</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @endif
-        @endauth
     </div>
 
     <script>
@@ -455,13 +608,13 @@
                             crudDiv.className = 'crud-buttons';
 
                             const editLink = document.createElement('a');
-                            editLink.href = `{{ url('organisasi') }}/${member.id}/edit`;
+                            editLink.href = `/organisasi/${member.id}/edit`;
                             editLink.className = 'btn btn-warning';
                             editLink.textContent = 'Edit';
                             crudDiv.appendChild(editLink);
 
                             const deleteForm = document.createElement('form');
-                            deleteForm.action = `{{ url('organisasi') }}/${member.id}`;
+                            deleteForm.action = `/organisasi/${member.id}`;
                             deleteForm.method = 'POST';
                             deleteForm.style.display = 'inline';
 

@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
         <div class="bg-white shadow sm:rounded-lg p-6">
             <h2 class="text-2xl font-semibold mb-6">Edit Anggota Organisasi</h2>
-            <form method="POST" action="{{ route('organisasi.update', $organisasi->id) }}">
+            <form method="POST" action="{{ route('organisasi.update', $organisasi->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -15,15 +15,16 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="instansi" class="block font-medium text-sm text-gray-700">Instansi</label>
-                    <select id="instansi" name="instansi" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
-                        <option value="perangkat" {{ old('instansi', $organisasi->instansi) == 'perangkat' ? 'selected' : '' }}>Perangkat</option>
-                        <option value="pokdarwis" {{ old('instansi', $organisasi->instansi) == 'pokdarwis' ? 'selected' : '' }}>Pokdarwis</option>
-                        <option value="bpd" {{ old('instansi', $organisasi->instansi) == 'bpd' ? 'selected' : '' }}>BPD</option>
-                        <option value="bumdes" {{ old('instansi', $organisasi->instansi) == 'bumdes' ? 'selected' : '' }}>BUMDes</option>
-                        <option value="bma" {{ old('instansi', $organisasi->instansi) == 'bma' ? 'selected' : '' }}>BMA</option>
+                    <label for="instansi_id" class="block font-medium text-sm text-gray-700">Instansi</label>
+                    <select id="instansi_id" name="instansi_id" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                        <option value="">-- Pilih Instansi --</option>
+                        @foreach ($instansis as $instansi)
+                            <option value="{{ $instansi->id }}" {{ old('instansi_id', $organisasi->instansi_id) == $instansi->id ? 'selected' : '' }}>
+                                {{ $instansi->name }}
+                            </option>
+                        @endforeach
                     </select>
-                    @error('instansi')
+                    @error('instansi_id')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
@@ -40,6 +41,17 @@
                     <label for="nip" class="block font-medium text-sm text-gray-700">NIP</label>
                     <input id="nip" name="nip" type="text" value="{{ old('nip', $organisasi->nip) }}" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
                     @error('nip')
+                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-4">
+                    <label for="photo" class="block font-medium text-sm text-gray-700">Foto Anggota</label>
+                    @if($organisasi->photo)
+                        <img src="{{ asset('storage/' . $organisasi->photo) }}" alt="{{ $organisasi->nama }}" class="w-32 h-32 object-cover rounded mb-2" />
+                    @endif
+                    <input id="photo" name="photo" type="file" accept="image/*" class="block mt-1 w-full" />
+                    @error('photo')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>

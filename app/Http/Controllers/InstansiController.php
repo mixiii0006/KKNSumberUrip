@@ -40,7 +40,7 @@ class InstansiController extends Controller
 
         Instansi::create($validated);
 
-        return redirect()->route('instansi.index')->with('success', 'Instansi berhasil ditambahkan.');
+        return redirect()->route('organisasi.index')->with('success', 'Instansi berhasil ditambahkan.');
     }
 
     public function edit(Instansi $instansi)
@@ -63,13 +63,13 @@ class InstansiController extends Controller
 
         $instansi->update($validated);
 
-        return redirect()->route('instansi.index')->with('success', 'Instansi berhasil diperbarui.');
+        return redirect()->route('organisasi.index')->with('success', 'Instansi berhasil diperbarui.');
     }
 
     public function destroy(Instansi $instansi)
     {
         $instansi->delete();
 
-        return redirect()->route('instansi.index')->with('success', 'Instansi berhasil dihapus.');
+        return redirect()->route('organisasi.index')->with('success', 'Instansi berhasil dihapus.');
     }
 }

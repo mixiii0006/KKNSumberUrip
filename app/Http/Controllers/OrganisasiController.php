@@ -69,18 +69,30 @@ class OrganisasiController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Organisasi $organisasi)
-    {
-        $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'instansi_id' => 'required|exists:instansis,id',
-            'jabatan' => 'required|string|max:255',
-            'nip' => 'nullable|string|max:255',
-        ]);
+{
+    $validated = $request->validate([
+        'nama' => 'required|string|max:255',
+        'instansi_id' => 'required|exists:instansis,id',
+        'jabatan' => 'required|string|max:255',
+        'nip' => 'nullable|string|max:255',
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
 
-        $organisasi->update($validated);
+    if ($request->hasFile('photo')) {
+        // Hapus file lama jika ada
+        if ($organisasi->photo && \Storage::disk('public')->exists($organisasi->photo)) {
+            \Storage::disk('public')->delete($organisasi->photo);
+        }
 
-        return redirect()->route('organisasi.index')->with('success', 'Anggota berhasil diperbarui.');
+        $path = $request->file('photo')->store('organisasi_photos', 'public');
+        $validated['photo'] = $path;
     }
+
+    $organisasi->update($validated);
+
+    return redirect()->route('organisasi.index')->with('success', 'Anggota berhasil diperbarui.');
+}
+
 
     /**
      * Remove the specified resource from storage.
