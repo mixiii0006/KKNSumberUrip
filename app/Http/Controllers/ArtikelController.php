@@ -6,6 +6,7 @@ use App\Models\Artikel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
 
 class ArtikelController extends Controller
 {
@@ -31,7 +32,7 @@ class ArtikelController extends Controller
     // Admin: show create form
     public function create()
     {
-        return view('admin.artikels.create');
+        return view('artikels.create');
     }
 
     // Admin: store new artikel
@@ -42,19 +43,29 @@ class ArtikelController extends Controller
             'isi' => 'required|string',
             'penulis' => 'nullable|string|max:255',
             'tanggal_publish' => 'required|date',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $validated['slug'] = Str::slug($validated['judul']);
 
-        Artikel::create($validated);
+        if ($request->hasFile('gambar')) {
+            $path = $request->file('gambar')->store('artikels', 'public');
+            $validated['gambar'] = $path;
+        }
 
-        return redirect()->route('welcome')->with('success', 'Artikel berhasil ditambahkan.');
+        try {
+            $artikel = Artikel::create($validated);
+            return redirect()->route('artikels.show', $artikel->slug)->with('success', 'Artikel berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            \Log::error('Artikel creation failed: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menambahkan artikel.');
+        }
     }
 
     // Admin: show edit form
     public function edit(Artikel $artikel)
     {
-        return view('admin.artikels.edit', compact('artikel'));
+        return view('artikels.edit', compact('artikel'));
     }
 
     // Admin: update artikel
@@ -65,15 +76,23 @@ class ArtikelController extends Controller
             'isi' => 'required|string',
             'penulis' => 'nullable|string|max:255',
             'tanggal_publish' => 'required|date',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $validated['slug'] = Str::slug($validated['judul']);
 
-        $artikel->update($validated);
+        if ($request->hasFile('gambar')) {
+            $path = $request->file('gambar')->store('artikels', 'public');
+            $validated['gambar'] = $path;
+        }
 
-        return redirect()->route('welcome')->with('success', 'Artikel berhasil diperbarui.');
+        try {
+            $artikel->update($validated);
+            return response()->json(['success' => true, 'message' => 'Artikel berhasil diperbarui.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Gagal memperbarui artikel.']);
+        }
     }
-
     // Admin: delete artikel
     public function destroy(Artikel $artikel)
     {

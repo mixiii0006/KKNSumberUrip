@@ -74,6 +74,16 @@
         {{$slot}}
     </div>
 
+    <!-- Login Modal -->
+    <x-modal name="loginModal" :show="false" maxWidth="md">
+        @include('auth.login-modal-content')
+    </x-modal>
+
+    <!-- Register Modal -->
+    <x-modal name="registerModal" :show="false" maxWidth="md">
+        @include('auth.register-modal-content')
+    </x-modal>
+
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">

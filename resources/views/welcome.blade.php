@@ -11,6 +11,9 @@
                                 <div class="col-lg-8">
                                     <h1 class="display-1 text-white mb-5 animated slideInDown">Make Your Home Like Garden</h1>
                                     <a href="" class="btn btn-primary py-sm-3 px-sm-4">Explore More</a>
+                                    <!-- Removed login and register buttons to keep only navbar buttons -->
+                                    <!-- <button @click="$dispatch('open-modal', 'loginModal')" class="btn btn-success ms-3">Login</button> -->
+                                    <!-- <button @click="$dispatch('open-modal', 'registerModal')" class="btn btn-warning ms-3">Register</button> -->
                                 </div>
                             </div>
                         </div>
@@ -322,28 +325,34 @@
                     </div>
                 @endif
             </div>
+            @include('artikels.css')
             <div class="row g-4">
                 @foreach ($artikels as $artikel)
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                        <div class="service-item rounded d-flex h-100 flex-column">
-                            <div class="service-text rounded p-4 flex-grow-1">
-                                <a href="{{ route('artikels.show', $artikel->slug) }}" class="text-primary h5 d-block mb-3">{{ $artikel->judul }}</a>
-                                <p class="text-muted mb-3">{!! Str::limit(strip_tags($artikel->isi), 100) !!}</p>
-                                <p class="text-secondary mb-3 small">Penulis: {{ $artikel->penulis ?? 'Admin' }} | {{ $artikel->tanggal_publish->format('d M Y') }}</p>
+                        <a href="{{ route('artikels.show', $artikel->slug) }}" class="text-decoration-none text-dark">
+                            <div class="artikel-container position-relative border rounded p-4 shadow-sm h-100 d-flex flex-column">
+                                <h3 class="artikel-title mb-2">
+                                    {{ $artikel->judul }}
+                                </h3>
+                                <p class="artikel-meta text-muted mb-3">Penulis: {{ $artikel->penulis ?? 'Admin' }} | {{ $artikel->tanggal_publish->format('d M Y') }}</p>
+                                <div class="artikel-excerpt flex-grow-1 mb-3">{!! Str::limit(strip_tags($artikel->isi), 100) !!}</div>
                                 @if(Auth::check() && Auth::user()->is_admin)
-                                    <div class="mt-auto">
-                                        <a href="{{ route('artikels.edit', $artikel->id) }}" class="btn btn-warning btn-sm me-2">Edit</a>
-                                        <form action="{{ route('artikels.destroy', $artikel->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus artikel ini?');">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <a href="{{ route('artikels.edit', $artikel->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                        <form action="{{ route('artikels.destroy', $artikel->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus artikel ini?');" class="m-0">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                            <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
                                         </form>
                                     </div>
                                 @endif
                             </div>
-                        </div>
+                        </a>
                     </div>
                 @endforeach
+            </div>
+            <div class="text-center mt-4">
+                <a href="{{ route('artikels.index') }}" class="btn btn-primary">See More</a>
             </div>
         </div>
     </div>

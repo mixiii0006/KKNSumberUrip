@@ -10,7 +10,7 @@ use App\Http\Controllers\ArtikelController;
 use App\Models\Artikel;
 
 Route::get('/', function () {
-    $artikels = Artikel::orderBy('tanggal_publish', 'desc')->limit(5)->get();
+    $artikels = Artikel::orderBy('tanggal_publish', 'desc')->limit(3)->get();
     return view('welcome', compact('artikels'));
 })->name('welcome');
 
@@ -23,7 +23,8 @@ Route::get('/sejarah', [SejarahController::class, 'publicIndex'])->name('sejarah
 Route::get('/organisasi', [OrganisasiController::class, 'index'])->name('organisasi.index');
 
 Route::get('/artikels', [ArtikelController::class, 'index'])->name('artikels.index');
-Route::get('/artikels/create', [ArtikelController::class, 'create'])->name('artikels.create');
+Route::get('/artikels/create', [ArtikelController::class, 'create'])->middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->name('artikels.create');
+Route::post('/artikels', [ArtikelController::class, 'store'])->middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->name('artikels.store');
 Route::get('/artikels/{slug}', [ArtikelController::class, 'show'])->name('artikels.show');
 
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
@@ -34,8 +35,8 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(
 
     Route::resource('instansi', InstansiController::class);
 
-    // Fix: Include 'create' and 'store' routes for artikels by excluding only 'index' and 'show'
-    Route::resource('artikels', ArtikelController::class)->except(['index', 'show']);
+    // Removed 'create' and 'store' from resource route to define explicitly with middleware above
+    Route::resource('artikels', ArtikelController::class)->except(['index', 'show', 'create', 'store']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

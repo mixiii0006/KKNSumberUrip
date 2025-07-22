@@ -12,6 +12,7 @@ class Artikel extends Model
         'isi',
         'penulis',
         'tanggal_publish',
+        'gambar',
     ];
 
     protected $casts = [
