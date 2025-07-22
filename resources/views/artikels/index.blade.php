@@ -4,7 +4,10 @@
         <a href="{{ route('welcome') }}" class="inline-block mb-6 text-blue-600 hover:underline">Kembali ke Beranda</a>
         @include('artikels.css')
         @foreach ($artikels as $artikel)
-            <a href="{{ route('artikels.show', $artikel->slug) }}" class="artikel-container">
+            <a href="{{ route('artikels.show', $artikel->slug) }}" class="artikel-container position-relative d-block">
+                @if($artikel->gambar)
+                    <img src="{{ asset('storage/' . $artikel->gambar) }}" alt="{{ $artikel->judul }}" class="mb-3 img-fluid rounded">
+                @endif
                 <h3 class="artikel-title">
                     {{ $artikel->judul }}
                 </h3>
@@ -12,6 +15,10 @@
                 <div class="artikel-excerpt">
                     {!! Str::limit(strip_tags($artikel->isi), 200) !!}
                 </div>
+                @if(Auth::check() && Auth::user()->is_admin)
+                    <div class="d-flex justify-content-end gap-2 mt-auto">
+                    </div>
+                @endif
             </a>
         @endforeach
 
