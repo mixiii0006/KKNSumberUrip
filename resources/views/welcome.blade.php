@@ -11,7 +11,7 @@
                                 <div class="col-lg-8">
                                     <h1 class="display-1 text-white mb-5 animated slideInDown">Make Your Home Like Garden</h1>
                                     <a href="" class="btn btn-primary py-sm-3 px-sm-4">Explore More</a>
-                                    <!-- Removed login and register buttons to keep only navbar buttons -->
+                                    <!-- Removed modal triggers for login and register -->
                                     <!-- <button @click="$dispatch('open-modal', 'loginModal')" class="btn btn-success ms-3">Login</button> -->
                                     <!-- <button @click="$dispatch('open-modal', 'registerModal')" class="btn btn-warning ms-3">Register</button> -->
                                 </div>
@@ -412,5 +412,5 @@
             });
         });
     </script>
-    <!-- Leaflet Map End -->
+   
 </x-guest-layout>

@@ -74,15 +74,6 @@
         {{$slot}}
     </div>
 
-    <!-- Login Modal -->
-    <x-modal name="loginModal" :show="false" maxWidth="md">
-        @include('auth.login-modal-content')
-    </x-modal>
-
-    <!-- Register Modal -->
-    <x-modal name="registerModal" :show="false" maxWidth="md">
-        @include('auth.register-modal-content')
-    </x-modal>
 
 
     <!-- Footer Start -->
@@ -166,6 +157,7 @@
     <!-- Template Javascript -->
     <script src="{{asset('assets/js/main.js')}}"></script>
     <script src="{{asset('assets/js/navbar-active.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </body>
 
 </html>
