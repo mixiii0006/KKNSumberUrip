@@ -5,3 +5,4 @@
 <x-modal name="registerModal" :show="false" maxWidth="md">
     @include('auth.register-modal-content')
 </x-modal>
+

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrganisasiController;
 use App\Http\Controllers\InstansiController;
 use App\Http\Controllers\ArtikelController;
+use App\Http\Controllers\CKEditorController;    
 
 use App\Models\Artikel;
 
@@ -25,7 +26,10 @@ Route::get('/organisasi', [OrganisasiController::class, 'index'])->name('organis
 Route::get('/artikels', [ArtikelController::class, 'index'])->name('artikels.index');
 Route::get('/artikels/create', [ArtikelController::class, 'create'])->middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->name('artikels.create');
 Route::post('/artikels', [ArtikelController::class, 'store'])->middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->name('artikels.store');
+// Route::post('/artikels/edit', [ArtikelController::class, 'edit'])->middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->name('artikels.edit');
 Route::get('/artikels/{slug}', [ArtikelController::class, 'show'])->name('artikels.show');
+Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
+
 
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
 

@@ -21,7 +21,7 @@
             background-color: #f9f9f9;
             border-radius: 12px;
             padding: 30px 40px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             font-size: 1rem;
             color: #333;
             position: relative;
@@ -50,7 +50,7 @@
             height: 300px;
             background: linear-gradient(135deg, #2e7d32, #81c784);
             border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             color: white;
             font-weight: bold;
             font-size: 1.5rem;
@@ -111,7 +111,7 @@
         .member-card {
             background-color: #fff;
             border-radius: 15px;
-            box-shadow: 0 2px 13px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 13px rgba(0, 0, 0, 0.15);
             text-align: left;
             padding: 15px;
             font-size: 0.9rem;
@@ -126,7 +126,7 @@
             object-fit: cover;
             background-color: #ccc;
             margin-bottom: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .member-name {
@@ -145,7 +145,8 @@
             margin-top: 10px;
         }
 
-        .crud-buttons a, .crud-buttons button {
+        .crud-buttons a,
+        .crud-buttons button {
             margin-right: 5px;
             font-size: 0.8rem;
             padding: 5px 10px;
@@ -196,105 +197,201 @@
                 border-radius: 12px;
             }
         }
+
+        .form-wrapper {
+            max-width: 100%;
+            background-color: #ffffff;
+            padding: 30px;
+            margin-top: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #348E38;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: #374151;
+        }
+
+        input[type="text"],
+        input[type="file"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+            color: #374151;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+            outline: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #2f7a2f, #348E38);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #1f4f1f, #246624);
+        }
+
+        .text-red-600 {
+            color: #e3342f;
+        }
+
+        .mt-1 {
+            margin-top: 0.25rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .mt-4 {
+            margin-top: 1rem;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .font-medium {
+            font-weight: 500;
+        }
+    </style>
     </style>
 
     <div class="org-container">
-@php
-    $instansiKeys = $organisasiGrouped->keys()->toArray();
-    $instansiData = $instansis->mapWithKeys(function($instansi) {
-        return [$instansi->id => [
-            'name' => $instansi->name,
-            'description' => $instansi->description,
-            'photo' => $instansi->photo ? asset('storage/' . $instansi->photo) : null,
-        ]];
-    })->toArray();
-    $currentIndex = 0;
-@endphp
+        @php
+            $instansiKeys = $organisasiGrouped->keys()->toArray();
+            $instansiData = $instansis
+                ->mapWithKeys(function ($instansi) {
+                    return [
+                        $instansi->id => [
+                            'name' => $instansi->name,
+                            'description' => $instansi->description,
+                            'photo' => $instansi->photo ? asset('storage/' . $instansi->photo) : null,
+                        ],
+                    ];
+                })
+                ->toArray();
+            $currentIndex = 0;
+        @endphp
 
-<script>
-    let currentIndex = 0;
-    let instansiKeys = @json($instansiKeys);
-</script>
+        <script>
+            let currentIndex = 0;
+            let instansiKeys = @json($instansiKeys);
+        </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const instansiEditBtn = document.getElementById('instansi-edit-btn');
-        const orgPrevBtn = document.getElementById('org-prev');
-        const orgNextBtn = document.getElementById('org-next');
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const instansiEditBtn = document.getElementById('instansi-edit-btn');
+                const orgPrevBtn = document.getElementById('org-prev');
+                const orgNextBtn = document.getElementById('org-next');
 
-        function updateEditLink(index) {
-            if (instansiEditBtn) {
-                instansiEditBtn.href = `/instansi/${instansiKeys[index]}/edit`;
-            }
-        }
+                function updateEditLink(index) {
+                    if (instansiEditBtn) {
+                        instansiEditBtn.href = `/instansi/${instansiKeys[index]}/edit`;
+                    }
+                }
 
-        orgPrevBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
-            updateEditLink(currentIndex);
-        });
+                orgPrevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
+                    updateEditLink(currentIndex);
+                });
 
-        orgNextBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % instansiKeys.length;
-            updateEditLink(currentIndex);
-        });
+                orgNextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % instansiKeys.length;
+                    updateEditLink(currentIndex);
+                });
 
-        // Initialize edit link on page load
-        updateEditLink(currentIndex);
-    });
-</script>
+                // Initialize edit link on page load
+                updateEditLink(currentIndex);
+            });
+        </script>
 
-@auth
-    @if(Auth::user()->is_admin)
-        <div class="add-instansi-form" style="margin-bottom: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
-            <h3>Tambah Instansi</h3>
-            <form method="POST" action="{{ route('instansi.store') }}" enctype="multipart/form-data">
-                @csrf
-                <div class="mb-4">
-                    <label for="name" class="block font-medium text-sm text-gray-700">Nama Instansi</label>
-                    <input id="name" name="name" type="text" value="{{ old('name') }}" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
-                    @error('name')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+        @auth
+            @if (Auth::user()->is_admin)
+                <!-- Form Tambah Instansi -->
+                <div class="form-wrapper">
+                    <h3>Tambah Instansi</h3>
+                    <form method="POST" action="{{ route('instansi.store') }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-4">
+                            <label for="name">Nama Instansi</label>
+                            <input id="name" name="name" type="text" value="{{ old('name') }}" required>
+                            @error('name')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="description">Deskripsi</label>
+                            <textarea id="description" name="description" rows="4">{{ old('description') }}</textarea>
+                            @error('description')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="photo">Foto Instansi</label>
+                            <input id="photo" name="photo" type="file" accept="image/*">
+                            @error('photo')
+                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn-primary">Simpan</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="mb-4">
-                    <label for="description" class="block font-medium text-sm text-gray-700">Deskripsi</label>
-                    <textarea id="description" name="description" rows="4" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">{{ old('description') }}</textarea>
-                    @error('description')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-                <div class="mb-4">
-                    <label for="photo" class="block font-medium text-sm text-gray-700">Foto Instansi</label>
-                    <input id="photo" name="photo" type="file" accept="image/*" class="block mt-1 w-full" />
-                    @error('photo')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-                <div class="flex items-center justify-end mt-4">
-                    <button type="submit" class="btn btn-primary px-4 py-2 rounded">Simpan</button>
-                </div>
-            </form>
-        </div>
 
-
-                <div class="add-anggota-form" style="margin-bottom: 30px; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+                <!-- Form Tambah Anggota -->
+                <div class="form-wrapper">
                     <h3>Tambah Anggota Organisasi</h3>
                     <form method="POST" action="{{ route('organisasi.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-4">
-                            <label for="nama" class="block font-medium text-sm text-gray-700">Nama</label>
-                            <input id="nama" name="nama" type="text" value="{{ old('nama') }}" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
+                            <label for="nama">Nama</label>
+                            <input id="nama" name="nama" type="text" value="{{ old('nama') }}" required>
                             @error('nama')
                                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div class="mb-4">
-                            <label for="instansi_id" class="block font-medium text-sm text-gray-700">Instansi</label>
-                            <select id="instansi_id" name="instansi_id" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                            <label for="instansi_id">Instansi</label>
+                            <select id="instansi_id" name="instansi_id" required>
                                 <option value="">-- Pilih Instansi --</option>
                                 @foreach ($instansis ?? [] as $instansi)
-                                    <option value="{{ $instansi->id }}" {{ old('instansi_id') == $instansi->id ? 'selected' : '' }}>
+                                    <option value="{{ $instansi->id }}"
+                                        {{ old('instansi_id') == $instansi->id ? 'selected' : '' }}>
                                         {{ $instansi->name }}
                                     </option>
                                 @endforeach
@@ -305,224 +402,235 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="jabatan" class="block font-medium text-sm text-gray-700">Jabatan</label>
-                            <input id="jabatan" name="jabatan" type="text" value="{{ old('jabatan') }}" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
+                            <label for="jabatan">Jabatan</label>
+                            <input id="jabatan" name="jabatan" type="text" value="{{ old('jabatan') }}" required>
                             @error('jabatan')
                                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div class="mb-4">
-                            <label for="nip" class="block font-medium text-sm text-gray-700">NIP</label>
-                            <input id="nip" name="nip" type="text" value="{{ old('nip') }}" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
+                            <label for="nip">NIP</label>
+                            <input id="nip" name="nip" type="text" value="{{ old('nip') }}">
                             @error('nip')
                                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <div class="mb-4">
-                            <label for="photo" class="block font-medium text-sm text-gray-700">Foto Anggota</label>
-                            <input id="photo" name="photo" type="file" accept="image/*" class="block mt-1 w-full" />
+                            <label for="photo">Foto Anggota</label>
+                            <input id="photo" name="photo" type="file" accept="image/*">
                             @error('photo')
                                 <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <div class="flex items-center justify-end mt-4">
-                            <button type="submit" class="btn btn-primary px-4 py-2 rounded">Simpan</button>
+                        <div class="mt-4">
+                            <button type="submit" class="btn-primary">Simpan</button>
                         </div>
                     </form>
                 </div>
+
             @endif
         @endauth
 
-@if(count($instansiKeys) > 0)
-    <div class="org-top" style="position: relative; display: flex; align-items: center; justify-content: flex-start; gap: 20px;">
-        <button class="org-nav-button org-nav-prev" id="org-prev" style="border: 1px solid #4CAF50; color: #4CAF50; font-weight: bold; font-size: 1.5rem; width: 40px; height: 40px; border-radius: 5px; margin-right: 10px; z-index: 20; position: relative;">&#10094;</button>
-        <div class="org-description" id="org-description" style="flex: 1; position: relative; padding-left: 50px; padding-right: 50px;">
-            <h2 id="instansi-name"></h2>
-            <div id="instansi-description" style="margin-top: 10px;"></div>
-            @auth
-        <div id="instansi-admin-actions" style="margin-top: 10px;">
-            @auth
-                @if(auth()->user()->is_admin)
-                    <a href="#" id="instansi-edit-btn" class="btn btn-warning mr-2">Edit</a>
-                    
-                @endif
-            @endauth
-        </div>
-            @endauth
-        </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const instansiKeys = @json($instansiKeys);
-                const instansiData = @json($instansiData);
-                let currentIndex = 0;
-
-                function renderOrg(index) {
-                    if (!instansiKeys || instansiKeys.length === 0) {
-                        // No instansi keys available, skip rendering
-                        return;
-                    }
-                    if (index < 0 || index >= instansiKeys.length) {
-                        // Index out of bounds, skip rendering
-                        return;
-                    }
-                const instansiId = instansiKeys[index];
-                const instansi = instansiData[instansiId];
-                const anggota = @json($organisasiGrouped);
-
-                if (!instansi || typeof instansi === 'undefined' || instansi === null) {
-                    // If instansi data is undefined or null, skip rendering
-                    console.warn('Instansi data undefined for index:', index, 'instansiId:', instansiId);
-                    // Try to find a valid instansi to render instead
-                    for (let i = 0; i < instansiKeys.length; i++) {
-                        const altInstansi = instansiData[instansiKeys[i]];
-                        if (altInstansi && altInstansi.name) {
-                            currentIndex = i;
-                            renderOrg(i);
-                            updateEditLink(i);
-                            return;
-                        }
-                    }
-                    return;
-                }
-
-                // Update instansi name and description
-                document.getElementById('instansi-name').textContent = instansi.name;
-                document.getElementById('instansi-description').textContent = instansi.description || 'Deskripsi tidak tersedia.';
-
-                    // Update instansi photo or placeholder
-                    const instansiPhotoElem = document.getElementById('instansi-photo');
-                    const instansiPhotoPlaceholder = document.getElementById('instansi-photo-placeholder');
-                    if (instansi.photo) {
-                        instansiPhotoElem.src = instansi.photo;
-                        instansiPhotoElem.style.display = 'block';
-                        instansiPhotoPlaceholder.style.display = 'none';
-                    } else {
-                        instansiPhotoElem.style.display = 'none';
-                        instansiPhotoPlaceholder.style.display = 'flex';
-                        instansiPhotoPlaceholder.textContent = instansi.name.charAt(0).toUpperCase();
-                    }
-
-                    // Clear member list
-                    const memberList = document.getElementById('member-list');
-                    memberList.innerHTML = '';
-
-                    // Add anggota cards
-                    (anggota[instansiId] || []).forEach(member => {
-                        if (!member.nama) return; // Skip empty member data
-
-                        const card = document.createElement('div');
-                        card.className = 'member-card';
-
-                        const photo = document.createElement('img');
-                        photo.className = 'member-photo';
-                        photo.alt = member.nama;
-                        if (member.photo) {
-                            photo.src = member.photo.startsWith('http') ? member.photo : `/storage/${member.photo}`;
-                        } else {
-                            photo.src = 'https://via.placeholder.com/140x110?text=No+Photo';
-                        }
-                        card.appendChild(photo);
-
-                        const name = document.createElement('div');
-                        name.className = 'member-name';
-                        name.textContent = member.nama;
-                        card.appendChild(name);
-
-                        const desc = document.createElement('div');
-                        desc.className = 'member-desc';
-                        desc.innerHTML = `Jabatan: ${member.jabatan}<br>NIP: ${member.nip || '-'}`;
-                        card.appendChild(desc);
-
-                        @auth
-                            @if(auth()->user()->is_admin)
-                                const crudDiv = document.createElement('div');
-                                crudDiv.className = 'crud-buttons';
-
-                                const editLink = document.createElement('a');
-                                editLink.href = `/organisasi/${member.id}/edit`;
-                                editLink.className = 'btn btn-warning';
-                                editLink.textContent = 'Edit';
-                                crudDiv.appendChild(editLink);
-
-                                const deleteForm = document.createElement('form');
-                                deleteForm.action = `/organisasi/${member.id}`;
-                                deleteForm.method = 'POST';
-                                deleteForm.style.display = 'inline';
-
-                                const csrfInput = document.createElement('input');
-                                csrfInput.type = 'hidden';
-                                csrfInput.name = '_token';
-                                csrfInput.value = '{{ csrf_token() }}';
-                                deleteForm.appendChild(csrfInput);
-
-                                const methodInput = document.createElement('input');
-                                methodInput.type = 'hidden';
-                                methodInput.name = '_method';
-                                methodInput.value = 'DELETE';
-                                deleteForm.appendChild(methodInput);
-
-                                const deleteButton = document.createElement('button');
-                                deleteButton.type = 'submit';
-                                deleteButton.className = 'btn btn-danger';
-                                deleteButton.textContent = 'Hapus';
-                                deleteButton.onclick = function() {
-                                    return confirm('Yakin ingin menghapus anggota ini?');
-                                };
-                                deleteForm.appendChild(deleteButton);
-
-                                crudDiv.appendChild(deleteForm);
-                                card.appendChild(crudDiv);
-                            @endif
-                        @endauth
-
-                        memberList.appendChild(card);
-                    });
-                }
-
-                // Navigation buttons
-                document.getElementById('org-prev').addEventListener('click', () => {
-                    currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
-                    renderOrg(currentIndex);
-                    updateEditLink(currentIndex);
-                });
-
-                document.getElementById('org-next').addEventListener('click', () => {
-                    currentIndex = (currentIndex + 1) % instansiKeys.length;
-                    renderOrg(currentIndex);
-                    updateEditLink(currentIndex);
-                });
-
-                // Update edit link
-                const instansiEditBtn = document.getElementById('instansi-edit-btn');
-                function updateEditLink(index) {
-                    if (instansiEditBtn) {
-                        instansiEditBtn.href = `/instansi/${instansiKeys[index]}/edit`;
-                    }
-                }
-
-                // Initial render
-                renderOrg(currentIndex);
-                updateEditLink(currentIndex);
-            });
-        </script>
-                <div class="org-logo-container" id="org-logo" style="width: 300px; height: 300px; position: relative;">
-                    <img id="instansi-photo" src="" alt="" style="width: 100%; height: 100%; border-radius: 12px; object-fit: cover; display: none;" />
-                    <div id="instansi-photo-placeholder" style="color: white; font-weight: bold; font-size: 1.5rem; display: flex; justify-content: center; align-items: center; height: 100%; border-radius: 12px; background: linear-gradient(135deg, #2e7d32, #81c784);"></div>
+        @if (count($instansiKeys) > 0)
+            <div class="org-top"
+                style="position: relative; display: flex; align-items: center; justify-content: flex-start; gap: 20px;">
+                <button class="org-nav-button org-nav-prev" id="org-prev"
+                    style="border: 1px solid #4CAF50; color: #4CAF50; font-weight: bold; font-size: 1.5rem; width: 40px; height: 40px; border-radius: 5px; margin-right: 10px; z-index: 20; position: relative;">&#10094;</button>
+                <div class="org-description" id="org-description"
+                    style="flex: 1; position: relative; padding-left: 50px; padding-right: 50px;">
+                    <h2 id="instansi-name"></h2>
+                    <div id="instansi-description" style="margin-top: 10px;"></div>
+                    @auth
+                        <div id="instansi-admin-actions" style="margin-top: 10px;">
+                            @auth
+                                @if (auth()->user()->is_admin)
+                                    <a href="#" id="instansi-edit-btn" class="btn btn-warning mr-2">Edit</a>
+                                @endif
+                            @endauth
+                        </div>
+                    @endauth
                 </div>
-                <button class="org-nav-button org-nav-next" id="org-next" style="border: 1px solid #4CAF50; color: #4CAF50; font-weight: bold; font-size: 1.5rem; width: 40px; height: 40px; border-radius: 5px; margin-left: 10px; z-index: 20; position: relative;">&#10095;</button>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const instansiKeys = @json($instansiKeys);
+                        const instansiData = @json($instansiData);
+                        let currentIndex = 0;
+
+                        function renderOrg(index) {
+                            if (!instansiKeys || instansiKeys.length === 0) {
+                                // No instansi keys available, skip rendering
+                                return;
+                            }
+                            if (index < 0 || index >= instansiKeys.length) {
+                                // Index out of bounds, skip rendering
+                                return;
+                            }
+                            const instansiId = instansiKeys[index];
+                            const instansi = instansiData[instansiId];
+                            const anggota = @json($organisasiGrouped);
+
+                            if (!instansi || typeof instansi === 'undefined' || instansi === null) {
+                                // If instansi data is undefined or null, skip rendering
+                                console.warn('Instansi data undefined for index:', index, 'instansiId:', instansiId);
+                                // Try to find a valid instansi to render instead
+                                for (let i = 0; i < instansiKeys.length; i++) {
+                                    const altInstansi = instansiData[instansiKeys[i]];
+                                    if (altInstansi && altInstansi.name) {
+                                        currentIndex = i;
+                                        renderOrg(i);
+                                        updateEditLink(i);
+                                        return;
+                                    }
+                                }
+                                return;
+                            }
+
+                            // Update instansi name and description
+                            document.getElementById('instansi-name').textContent = instansi.name;
+                            document.getElementById('instansi-description').textContent = instansi.description ||
+                                'Deskripsi tidak tersedia.';
+
+                            // Update instansi photo or placeholder
+                            const instansiPhotoElem = document.getElementById('instansi-photo');
+                            const instansiPhotoPlaceholder = document.getElementById('instansi-photo-placeholder');
+                            if (instansi.photo) {
+                                instansiPhotoElem.src = instansi.photo;
+                                instansiPhotoElem.style.display = 'block';
+                                instansiPhotoPlaceholder.style.display = 'none';
+                            } else {
+                                instansiPhotoElem.style.display = 'none';
+                                instansiPhotoPlaceholder.style.display = 'flex';
+                                instansiPhotoPlaceholder.textContent = instansi.name.charAt(0).toUpperCase();
+                            }
+
+                            // Clear member list
+                            const memberList = document.getElementById('member-list');
+                            memberList.innerHTML = '';
+
+                            // Add anggota cards
+                            (anggota[instansiId] || []).forEach(member => {
+                                    if (!member.nama) return; // Skip empty member data
+
+                                    const card = document.createElement('div');
+                                    card.className = 'member-card';
+
+                                    const photo = document.createElement('img');
+                                    photo.className = 'member-photo';
+                                    photo.alt = member.nama;
+                                    if (member.photo) {
+                                        photo.src = member.photo.startsWith('http') ? member.photo :
+                                            `/storage/${member.photo}`;
+                                    } else {
+                                        photo.src = 'https://via.placeholder.com/140x110?text=No+Photo';
+                                    }
+                                    card.appendChild(photo);
+
+                                    const name = document.createElement('div');
+                                    name.className = 'member-name';
+                                    name.textContent = member.nama;
+                                    card.appendChild(name);
+
+                                    const desc = document.createElement('div');
+                                    desc.className = 'member-desc';
+                                    desc.innerHTML = `Jabatan: ${member.jabatan}<br>NIP: ${member.nip || '-'}`;
+                                    card.appendChild(desc);
+
+                                    @auth
+                                    @if (auth()->user()->is_admin)
+                                        const crudDiv = document.createElement('div');
+                                        crudDiv.className = 'crud-buttons';
+
+                                        const editLink = document.createElement('a');
+                                        editLink.href = `/organisasi/${member.id}/edit`;
+                                        editLink.className = 'btn btn-warning';
+                                        editLink.textContent = 'Edit';
+                                        crudDiv.appendChild(editLink);
+
+                                        const deleteForm = document.createElement('form');
+                                        deleteForm.action = `/organisasi/${member.id}`;
+                                        deleteForm.method = 'POST';
+                                        deleteForm.style.display = 'inline';
+
+                                        const csrfInput = document.createElement('input');
+                                        csrfInput.type = 'hidden';
+                                        csrfInput.name = '_token';
+                                        csrfInput.value = '{{ csrf_token() }}';
+                                        deleteForm.appendChild(csrfInput);
+
+                                        const methodInput = document.createElement('input');
+                                        methodInput.type = 'hidden';
+                                        methodInput.name = '_method';
+                                        methodInput.value = 'DELETE';
+                                        deleteForm.appendChild(methodInput);
+
+                                        const deleteButton = document.createElement('button');
+                                        deleteButton.type = 'submit';
+                                        deleteButton.className = 'btn btn-danger';
+                                        deleteButton.textContent = 'Hapus';
+                                        deleteButton.onclick = function() {
+                                            return confirm('Yakin ingin menghapus anggota ini?');
+                                        };
+                                        deleteForm.appendChild(deleteButton);
+
+                                        crudDiv.appendChild(deleteForm);
+                                        card.appendChild(crudDiv);
+                                    @endif
+                                @endauth
+
+                                memberList.appendChild(card);
+                            });
+                    }
+
+                    // Navigation buttons
+                    document.getElementById('org-prev').addEventListener('click', () => {
+                        currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
+                        renderOrg(currentIndex);
+                        updateEditLink(currentIndex);
+                    });
+
+                    document.getElementById('org-next').addEventListener('click', () => {
+                        currentIndex = (currentIndex + 1) % instansiKeys.length;
+                        renderOrg(currentIndex);
+                        updateEditLink(currentIndex);
+                    });
+
+                    // Update edit link
+                    const instansiEditBtn = document.getElementById('instansi-edit-btn');
+
+                    function updateEditLink(index) {
+                        if (instansiEditBtn) {
+                            instansiEditBtn.href = `/instansi/${instansiKeys[index]}/edit`;
+                        }
+                    }
+
+                    // Initial render
+                    renderOrg(currentIndex); updateEditLink(currentIndex);
+                    });
+                </script>
+                <div class="org-logo-container" id="org-logo" style="width: 300px; height: 300px; position: relative;">
+                    <img id="instansi-photo" src="" alt=""
+                        style="width: 100%; height: 100%; border-radius: 12px; object-fit: cover; display: none;" />
+                    <div id="instansi-photo-placeholder"
+                        style="color: white; font-weight: bold; font-size: 1.5rem; display: flex; justify-content: center; align-items: center; height: 100%; border-radius: 12px; background: linear-gradient(135deg, #2e7d32, #81c784);">
+                    </div>
+                </div>
+                <button class="org-nav-button org-nav-next" id="org-next"
+                    style="border: 1px solid #4CAF50; color: #4CAF50; font-weight: bold; font-size: 1.5rem; width: 40px; height: 40px; border-radius: 5px; margin-left: 10px; z-index: 20; position: relative;">&#10095;</button>
             </div>
 
             <div class="anggota-section">
                 <div class="anggota-title">Anggota</div>
-                <button class="org-nav-button org-nav-prev" id="member-prev" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 10;">&#10094;</button>
+                <button class="org-nav-button org-nav-prev" id="member-prev"
+                    style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 10;border: 1px solid #4CAF50;font-weight: bold; font-size: 1.5rem; color: #4CAF50;  border-radius: 5px; width: 40px; height: 40px; ">&#10094;</button>
                 <div class="member-list" id="member-list" style="scroll-behavior: smooth; margin: 0 40px;">
                     <!-- Member cards will be rendered dynamically -->
                 </div>
-                <button class="org-nav-button org-nav-next" id="member-next" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10;">&#10095;</button>
+                <button class="org-nav-button org-nav-next" id="member-next"
+                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10; border: 1px solid #4CAF50;font-weight: bold; font-size: 1.5rem; color: #4CAF50;  border-radius: 5px; width: 40px; height: 40px; ">&#10095;</button>
             </div>
         @else
             <p>Tidak ada data organisasi yang tersedia.</p>
@@ -579,31 +687,31 @@
 
                 // Add anggota cards
                 anggota[instansiId].forEach(member => {
-                    const card = document.createElement('div');
-                    card.className = 'member-card';
+                        const card = document.createElement('div');
+                        card.className = 'member-card';
 
-                    const photo = document.createElement('img');
-                    photo.className = 'member-photo';
-                    photo.alt = member.nama;
-                    if (member.photo) {
-                        photo.src = `/storage/${member.photo}`;
-                    } else {
-                        photo.src = 'https://via.placeholder.com/140x110?text=No+Photo';
-                    }
-                    card.appendChild(photo);
+                        const photo = document.createElement('img');
+                        photo.className = 'member-photo';
+                        photo.alt = member.nama;
+                        if (member.photo) {
+                            photo.src = `/storage/${member.photo}`;
+                        } else {
+                            photo.src = 'https://via.placeholder.com/140x110?text=No+Photo';
+                        }
+                        card.appendChild(photo);
 
-                    const name = document.createElement('div');
-                    name.className = 'member-name';
-                    name.textContent = member.nama;
-                    card.appendChild(name);
+                        const name = document.createElement('div');
+                        name.className = 'member-name';
+                        name.textContent = member.nama;
+                        card.appendChild(name);
 
-                    const desc = document.createElement('div');
-                    desc.className = 'member-desc';
-                    desc.innerHTML = `Jabatan: ${member.jabatan}<br>NIP: ${member.nip || '-'}`;
-                    card.appendChild(desc);
+                        const desc = document.createElement('div');
+                        desc.className = 'member-desc';
+                        desc.innerHTML = `Jabatan: ${member.jabatan}<br>NIP: ${member.nip || '-'}`;
+                        card.appendChild(desc);
 
-                    @auth
-                        @if(auth()->user()->is_admin)
+                        @auth
+                        @if (auth()->user()->is_admin)
                             const crudDiv = document.createElement('div');
                             crudDiv.className = 'crud-buttons';
 
@@ -646,92 +754,98 @@
 
                     memberList.appendChild(card);
                 });
-            }
+        }
 
-            prevBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
-                renderOrg(currentIndex);
-            });
-
-            nextBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % instansiKeys.length;
-                renderOrg(currentIndex);
-            });
-
-            const memberPrevBtn = document.getElementById('member-prev');
-            const memberNextBtn = document.getElementById('member-next');
-
-            memberPrevBtn.addEventListener('click', () => {
-                memberList.scrollBy({ left: -150, behavior: 'smooth' });
-            });
-
-            memberNextBtn.addEventListener('click', () => {
-                memberList.scrollBy({ left: 150, behavior: 'smooth' });
-            });
-
-            // Swipe detection variables
-            let startX = 0;
-            let isDragging = false;
-
-            orgContainer.addEventListener('touchstart', (e) => {
-                startX = e.touches[0].clientX;
-                isDragging = true;
-            });
-
-            orgContainer.addEventListener('touchmove', (e) => {
-                if (!isDragging) return;
-                const currentX = e.touches[0].clientX;
-                const diffX = currentX - startX;
-
-                // Threshold for swipe
-                if (Math.abs(diffX) > 50) {
-                    if (diffX > 0) {
-                        // Swipe right - previous instansi
-                        currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
-                    } else {
-                        // Swipe left - next instansi
-                        currentIndex = (currentIndex + 1) % instansiKeys.length;
-                    }
-                    renderOrg(currentIndex);
-                    isDragging = false;
-                }
-            });
-
-            orgContainer.addEventListener('touchend', () => {
-                isDragging = false;
-            });
-
-            // Mouse drag support for desktop
-            orgContainer.addEventListener('mousedown', (e) => {
-                startX = e.clientX;
-                isDragging = true;
-            });
-
-            orgContainer.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                const currentX = e.clientX;
-                const diffX = currentX - startX;
-
-                if (Math.abs(diffX) > 50) {
-                    if (diffX > 0) {
-                        currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
-                    } else {
-                        currentIndex = (currentIndex + 1) % instansiKeys.length;
-                    }
-                    renderOrg(currentIndex);
-                    isDragging = false;
-                }
-            });
-
-            orgContainer.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
-
-            orgContainer.addEventListener('mouseleave', () => {
-                isDragging = false;
-            });
-
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
             renderOrg(currentIndex);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % instansiKeys.length;
+            renderOrg(currentIndex);
+        });
+
+        const memberPrevBtn = document.getElementById('member-prev');
+        const memberNextBtn = document.getElementById('member-next');
+
+        memberPrevBtn.addEventListener('click', () => {
+            memberList.scrollBy({
+                left: -150,
+                behavior: 'smooth'
+            });
+        });
+
+        memberNextBtn.addEventListener('click', () => {
+            memberList.scrollBy({
+                left: 150,
+                behavior: 'smooth'
+            });
+        });
+
+        // Swipe detection variables
+        let startX = 0;
+        let isDragging = false;
+
+        orgContainer.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+        });
+
+        orgContainer.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const currentX = e.touches[0].clientX;
+            const diffX = currentX - startX;
+
+            // Threshold for swipe
+            if (Math.abs(diffX) > 50) {
+                if (diffX > 0) {
+                    // Swipe right - previous instansi
+                    currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
+                } else {
+                    // Swipe left - next instansi
+                    currentIndex = (currentIndex + 1) % instansiKeys.length;
+                }
+                renderOrg(currentIndex);
+                isDragging = false;
+            }
+        });
+
+        orgContainer.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+        // Mouse drag support for desktop
+        orgContainer.addEventListener('mousedown', (e) => {
+            startX = e.clientX;
+            isDragging = true;
+        });
+
+        orgContainer.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const currentX = e.clientX;
+            const diffX = currentX - startX;
+
+            if (Math.abs(diffX) > 50) {
+                if (diffX > 0) {
+                    currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
+                } else {
+                    currentIndex = (currentIndex + 1) % instansiKeys.length;
+                }
+                renderOrg(currentIndex);
+                isDragging = false;
+            }
+        });
+
+        orgContainer.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        orgContainer.addEventListener('mouseleave', () => {
+            isDragging = false;
+        });
+
+        renderOrg(currentIndex);
         });
     </script>
 </x-guest-layout>

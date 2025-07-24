@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Gardener - Gardening Website Template</title>
+    <title>Desa Wisata Sumber Urip</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -42,9 +42,10 @@
 
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-dark  navbar-light sticky-top p-0">
-        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h1 class="m-0" style="color:#ffffff">Gardener</h1>
-        </a>
+<a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+<img src="{{ asset('assets/img/about.jpg') }}" alt="Logo" style="width: 50px; height: 50px; margin-right: 10px; border-radius: 50%; object-fit: cover;">
+    <h1 class="m-0" style="color:#ffffff; font-size: 1.75rem;">Desa Wisata Sumber Urip</h1>
+</a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -57,7 +58,7 @@
             @auth
                 <form method="POST" action="{{ route('logout') }}" class="d-inline">
                     @csrf
-                    <button type="submit" class="nav-item nav-link btn btn-link" style="display:inline; padding:0; border:none; background:none; cursor:pointer;">
+                    <button type="submit" class="nav-item nav-link" style="background:none; border:none; padding:25px 0; margin-right: 35px; cursor:pointer; vertical-align: middle;">
                         Logout
                     </button>
                 </form>
@@ -73,8 +74,6 @@
     <div>
         {{$slot}}
     </div>
-
-
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
