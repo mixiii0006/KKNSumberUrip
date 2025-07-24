@@ -283,8 +283,52 @@
         .font-medium {
             font-weight: 500;
         }
+
+        @media (max-width: 768px) {
+
+            /* Margin dan padding gambar */
+            .gambar-responsive {
+                width: 100%;
+                height: auto;
+                margin: 10px 0;
+                padding: 0 10px;
+                display: block;
+            }
+
+            /* Rata kanan-kiri untuk paragraf */
+            .text-justify {
+                text-align: justify;
+            }
+
+            /* Tombol CRUD sejajar kiri-kanan */
+            .crud-buttons {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 10px;
+                margin-top: 10px;
+            }
+
+            .crud-buttons a,
+            .crud-buttons button {
+                flex: 1;
+                text-align: center;
+            }
+
+            .org-description {
+                margin: 0px;
+                width: 100%;
+            }
+
+            /* Pastikan card atau box kontennya tidak terlalu mepet */
+            .card-container,
+            .content-box {
+                margin: 0 10px;
+                padding: 15px;
+            }
+        }
     </style>
-    </style>
+
 
     <div class="org-container">
         @php

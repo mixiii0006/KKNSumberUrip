@@ -139,6 +139,60 @@
         .add-button:hover {
             background-color: #16a34a;
         }
+
+        @media (max-width: 768px) {
+            .step-item {
+                flex-direction: column !important;
+                align-items: stretch;
+            }
+
+            .step-number {
+                width: 100%;
+                min-width: auto;
+                text-align: center;
+                font-size: 1.5rem;
+                padding: 12px;
+                margin-bottom: 10px;
+                border-radius: 8px;
+            }
+
+            .step-content {
+                padding: 15px 20px;
+                font-size: 0.95rem;
+            }
+
+            .step-content h5 {
+                font-size: 1.1rem;
+            }
+
+            .crud-buttons {
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .crud-buttons a,
+            .crud-buttons button {
+                width: auto;
+                padding: 8px 16px;
+                flex: 1 1 auto;
+                white-space: nowrap;
+                text-align: center;
+            }
+
+
+            .add-button {
+                width: 100%;
+                min-width: auto;
+                text-align: center;
+                font-size: 1.5rem;
+                padding: 12px;
+                margin-bottom: 10px;
+                border-radius: 8px;
+            }
+        }
     </style>
 
 
