@@ -1,3 +1,9 @@
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
 <x-guest-layout>
     <div class="max-w-3xl mx-auto py-10 px-4 sm:px-6 lg:px-8 bg-white rounded shadow-md">
         <h1 class="pt-4 text-3xl sm:text-4xl font-bold mb-4 text-center text-blue-800 leading-snug">
@@ -23,28 +29,31 @@
             {!! $artikel->isi !!}
         </div>
 
+
         @if (Auth::check() && Auth::user()->is_admin)
-            <div class="mt-8 px-4 max-w-md mx-auto">
-                <div class="flex justify-center items-center gap-4">
+            <div class="mt-4 d-flex justify-content-end mb-3">
+                <div class="d-flex gap-2">
                     <!-- Tombol Edit -->
-                    <a href="{{ route('artikels.edit', $artikel->id) }}"
-                        class="btn btn-warning text-center inline-flex items-center flex-shrink-0 mx-2">
-                        <i class="bi bi-pencil-square"></i> Edit
+                    <a href="{{ route('artikels.edit', $artikel->id) }}" class="btn btn-warning px-4"
+                        style="min-width: 120px;">
+                        <i class="bi bi-pencil-square me-2"></i> Edit
                     </a>
 
                     <!-- Tombol Hapus -->
                     <form action="{{ route('artikels.destroy', $artikel->id) }}" method="POST"
-                        onsubmit="return confirm('Yakin ingin menghapus artikel ini?')"
-                        class="flex flex-row items-center">
+                        onsubmit="return confirm('Yakin ingin menghapus artikel ini?')">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger flex-shrink-0 mx-2">
-                            <i class="bi bi-trash"></i> Hapus
+                        <button type="submit" class="btn btn-danger px-4" style="min-width: 120px;">
+                            <i class="bi bi-trash me-2"></i> Hapus
                         </button>
                     </form>
                 </div>
             </div>
         @endif
+
+
+
 
         {{-- Navigasi --}}
         <div class="mt-10 text-center">

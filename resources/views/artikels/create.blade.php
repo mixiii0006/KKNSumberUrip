@@ -54,22 +54,12 @@
                     class="form-control mt-1 w-full">
             </div>
 
-            {{-- <div class="mb-4">
-                <label for="tanggal_publish" class="block font-medium text-sm text-gray-700">Tanggal Publish</label>
-                <input type="date" name="tanggal_publish" id="tanggal_publish" value="{{ old('tanggal_publish') }}"
-                    class="form-control mt-1 w-full" required>
-            </div>
-
-            <div class="mb-4">
-                <label for="gambar" class="block font-medium text-sm text-gray-700">Gambar Utama</label>
-                <input type="file" name="gambar" id="gambar" class="form-control mt-1 w-full" accept="image/*">
-            </div> --}}
 
             <div class="flex justify-end gap-3 mt-6">
                 <a href="{{ route('welcome') }}"
                     class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</a>
                 <button type="submit"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Simpan</button>
+                    style="background-color: #1f412b; " class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Simpan</button>
             </div>
         </form>
     </div>

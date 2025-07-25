@@ -187,8 +187,10 @@
                                     class="mb-3 img-fluid rounded">
                                 <h4 class="mb-0">Sedekah Bumi</h4>
                                 <p>
-                                    Sedekah Bumi merupakan tradisi tahunan sebagai ungkapan syukur kepada Tuhan atas.....
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalSedekahBumi">Selengkapnya</a>
+                                    Sedekah Bumi merupakan tradisi tahunan sebagai ungkapan syukur kepada Tuhan
+                                    atas.....
+                                    <a href="#" data-bs-toggle="modal"
+                                        data-bs-target="#modalSedekahBumi">Selengkapnya</a>
                                 </p>
                             </div>
 
@@ -226,7 +228,8 @@
                                 <h4 class="mb-0">Kuda Kepang</h4>
                                 <p>Kuda kepang adalah tarian tradisional khas Jawa yang dimainkan oleh pemuda desa
                                     dengan iringan gamelan.....
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modalKudaKepang">Selengkapnya</a>
+                                    <a href="#" data-bs-toggle="modal"
+                                        data-bs-target="#modalKudaKepang">Selengkapnya</a>
                                 </p>
                             </div>
 
@@ -284,9 +287,10 @@
                                     alt="Icon">
                             </div>
                             <h4 class="mb-3">Bukit Kaba</h4>
-                            <p class="mb-4">Bukit Kaba, yang juga dikenal sebagai Gunung Kaba, adalah gunung berapi aktif yang berada di
-                            kawasan Rejang Lebong, Bengkulu, dan menjadi salah satu ikon wisata alam di sekitar Desa
-                            Sumber Urip.</p>
+                            <p class="mb-4">Bukit Kaba, yang juga dikenal sebagai Gunung Kaba, adalah gunung berapi
+                                aktif yang berada di
+                                kawasan Rejang Lebong, Bengkulu, dan menjadi salah satu ikon wisata alam di sekitar Desa
+                                Sumber Urip.</p>
                             <a class="btn btn-sm" href="#" data-bs-toggle="modal"
                                 data-bs-target="#modalBukitKaba">
                                 <i class="fa fa-plus text-primary me-2"></i>Selengkapnya
@@ -308,7 +312,8 @@
                                     alt="Icon">
                             </div>
                             <h4 class="mb-3">Pemandian Air Panas</h4>
-                            <p class="mb-4">Pemandian Air Panas di Desa Sumber Urip merupakan salah satu potensi wisata alam yang masih alami dan belum banyak terjamah.</p>
+                            <p class="mb-4">Pemandian Air Panas di Desa Sumber Urip merupakan salah satu potensi
+                                wisata alam yang masih alami dan belum banyak terjamah.</p>
                             <a class="btn btn-sm" href="#" data-bs-toggle="modal"
                                 data-bs-target="#modalAirPanas">
                                 <i class="fa fa-plus text-primary me-2"></i>Selengkapnya
@@ -381,9 +386,19 @@
                         <img src="{{ asset('assets/img/service-2.jpg') }}" alt="Pemandian Air Panas"
                             class="img-fluid rounded mb-4" style="max-height: 300px; object-fit: contain;">
                         <p>
-                            Pemandian Air Panas di Desa Sumber Urip merupakan salah satu potensi wisata alam yang masih alami dan belum banyak terjamah. Terletak tidak jauh dari kawasan Bukit Kaba, lokasi ini menjadi tempat favorit masyarakat sekitar untuk mandi dan relaksasi, terutama di pagi atau sore hari. Air panas yang muncul berasal dari sumber alami geotermal kaki bukit, dan dipercaya memiliki manfaat untuk kesehatan seperti meredakan pegal, melancarkan peredaran darah, dan terapi ringan bagi penderita rematik.
+                            Pemandian Air Panas di Desa Sumber Urip merupakan salah satu potensi wisata alam yang masih
+                            alami dan belum banyak terjamah. Terletak tidak jauh dari kawasan Bukit Kaba, lokasi ini
+                            menjadi tempat favorit masyarakat sekitar untuk mandi dan relaksasi, terutama di pagi atau
+                            sore hari. Air panas yang muncul berasal dari sumber alami geotermal kaki bukit, dan
+                            dipercaya memiliki manfaat untuk kesehatan seperti meredakan pegal, melancarkan peredaran
+                            darah, dan terapi ringan bagi penderita rematik.
 
-Meskipun fasilitasnya masih sederhana, daya tariknya terletak pada suasana tenang, dikelilingi alam terbuka, serta uap panas alami yang menyegarkan. Kawasan ini sangat berpotensi untuk dikembangkan menjadi wisata pemandian keluarga atau terapi kesehatan dengan konsep alami. Dengan penataan yang tepat, pemandian air panas ini dapat menjadi pelengkap destinasi ekowisata Bukit Kaba yang berada dalam satu jalur kawasan wisata alam Desa Sumber Urip.
+                            Meskipun fasilitasnya masih sederhana, daya tariknya terletak pada suasana tenang,
+                            dikelilingi alam terbuka, serta uap panas alami yang menyegarkan. Kawasan ini sangat
+                            berpotensi untuk dikembangkan menjadi wisata pemandian keluarga atau terapi kesehatan dengan
+                            konsep alami. Dengan penataan yang tepat, pemandian air panas ini dapat menjadi pelengkap
+                            destinasi ekowisata Bukit Kaba yang berada dalam satu jalur kawasan wisata alam Desa Sumber
+                            Urip.
 
 
                         </p>
@@ -417,10 +432,21 @@ Meskipun fasilitasnya masih sederhana, daya tariknya terletak pada suasana tenan
                             class="text-decoration-none text-dark">
                             <div
                                 class="artikel-container position-relative border rounded p-4 shadow-sm h-100 d-flex flex-column">
-                                @if ($artikel->gambar)
+                                {{-- @if ($artikel->gambar)
                                     <img src="{{ asset('storage/' . $artikel->gambar) }}"
                                         alt="{{ $artikel->judul }}" class="mb-3 img-fluid rounded">
+                                @endif --}}
+                                @php
+                                    preg_match('/<img[^>]+src="([^">]+)"/i', $artikel->isi, $matches);
+                                    $thumbnail = $matches[1] ?? null;
+                                @endphp
+
+                                @if ($thumbnail)
+                                    {{-- <img src="{{ $thumbnail }}" alt="{{ $artikel->judul }}" class="mb-3 img-fluid rounded"> --}}
+                                    <img src="{{ $thumbnail }}" alt="{{ $artikel->judul }}"
+                                        class="mb-3 img-thumbnail-thumbnail rounded">
                                 @endif
+
                                 <h3 class="artikel-title mb-2">
                                     {{ $artikel->judul }}
                                 </h3>
@@ -456,10 +482,99 @@ Meskipun fasilitasnya masih sederhana, daya tariknya terletak pada suasana tenan
     <div class="container-fluid my-5 py-5">
         <div class="container py-5">
             <h1 class="display-5 text-center mb-4">Peta Desa Sumber Urip</h1>
-            <div id="map" style="height: 500px; width: 100%;" class="wow fadeIn" data-wow-delay="0.5s"></div>
+            <div id="map" style="height: 500px; width: 100%;"></div>
         </div>
     </div>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    {{-- <div class="container-fluid my-5 py-5">
+        <div class="container py-5">
+            <h1 class="display-5 text-center mb-4">Peta Desa Sumber Urip</h1>
+            <div id="map" style="height: 500px; width: 100%;" class="wow fadeIn" data-wow-delay="0.5s"></div>
+        </div>
+    </div> --}}
+
+    <style>
+        .img-thumbnail-thumbnail {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        @media (min-width: 768px) {
+            .img-thumbnail-thumbnail {
+                height: 200px;
+            }
+        }
+
+        .artikel-title {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            /* Batas maksimal 2 baris */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            /* text-overflow: ellipsis; */
+            min-height: 3em;
+            /* Untuk menjaga tinggi tetap 2 baris */
+        }
+    </style>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var map = L.map('map').setView([-3.477, 102.648], 14);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            function addMarker(lat, lon, title, htmlPopup, iconColor) {
+                var marker = L.circleMarker([lat, lon], {
+                    radius: 7,
+                    color: iconColor || '#3388ff',
+                    fillColor: iconColor || '#3388ff',
+                    fillOpacity: 0.9
+                }).addTo(map);
+                marker.bindPopup('<b>' + title + '</b><br>' + htmlPopup);
+            }
+
+            // Polygon batas kasar desa (contoh visual)
+            var boundary = [
+                [-3.494778, 102.637292],
+                [-3.491014, 102.641941],
+                [-3.489533, 102.645186],
+                [-3.488130, 102.646830],
+                [-3.486624, 102.648343],
+                [-3.483936, 102.654792],
+                [-3.483154, 102.657548],
+                [-3.481554, 102.659637],
+                [-3.478537, 102.661672],
+                [-3.476908, 102.661510],
+                [-3.475541, 102.660704],
+                [-3.475058, 102.658972],
+                [-3.475923, 102.655224],
+                [-3.470378, 102.653164],
+                [-3.467661, 102.654226],
+                [-3.464318, 102.655057],
+                [-3.458956, 102.655663],
+                [-3.462318, 102.650930],
+                [-3.461198, 102.645589],
+                [-3.463136, 102.641553],
+                [-3.468801, 102.643769],
+                [-3.490773, 102.636194],
+                
+            ];
+            L.polygon(boundary, {
+                color: '#ff7800',
+                fillColor: '#ffaa33',
+                fillOpacity: 0.2
+            }).addTo(map).bindPopup('Batas perkiraan Desa Sumber Urip');
+
+        });
+    </script>
+
+    {{-- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var map = L.map('map').setView([-3.477, 102.648], 13);
@@ -479,12 +594,12 @@ Meskipun fasilitasnya masih sederhana, daya tariknya terletak pada suasana tenan
                         [-3.490, 102.660],
                         [-3.500, 102.650],
                         [-3.495, 102.640],
-                        [-3.490, 102.630],
-                        [-3.485, 102.620],
-                        [-3.480, 102.610],
-                        [-3.470, 102.600],
-                        [-3.460, 102.605],
-                        [-3.450, 102.610]
+                        // [-3.490, 102.630],
+                        // [-3.485, 102.620],
+                        // [-3.480, 102.610],
+                        // [-3.470, 102.600],
+                        // [-3.460, 102.605],
+                        // [-3.450, 102.610]
                     ],
                     color: '#ff7800',
                     fillColor: '#ff7800',
@@ -501,6 +616,6 @@ Meskipun fasilitasnya masih sederhana, daya tariknya terletak pada suasana tenan
                 }).addTo(map);
             });
         });
-    </script>
+    </script> --}}
 
 </x-guest-layout>
