@@ -162,8 +162,7 @@
                         @if (Auth::user()->is_admin)
                             <div class="crud-buttons">
                                 <a href="{{ route('sejarah.edit', $sejarah->id) }}">Edit</a>
-                                <form action="{{ route('sejarah.destroy', $sejarah->id) }}" method="POST"
-                                    onsubmit="return confirm('Yakin ingin menghapus data ini?');" style="display:inline;">
+                                <form action="{{ route('sejarah.destroy', $sejarah->id) }}" method="POST" class="delete-form" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit">Hapus</button>
@@ -175,4 +174,44 @@
             </div>
         @endforeach
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteForms = document.querySelectorAll('.delete-form');
+            deleteForms.forEach(function(form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Yakin ingin menghapus data ini?',
+                        text: "Data yang dihapus tidak dapat dikembalikan!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya, hapus!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+    @if(session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({ma
+                icon: 'success',
+                title: 'Sukses',
+                text: 'Data berhasil disimpan!',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        });
+    </script>
+    @endif
 </x-guest-layout>

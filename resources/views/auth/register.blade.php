@@ -27,7 +27,7 @@
         }
         .register-image {
             flex: 1 1 50%;
-            background: url('{{ asset("assets/img/register-image.jpg") }}') center center/cover no-repeat;
+            background: url('{{ asset("assets/img/beranda1.JPG") }}') center center/cover no-repeat;
             min-height: 400px;
         }
         .register-form {
