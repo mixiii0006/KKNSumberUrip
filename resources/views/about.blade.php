@@ -110,6 +110,12 @@
             .sda-card {
                 margin-bottom: 20px;
             }
+            .section-content {
+        text-align: justify;
+    }
+    .service-text {
+        text-align: center;
+    }
         }
     </style>
 
@@ -133,7 +139,7 @@
                 <div class="section-image">
                     <img src="{{ asset('assets/img/beranda2.jpg') }}" alt="Sumber Daya Manusia">
                 </div>
-                <div class="section-content" style="text-align: right;">
+                <div class="section-content">
                     <h2>Sumber Daya Manusia (SDM)</h2>
                     <p>Jumlah penduduk Desa Sumber Urip mencapai 2.471 jiwa yang terbagi dalam 6 dusun. Mayoritas masyarakat adalah suku Jawa yang telah lama bermukim dan membentuk budaya lokal yang kuat. Dari sisi pendidikan, sebagian besar penduduk berpendidikan hingga tingkat SD dan SMP. Meskipun begitu, desa ini memiliki potensi besar dalam pengembangan SDM melalui pelatihan, pendidikan non-formal, serta penguatan organisasi pemuda dan masyarakat. Kehadiran lembaga seperti Karang Taruna dan kelompok pengajian juga berperan penting dalam pembinaan sosial dan spiritual warga.</p>
                 </div>
