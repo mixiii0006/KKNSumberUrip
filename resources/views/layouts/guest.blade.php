@@ -9,7 +9,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="{{asset('assets/img/favicon.ico')}}" rel="icon">
+    <link href="{{ asset('assets/img/favicon.ico') }}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,61 +21,92 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="{{asset('assets/lib/animate/animate.min.css')}}" rel="stylesheet">
-    <link href="{{asset('assets/lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
-    <link href="{{asset('assets/lib/lightbox/css/lightbox.min.css')}}" rel="stylesheet">
-
+    <link href="{{ asset('assets/lib/animate/animate.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 
     <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+
+<body>
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
     </div>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-
+    <!-- Spinner End -->
 
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-dark  navbar-light sticky-top p-0">
-<a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-<img src="{{ asset('assets/img/about.jpg') }}" alt="Logo" style="width: 50px; height: 50px; margin-right: 10px; border-radius: 50%; object-fit: cover;">
-    <h1 class="m-0" style="color:#ffffff; font-size: 1.75rem;">Desa Wisata Sumber Urip</h1>
-</a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+<nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top p-0">
+    <div class="container-fluid px-4 d-flex justify-content-between align-items-center">        
+        <!-- Logo dan Judul -->
+        <a href="/" class="navbar-brand d-flex align-items-center m-0">
+            <img src="{{ asset('assets/img/about.jpg') }}" alt="Logo"
+                style="width: 50px; height: 50px; margin-right: 10px; border-radius: 50%; object-fit: cover;">
+            <h1 class="m-0 text-white" style="font-size: 1.75rem;">
+                Desa Wisata Sumber Urip
+            </h1>
+        </a>
+
+        <!-- Toggler diletakkan di kanan -->
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-            <a href="/" class="nav-item nav-link active">Beranda</a>
-            <a href="/about" class="nav-item nav-link">Tentang</a>
-            <a href="/sejarah" class="nav-item nav-link">Sejarah</a>
-            <a href="/organisasi" class="nav-item nav-link">Organisasi</a>
-            @auth
-                <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                    @csrf
-                    <button type="submit" class="nav-item nav-link" style="background:none; border:none; padding:25px 0; margin-right: 35px; cursor:pointer; vertical-align: middle;">
-                        Logout
-                    </button>
-                </form>
-            @else
-                <a href="{{ route('login') }}" class="nav-item nav-link">Login</a>
-                <a href="{{ route('register') }}" class="nav-item nav-link">Register</a>
-            @endauth
-            </div>
+
+        <!-- Menu -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a href="/" class="nav-link active">Beranda</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/about" class="nav-link">Tentang</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/sejarah" class="nav-link">Sejarah</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/organisasi" class="nav-link">Organisasi</a>
+                </li>
+                @auth
+                    <li class="nav-item">
+                        <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                            @csrf
+                            <button type="submit" class="nav-link btn btn-link text-white p-0" style="text-decoration: none;">Logout</button>
+                        </form>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a href="{{ route('login') }}" class="nav-link">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('register') }}" class="nav-link">Register</a>
+                    </li>
+                @endauth
+            </ul>
         </div>
-    </nav>
-    <!-- Navbar End -->
+    </div>
+</nav>
+<!-- Navbar End -->
+
+<!-- Optional Responsive Styling -->
+<style>
+    @media (max-width: 576px) {
+        .navbar-brand h1 {
+            font-size: 1rem !important;
+        }
+    }
+</style>
 
     <div>
-        {{$slot}}
+        {{ $slot }}
     </div>
 
     <!-- Footer Start -->
@@ -123,7 +154,6 @@
     </div>
     <!-- Footer End -->
 
-
     <!-- Copyright Start -->
     <div class="container-fluid copyright py-4">
         <div class="container">
@@ -139,29 +169,26 @@
     </div>
     <!-- Copyright End -->
 
-
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
-
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{asset('assets/lib/wow/wow.min.js')}}"></script>
-    <script src="{{asset('assets/lib/easing/easing.min.js')}}"></script>
-    <script src="{{asset('assets/lib/waypoints/waypoints.min.js')}}"></script>
-    <script src="{{asset('assets/lib/owlcarousel/owl.carousel.min.js')}}"></script>
-    <script src="{{asset('assets/lib/counterup/counterup.min.js')}}"></script>
-    <script src="{{asset('assets/lib/parallax/parallax.min.js')}}"></script>
-    <script src="{{asset('assets/lib/isotope/isotope.pkgd.min.js')}}"></script>
-    <script src="{{asset('assets/lib/lightbox/js/lightbox.min.js')}}"></script>
+    <script src="{{ asset('assets/lib/wow/wow.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/easing/easing.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/counterup/counterup.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/parallax/parallax.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/isotope/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ asset('assets/lib/lightbox/js/lightbox.min.js') }}"></script>
 
     <!-- Template Javascript -->
-    <script src="{{asset('assets/js/main.js')}}"></script>
-    <script src="{{asset('assets/js/navbar-active.js')}}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script src="{{ asset('assets/js/navbar-active.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 
 </html>
