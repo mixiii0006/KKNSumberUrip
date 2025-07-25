@@ -110,44 +110,42 @@
     </div>
 
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer mt-5 py-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
+    <div class="container-fluid bg-dark text-light footer mt-3 py-3 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-3">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-4">Our Office</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+                    <h4 class="text-white mb-4">Kantor Desa</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Dusun IV Desa Sumber Urip</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+736 123456</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>desasumberurip@gmail.com</p>
                     <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-light rounded-circle me-2" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
+    <a class="btn btn-square btn-outline-light rounded-circle me-2"
+       href="https://www.youtube.com/@desasumberurip6899"
+       target="_blank">
+        <i class="fab fa-youtube"></i>
+    </a>
+    <a class="btn btn-square btn-outline-light rounded-circle me-2"
+       href="https://www.instagram.com/bukit_kaba_gunungkaba?utm_source=ig_web_button_share_sheet&igsh=ZWFmYWFzZHBva2w0"
+       target="_blank">
+        <i class="fab fa-instagram"></i>
+    </a>
+</div>
+
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-4">Services</h4>
-                    <a class="btn btn-link" href="">Landscaping</a>
-                    <a class="btn btn-link" href="">Pruning plants</a>
-                    <a class="btn btn-link" href="">Urban Gardening</a>
-                    <a class="btn btn-link" href="">Garden Maintenance</a>
-                    <a class="btn btn-link" href="">Green Technology</a>
+                    <h4 class="text-white mb-4">Pelayanan</h4>
+                    <a class="btn btn-link">Posyandu Balita dan Batita</a>
+                    <a class="btn btn-link">Pelayanan Kesehatan Lansia</a>
+                    <a class="btn btn-link">Pelayanan Kesehatan Anak</a>
+                    <a class="btn btn-link">Hari Anak Nasional</a>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-4">Quick Links</h4>
-                    <a class="btn btn-link" href="">About Us</a>
-                    <a class="btn btn-link" href="">Contact Us</a>
-                    <a class="btn btn-link" href="">Our Services</a>
-                    <a class="btn btn-link" href="">Terms & Condition</a>
-                    <a class="btn btn-link" href="">Support</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-4">Newsletter</h4>
+                    {{-- <h4 class="text-white mb-4">Newsletter</h4>
                     <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
                     <div class="position-relative w-100">
                         <input class="form-control bg-light border-light w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
                         <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
