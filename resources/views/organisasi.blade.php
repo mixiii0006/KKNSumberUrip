@@ -21,7 +21,7 @@
             background-color: #f9f9f9;
             border-radius: 12px;
             padding: 30px 40px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             font-size: 1rem;
             color: #333;
             position: relative;
@@ -50,7 +50,7 @@
             height: 300px;
             background: linear-gradient(135deg, #2e7d32, #81c784);
             border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             color: white;
             font-weight: bold;
             font-size: 1.5rem;
@@ -111,7 +111,7 @@
         .member-card {
             background-color: #fff;
             border-radius: 15px;
-            box-shadow: 0 2px 13px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 13px rgba(0, 0, 0, 0.15);
             text-align: left;
             padding: 15px;
             font-size: 0.9rem;
@@ -126,7 +126,7 @@
             object-fit: cover;
             background-color: #ccc;
             margin-bottom: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .member-name {
@@ -145,7 +145,8 @@
             margin-top: 10px;
         }
 
-        .crud-buttons a, .crud-buttons button {
+        .crud-buttons a,
+        .crud-buttons button {
             margin-right: 5px;
             font-size: 0.8rem;
             padding: 5px 10px;
@@ -210,12 +211,21 @@
         </div>
 
         <div class="org-top">
+            <div class="org-title">Struktur Organisasi</div>
+            <div>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahOrganisasiModal">+ Tambah
+                    Organisasi</button>
+            </div>
+        </div>
+
+
+        {{-- <div class="org-top">
             <button class="org-nav-button org-nav-prev" id="org-prev">&#10094;</button>
             <div class="org-description" id="org-description">
                 <h2>{{ strtoupper($instansiKeys[$currentIndex] ?? '') }}</h2>
                 <p>Deskripsi untuk instansi {{ $instansiKeys[$currentIndex] ?? '' }} akan ditampilkan di sini.</p>
                 @auth
-                    @if(Auth::user()->is_admin)
+                    @if (Auth::user()->is_admin)
                         <a href="{{ route('organisasi.create') }}" class="add-button">Tambah Anggota</a>
                     @endif
                 @endauth
@@ -224,12 +234,13 @@
                 LOGO {{ strtoupper($instansiKeys[$currentIndex] ?? '') }}
             </div>
             <button class="org-nav-button org-nav-next" id="org-next">&#10095;</button>
-        </div>
+        </div> --}}
 
         <div class="anggota-section">
             <div class="anggota-title">Anggota</div>
             <div class="member-list" id="member-list">
-                @foreach ($organisasiGrouped[$instansiKeys[$currentIndex]] as $anggota)
+                {{-- @forelse ($organisasiGrouped[$instansiKeys[$currentIndex]] as $anggota) --}}
+                @forelse ($organisasiGrouped[$instansiKeys[$currentIndex]] ?? [] as $anggota)
                     <div class="member-card">
                         <div class="member-photo"></div>
                         <div class="member-name">{{ $anggota->nama }}</div>
@@ -238,19 +249,24 @@
                             NIP: {{ $anggota->nip ?? '-' }}
                         </div>
                         @auth
-                            @if(auth()->user()->is_admin)
+                            @if (auth()->user()->is_admin)
                                 <div class="crud-buttons">
-                                    <a href="{{ route('organisasi.edit', ['organisasi' => $anggota->id]) }}" class="btn btn-warning">Edit</a>
-                                    <form action="{{ route('organisasi.destroy', ['organisasi' => $anggota->id]) }}" method="POST" style="display:inline;">
+                                    <a href="{{ route('organisasi.edit', ['organisasi' => $anggota->id]) }}"
+                                        class="btn btn-warning">Edit</a>
+                                    <form action="{{ route('organisasi.destroy', ['organisasi' => $anggota->id]) }}"
+                                        method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus anggota ini?')">Hapus</button>
+                                        <button type="submit" class="btn btn-danger"
+                                            onclick="return confirm('Yakin ingin menghapus anggota ini?')">Hapus</button>
                                     </form>
                                 </div>
                             @endif
                         @endauth
                     </div>
-                @endforeach
+                @empty
+                    <div class="text-muted">Belum ada anggota untuk instansi ini.</div>
+                @endforelse
             </div>
         </div>
     </div>
@@ -272,33 +288,39 @@
 
                 // Update description and logo
                 orgDescription.querySelector('h2').textContent = instansi.toUpperCase();
-                orgDescription.querySelector('p').textContent = `Deskripsi untuk instansi ${instansi} akan ditampilkan di sini.`;
+                orgDescription.querySelector('p').textContent =
+                    `Deskripsi untuk instansi ${instansi} akan ditampilkan di sini.`;
                 orgLogo.textContent = `LOGO ${instansi.toUpperCase()}`;
 
                 // Clear member list
                 memberList.innerHTML = '';
 
                 // Add anggota cards
+                if (!anggota[instansi] || anggota[instansi].length === 0) {
+                    memberList.innerHTML = '<div class="text-muted">Belum ada anggota untuk instansi ini.</div>';
+                    return;
+                }
+                
                 anggota[instansi].forEach(member => {
-                    const card = document.createElement('div');
-                    card.className = 'member-card';
+                        const card = document.createElement('div');
+                        card.className = 'member-card';
 
-                    const photo = document.createElement('div');
-                    photo.className = 'member-photo';
-                    card.appendChild(photo);
+                        const photo = document.createElement('div');
+                        photo.className = 'member-photo';
+                        card.appendChild(photo);
 
-                    const name = document.createElement('div');
-                    name.className = 'member-name';
-                    name.textContent = member.nama;
-                    card.appendChild(name);
+                        const name = document.createElement('div');
+                        name.className = 'member-name';
+                        name.textContent = member.nama;
+                        card.appendChild(name);
 
-                    const desc = document.createElement('div');
-                    desc.className = 'member-desc';
-                    desc.innerHTML = `Jabatan: ${member.jabatan}<br>NIP: ${member.nip || '-'}`;
-                    card.appendChild(desc);
+                        const desc = document.createElement('div');
+                        desc.className = 'member-desc';
+                        desc.innerHTML = `Jabatan: ${member.jabatan}<br>NIP: ${member.nip || '-'}`;
+                        card.appendChild(desc);
 
-                    @auth
-                        @if(auth()->user()->is_admin)
+                        @auth
+                        @if (auth()->user()->is_admin)
                             const crudDiv = document.createElement('div');
                             crudDiv.className = 'crud-buttons';
 
@@ -341,19 +363,19 @@
 
                     memberList.appendChild(card);
                 });
-            }
+        }
 
-            prevBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
-                renderOrg(currentIndex);
-            });
-
-            nextBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % instansiKeys.length;
-                renderOrg(currentIndex);
-            });
-
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
             renderOrg(currentIndex);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % instansiKeys.length;
+            renderOrg(currentIndex);
+        });
+
+        renderOrg(currentIndex);
         });
     </script>
 </x-guest-layout>

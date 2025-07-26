@@ -18,11 +18,30 @@ class OrganisasiController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $organisasi = Organisasi::with('instansi')->get()->groupBy('instansi_id');
-        $instansis = \App\Models\Instansi::all()->keyBy('id');
-        return view('organisasi_updated', ['organisasiGrouped' => $organisasi, 'instansis' => $instansis]);
+{
+    $organisasi = Organisasi::with('instansi')->get()->groupBy('instansi_id');
+    $instansis = \App\Models\Instansi::all()->keyBy('id');
+
+    // Pastikan setiap instansi memiliki entry meskipun tidak punya anggota
+    foreach ($instansis as $id => $instansi) {
+        if (!isset($organisasi[$id])) {
+            $organisasi[$id] = collect(); // atau [] kalau kamu pakai json langsung
+        }
     }
+
+    return view('organisasi_updated', [
+        'organisasiGrouped' => $organisasi,
+        'instansis' => $instansis
+    ]);
+}
+
+    
+    // public function index()
+    // {
+    //     $organisasi = Organisasi::with('instansi')->get()->groupBy('instansi_id');
+    //     $instansis = \App\Models\Instansi::all()->keyBy('id');
+    //     return view('organisasi_updated', ['organisasiGrouped' => $organisasi, 'instansis' => $instansis]);
+    // }
 
     /**
      * Show the form for creating a new resource.

@@ -14,7 +14,9 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;500&display=swap"
+        rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -37,73 +39,75 @@
 
 <body>
     <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
     </div>
     <!-- Spinner End -->
 
     <!-- Navbar Start -->
-<nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top p-0">
-    <div class="container-fluid px-4 d-flex justify-content-between align-items-center">        
-        <!-- Logo dan Judul -->
-        <a href="/" class="navbar-brand d-flex align-items-center m-0">
-            <img src="{{ asset('assets/img/about.jpg') }}" alt="Logo"
-                style="width: 50px; height: 50px; margin-right: 10px; border-radius: 50%; object-fit: cover;">
-            <h1 class="m-0 text-white" style="font-size: 1.75rem;">
-                Desa Wisata Sumber Urip
-            </h1>
-        </a>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-light sticky-top p-0">
+        <div class="container-fluid px-4 d-flex justify-content-between align-items-center">
+            <!-- Logo dan Judul -->
+            <a href="/" class="navbar-brand d-flex align-items-center m-0">
+                <img src="{{ asset('assets/img/about.jpg') }}" alt="Logo"
+                    style="width: 50px; height: 50px; margin-right: 10px; border-radius: 50%; object-fit: cover;">
+                <h1 class="m-0 text-white" style="font-size: 1.75rem;">
+                    Desa Wisata Sumber Urip
+                </h1>
+            </a>
 
-        <!-- Toggler diletakkan di kanan -->
-        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <!-- Toggler diletakkan di kanan -->
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <!-- Menu -->
-        <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
-            <ul class="navbar-nav mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a href="/" class="nav-link active">Beranda</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/about" class="nav-link">Tentang</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/sejarah" class="nav-link">Sejarah</a>
-                </li>
-                <li class="nav-item">
-                    <a href="/organisasi" class="nav-link">Organisasi</a>
-                </li>
-                @auth
+            <!-- Menu -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+                <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                            @csrf
-                            <button type="submit" class="nav-link btn" style="text-decoration: none;">Logout</button>
-                        </form>
-                    </li>
-                @else
-                    <li class="nav-item">
-                        <a href="{{ route('login') }}" class="nav-link">Login</a>
+                        <a href="/" class="nav-link active">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('register') }}" class="nav-link">Register</a>
+                        <a href="/about" class="nav-link">Tentang</a>
                     </li>
-                @endauth
-            </ul>
+                    <li class="nav-item">
+                        <a href="/sejarah" class="nav-link">Sejarah</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/organisasi" class="nav-link">Organisasi</a>
+                    </li>
+                    @auth
+                        <li class="nav-item">
+                            <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                                @csrf
+                                <button type="submit" class="nav-link btn" style="text-decoration: none;">Logout</button>
+                            </form>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a href="{{ route('login') }}" class="nav-link">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('register') }}" class="nav-link">Register</a>
+                        </li>
+                    @endauth
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-<!-- Navbar End -->
+    </nav>
+    <!-- Navbar End -->
 
-<!-- Optional Responsive Styling -->
-<style>
-    @media (max-width: 576px) {
-        .navbar-brand h1 {
-            font-size: 1rem !important;
+    <!-- Optional Responsive Styling -->
+    <style>
+        @media (max-width: 576px) {
+            .navbar-brand h1 {
+                font-size: 1rem !important;
+            }
         }
-    }
-</style>
+    </style>
 
     <div>
         {{ $slot }}
@@ -119,17 +123,16 @@
                     <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+736 123456</p>
                     <p class="mb-2"><i class="fa fa-envelope me-3"></i>desasumberurip@gmail.com</p>
                     <div class="d-flex pt-2">
-    <a class="btn btn-square btn-outline-light rounded-circle me-2"
-       href="https://www.youtube.com/@desasumberurip6899"
-       target="_blank">
-        <i class="fab fa-youtube"></i>
-    </a>
-    <a class="btn btn-square btn-outline-light rounded-circle me-2"
-       href="https://www.instagram.com/bukit_kaba_gunungkaba?utm_source=ig_web_button_share_sheet&igsh=ZWFmYWFzZHBva2w0"
-       target="_blank">
-        <i class="fab fa-instagram"></i>
-    </a>
-</div>
+                        <a class="btn btn-square btn-outline-light rounded-circle me-2"
+                            href="https://www.youtube.com/@desasumberurip6899" target="_blank">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a class="btn btn-square btn-outline-light rounded-circle me-2"
+                            href="https://www.instagram.com/bukit_kaba_gunungkaba?utm_source=ig_web_button_share_sheet&igsh=ZWFmYWFzZHBva2w0"
+                            target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
 
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -168,7 +171,8 @@
     <!-- Copyright End -->
 
     <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
+            class="bi bi-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

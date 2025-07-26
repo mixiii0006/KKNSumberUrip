@@ -284,7 +284,6 @@
             font-weight: 500;
         }
     </style>
-    </style>
 
     <div class="org-container">
         @php
@@ -337,98 +336,134 @@
 
         @auth
             @if (Auth::user()->is_admin)
-                <!-- Form Tambah Instansi -->
-                <div class="form-wrapper">
-                    <h3>Tambah Instansi</h3>
-                    <form method="POST" action="{{ route('instansi.store') }}" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-4">
-                            <label for="name">Nama Instansi</label>
-                            <input id="name" name="name" type="text" value="{{ old('name') }}" required>
-                            @error('name')
-                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="description">Deskripsi</label>
-                            <textarea id="description" name="description" rows="4">{{ old('description') }}</textarea>
-                            @error('description')
-                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="photo">Foto Instansi</label>
-                            <input id="photo" name="photo" type="file" accept="image/*">
-                            @error('photo')
-                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="mt-4">
-                            <button type="submit" class="btn-primary">Simpan</button>
-                        </div>
-                    </form>
+            <div class="org-top d-flex justify-content-end">
+                <div>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahOrganisasiModal">+
+                        Tambah Instansi</button>
                 </div>
-
-                <!-- Form Tambah Anggota -->
+            </div>
                 <div class="form-wrapper">
-                    <h3>Tambah Anggota Organisasi</h3>
-                    <form method="POST" action="{{ route('organisasi.store') }}" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-4">
-                            <label for="nama">Nama</label>
-                            <input id="nama" name="nama" type="text" value="{{ old('nama') }}" required>
-                            @error('nama')
-                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
 
-                        <div class="mb-4">
-                            <label for="instansi_id">Instansi</label>
-                            <select id="instansi_id" name="instansi_id" required>
-                                <option value="">-- Pilih Instansi --</option>
-                                @foreach ($instansis ?? [] as $instansi)
-                                    <option value="{{ $instansi->id }}"
-                                        {{ old('instansi_id') == $instansi->id ? 'selected' : '' }}>
-                                        {{ $instansi->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('instansi_id')
-                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
+                    <!-- Modal Tambah Instansi -->
+                    <div class="modal fade" id="tambahOrganisasiModal" tabindex="-1"
+                        aria-labelledby="tambahOrganisasiModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <form method="POST" action="{{ route('instansi.store') }}" enctype="multipart/form-data"
+                                class="w-100">
+                                @csrf
+                                <div class="modal-content p-3 shadow">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="tambahOrganisasiModalLabel">Tambah Instansi</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row g-4">
+                                            <div class="col-md-6">
+                                                <label for="name" class="form-label">Nama Instansi</label>
+                                                <input id="name" name="name" type="text"
+                                                    value="{{ old('name') }}" required class="form-control">
+                                                @error('name')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
 
-                        <div class="mb-4">
-                            <label for="jabatan">Jabatan</label>
-                            <input id="jabatan" name="jabatan" type="text" value="{{ old('jabatan') }}" required>
-                            @error('jabatan')
-                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
+                                            <div class="col-md-6">
+                                                <label for="photo" class="form-label">Foto Instansi</label>
+                                                <input id="photo" name="photo" type="file" accept="image/*"
+                                                    class="form-control">
+                                                @error('photo')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
 
-                        <div class="mb-4">
-                            <label for="nip">NIP</label>
-                            <input id="nip" name="nip" type="text" value="{{ old('nip') }}">
-                            @error('nip')
-                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
+                                            <div class="col-12">
+                                                <label for="description" class="form-label">Deskripsi</label>
+                                                <textarea id="description" name="description" rows="4" class="form-control">{{ old('description') }}</textarea>
+                                                @error('description')
+                                                    <div class="text-danger small mt-1">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
+                    </div>
 
-                        <div class="mb-4">
-                            <label for="photo">Foto Anggota</label>
-                            <input id="photo" name="photo" type="file" accept="image/*">
-                            @error('photo')
-                                <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
 
-                        <div class="mt-4">
-                            <button type="submit" class="btn-primary">Simpan</button>
-                        </div>
-                    </form>
+
+                    <!-- Form Tambah Anggota -->
+                    <div class="d-flex justify-content-between align-items-center mb-0 pb-0">
+                        <h5>Tambah Anggota Organisasi</h3>
+                            <button class="btn border-0 bg-transparent p-0" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseFormAnggota" aria-expanded="false"
+                                aria-controls="collapseFormAnggota" title="Tampilkan/Sembunyikan Form">
+                                <i class="bi bi-chevron-down fs-5"></i>
+                            </button>
+
+
+                    </div>
+                    <div class="collapse" id="collapseFormAnggota">
+                        <form method="POST" action="{{ route('organisasi.store') }}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="mb-4">
+                                <label for="nama">Nama</label>
+                                <input id="nama" name="nama" type="text" value="{{ old('nama') }}" required>
+                                @error('nama')
+                                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="instansi_id">Instansi</label>
+                                <select id="instansi_id" name="instansi_id" required>
+                                    <option value="">-- Pilih Instansi --</option>
+                                    @foreach ($instansis ?? [] as $instansi)
+                                        <option value="{{ $instansi->id }}"
+                                            {{ old('instansi_id') == $instansi->id ? 'selected' : '' }}>
+                                            {{ $instansi->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('instansi_id')
+                                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="jabatan">Jabatan</label>
+                                <input id="jabatan" name="jabatan" type="text" value="{{ old('jabatan') }}" required>
+                                @error('jabatan')
+                                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="nip">NIP</label>
+                                <input id="nip" name="nip" type="text" value="{{ old('nip') }}">
+                                @error('nip')
+                                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="photo">Foto Anggota</label>
+                                <input id="photo" name="photo" type="file" accept="image/*">
+                                @error('photo')
+                                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div class="mt-4">
+                                <button type="submit" class="btn-primary">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+
                 </div>
 
             @endif
@@ -512,77 +547,87 @@
                             memberList.innerHTML = '';
 
                             // Add anggota cards
-                            (anggota[instansiId] || []).forEach(member => {
-                                    if (!member.nama) return; // Skip empty member data
+                            const anggotaList = anggota[instansiId] || [];
 
-                                    const card = document.createElement('div');
-                                    card.className = 'member-card';
+                            if (anggotaList.length === 0) {
+                                const emptyMsg = document.createElement('div');
+                                emptyMsg.className = 'text-muted';
+                                emptyMsg.textContent = 'Belum ada anggota untuk instansi ini.';
+                                memberList.appendChild(emptyMsg);
+                            } else {
+                                anggotaList.forEach(member => {
+                                        if (!member.nama) return;
 
-                                    const photo = document.createElement('img');
-                                    photo.className = 'member-photo';
-                                    photo.alt = member.nama;
-                                    if (member.photo) {
-                                        photo.src = member.photo.startsWith('http') ? member.photo :
-                                            `/storage/${member.photo}`;
-                                    } else {
-                                        photo.src = 'https://via.placeholder.com/140x110?text=No+Photo';
-                                    }
-                                    card.appendChild(photo);
+                                        const card = document.createElement('div');
+                                        card.className = 'member-card';
 
-                                    const name = document.createElement('div');
-                                    name.className = 'member-name';
-                                    name.textContent = member.nama;
-                                    card.appendChild(name);
+                                        const photo = document.createElement('img');
+                                        photo.className = 'member-photo';
+                                        photo.alt = member.nama;
+                                        if (member.photo) {
+                                            photo.src = member.photo.startsWith('http') ? member.photo :
+                                                `/storage/${member.photo}`;
+                                        } else {
+                                            photo.src = 'https://via.placeholder.com/140x110?text=No+Photo';
+                                        }
+                                        card.appendChild(photo);
 
-                                    const desc = document.createElement('div');
-                                    desc.className = 'member-desc';
-                                    desc.innerHTML = `Jabatan: ${member.jabatan}<br>NIP: ${member.nip || '-'}`;
-                                    card.appendChild(desc);
+                                        const name = document.createElement('div');
+                                        name.className = 'member-name';
+                                        name.textContent = member.nama;
+                                        card.appendChild(name);
 
-                                    @auth
-                                    @if (auth()->user()->is_admin)
-                                        const crudDiv = document.createElement('div');
-                                        crudDiv.className = 'crud-buttons';
+                                        const desc = document.createElement('div');
+                                        desc.className = 'member-desc';
+                                        desc.innerHTML = `Jabatan: ${member.jabatan}<br>NIP: ${member.nip || '-'}`;
+                                        card.appendChild(desc);
 
-                                        const editLink = document.createElement('a');
-                                        editLink.href = `/organisasi/${member.id}/edit`;
-                                        editLink.className = 'btn btn-warning';
-                                        editLink.textContent = 'Edit';
-                                        crudDiv.appendChild(editLink);
+                                        @auth
+                                        @if (auth()->user()->is_admin)
+                                            const crudDiv = document.createElement('div');
+                                            crudDiv.className = 'crud-buttons';
 
-                                        const deleteForm = document.createElement('form');
-                                        deleteForm.action = `/organisasi/${member.id}`;
-                                        deleteForm.method = 'POST';
-                                        deleteForm.style.display = 'inline';
+                                            const editLink = document.createElement('a');
+                                            editLink.href = `/organisasi/${member.id}/edit`;
+                                            editLink.className = 'btn btn-warning';
+                                            editLink.textContent = 'Edit';
+                                            crudDiv.appendChild(editLink);
 
-                                        const csrfInput = document.createElement('input');
-                                        csrfInput.type = 'hidden';
-                                        csrfInput.name = '_token';
-                                        csrfInput.value = '{{ csrf_token() }}';
-                                        deleteForm.appendChild(csrfInput);
+                                            const deleteForm = document.createElement('form');
+                                            deleteForm.action = `/organisasi/${member.id}`;
+                                            deleteForm.method = 'POST';
+                                            deleteForm.style.display = 'inline';
 
-                                        const methodInput = document.createElement('input');
-                                        methodInput.type = 'hidden';
-                                        methodInput.name = '_method';
-                                        methodInput.value = 'DELETE';
-                                        deleteForm.appendChild(methodInput);
+                                            const csrfInput = document.createElement('input');
+                                            csrfInput.type = 'hidden';
+                                            csrfInput.name = '_token';
+                                            csrfInput.value = '{{ csrf_token() }}';
+                                            deleteForm.appendChild(csrfInput);
 
-                                        const deleteButton = document.createElement('button');
-                                        deleteButton.type = 'submit';
-                                        deleteButton.className = 'btn btn-danger';
-                                        deleteButton.textContent = 'Hapus';
-                                        deleteButton.onclick = function() {
-                                            return confirm('Yakin ingin menghapus anggota ini?');
-                                        };
-                                        deleteForm.appendChild(deleteButton);
+                                            const methodInput = document.createElement('input');
+                                            methodInput.type = 'hidden';
+                                            methodInput.name = '_method';
+                                            methodInput.value = 'DELETE';
+                                            deleteForm.appendChild(methodInput);
 
-                                        crudDiv.appendChild(deleteForm);
-                                        card.appendChild(crudDiv);
-                                    @endif
-                                @endauth
+                                            const deleteButton = document.createElement('button');
+                                            deleteButton.type = 'submit';
+                                            deleteButton.className = 'btn btn-danger';
+                                            deleteButton.textContent = 'Hapus';
+                                            deleteButton.onclick = function() {
+                                                return confirm('Yakin ingin menghapus anggota ini?');
+                                            };
+                                            deleteForm.appendChild(deleteButton);
 
-                                memberList.appendChild(card);
-                            });
+                                            crudDiv.appendChild(deleteForm);
+                                            card.appendChild(crudDiv);
+                                        @endif
+                                    @endauth
+
+                                    memberList.appendChild(card);
+                                });
+                        }
+
                     }
 
                     // Navigation buttons
@@ -611,7 +656,8 @@
                     renderOrg(currentIndex); updateEditLink(currentIndex);
                     });
                 </script>
-                <div class="org-logo-container" id="org-logo" style="width: 300px; height: 300px; position: relative;">
+                <div class="org-logo-container" id="org-logo"
+                    style="width: 300px; height: 300px; position: relative;">
                     <img id="instansi-photo" src="" alt=""
                         style="width: 100%; height: 100%; border-radius: 12px; object-fit: cover; display: none;" />
                     <div id="instansi-photo-placeholder"
