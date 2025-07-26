@@ -441,14 +441,14 @@
                                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
-
+{{-- 
                             <div class="mb-4">
                                 <label for="nip">NIP</label>
                                 <input id="nip" name="nip" type="text" value="{{ old('nip') }}">
                                 @error('nip')
                                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <div class="mb-4">
                                 <label for="photo">Foto Anggota</label>
@@ -579,7 +579,7 @@
 
                                         const desc = document.createElement('div');
                                         desc.className = 'member-desc';
-                                        desc.innerHTML = `Jabatan: ${member.jabatan}<br>NIP: ${member.nip || '-'}`;
+                                        desc.innerHTML = `Jabatan: ${member.jabatan}`;
                                         card.appendChild(desc);
 
                                         @auth
@@ -728,15 +728,15 @@
                     instansiPhotoPlaceholder.textContent = instansi.name.charAt(0).toUpperCase();
                 }
 
-                // Clear member list
-                memberList.innerHTML = '';
+const anggotaSection = document.querySelector('.anggota-section');
+
+// Clear member list
+memberList.innerHTML = '';
 
 if (!anggota[instansiId] || anggota[instansiId].length === 0) {
-    const emptyMsg = document.createElement('div');
-    emptyMsg.className = 'text-muted';
-    emptyMsg.textContent = 'Belum ada anggota untuk instansi ini.';
-    memberList.appendChild(emptyMsg);
+    anggotaSection.style.display = 'none';
 } else {
+    anggotaSection.style.display = 'block';
     anggota[instansiId].forEach(member => {
         const card = document.createElement('div');
         card.className = 'member-card';

@@ -120,13 +120,13 @@
                 @enderror
             </div>
 
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="nip">NIP</label>
                 <input id="nip" name="nip" type="text" value="{{ old('nip', $organisasi->nip) }}" />
                 @error('nip')
                     <p class="error-text">{{ $message }}</p>
                 @enderror
-            </div>
+            </div> --}}
 
             <div class="form-group">
                 <label for="photo">Foto Anggota</label>

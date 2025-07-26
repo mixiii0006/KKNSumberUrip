@@ -36,13 +36,13 @@
                     @enderror
                 </div>
 
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <label for="nip" class="block font-medium text-sm text-gray-700">NIP</label>
                     <input id="nip" name="nip" type="text" value="{{ old('nip') }}" class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
                     @error('nip')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
-                </div>
+                </div> --}}
 
                 <div class="mb-4">
                     <label for="photo" class="block font-medium text-sm text-gray-700">Foto Anggota</label>
