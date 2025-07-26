@@ -22,7 +22,7 @@
         @endif
 
         {{-- Form --}}
-        <form method="POST" action="{{ route('artikels.store') }}" enctype="multipart/form-data">
+        <form id="create-article-form" method="POST" action="{{ route('artikels.store') }}" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-4">
@@ -58,8 +58,8 @@
             <div class="flex justify-end gap-3 mt-6">
                 <a href="{{ route('welcome') }}"
                     class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded">Batal</a>
-                <button type="submit"
-                    style="background-color: #1f412b; " class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Simpan</button>
+                <button type="submit" style="background-color: #1f412b; "
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Simpan</button>
             </div>
         </form>
     </div>
@@ -85,5 +85,50 @@
         });
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById('create-article-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = this;
+            document.querySelector('#isi').value = window.editor.getData(); // ambil data dari CKEditor
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: data.message,
+                        }).then(() => {
+                            window.location.href = data.redirect_url;
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: data.message || 'Terjadi kesalahan saat menyimpan artikel.',
+                        });
+                    }
+                })
+                .catch(() => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Terjadi kesalahan jaringan.',
+                    });
+                });
+        });
+        console.log('Form submitted intercepted!');
+
+    </script>
 
 </x-guest-layout>

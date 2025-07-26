@@ -1,8 +1,29 @@
-@if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
+@if (session('success') || session('error'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endif
+
+@if (session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: '{{ session('success') }}',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: '{{ session('error') }}',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
+
 
 <x-guest-layout>
     <div class="max-w-3xl mx-auto py-10 px-4 sm:px-6 lg:px-8 bg-white rounded shadow-md">
@@ -40,11 +61,11 @@
                     </a>
 
                     <!-- Tombol Hapus -->
-                    <form action="{{ route('artikels.destroy', $artikel->id) }}" method="POST"
-                        onsubmit="return confirm('Yakin ingin menghapus artikel ini?')">
+                    <form id="deleteForm" action="{{ route('artikels.destroy', $artikel->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger px-4" style="min-width: 120px;">
+                        <button type="button" class="btn btn-danger px-4" onclick="confirmDelete()"
+                            style="min-width: 120px;">
                             <i class="bi bi-trash me-2"></i> Hapus
                         </button>
                     </form>
@@ -59,7 +80,8 @@
         <div class="mt-10 text-center">
             <a href="{{ route('welcome') }}" class="text-blue-600 hover:underline font-medium">← Kembali ke Beranda</a>
             <span class="mx-2 text-gray-400">|</span>
-            <a href="{{ route('artikels.index') }}" class="text-blue-600 hover:underline font-medium">Daftar Artikel</a>
+            <a href="{{ route('artikels.index') }}" class="text-blue-600 hover:underline font-medium">Daftar
+                Artikel</a>
         </div>
 
     </div>
@@ -75,4 +97,23 @@
             margin-right: auto;
         }
     </style>
+
+    <script>
+        function confirmDelete() {
+            Swal.fire({
+                title: 'Yakin ingin menghapus artikel?',
+                text: "Tindakan ini tidak bisa dibatalkan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('deleteForm').submit();
+                }
+            });
+        }
+    </script>
 </x-guest-layout>
