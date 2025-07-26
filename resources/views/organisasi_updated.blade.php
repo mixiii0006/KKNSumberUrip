@@ -731,75 +731,81 @@
                 // Clear member list
                 memberList.innerHTML = '';
 
-                // Add anggota cards
-                anggota[instansiId].forEach(member => {
-                        const card = document.createElement('div');
-                        card.className = 'member-card';
+if (!anggota[instansiId] || anggota[instansiId].length === 0) {
+    const emptyMsg = document.createElement('div');
+    emptyMsg.className = 'text-muted';
+    emptyMsg.textContent = 'Belum ada anggota untuk instansi ini.';
+    memberList.appendChild(emptyMsg);
+} else {
+    anggota[instansiId].forEach(member => {
+        const card = document.createElement('div');
+        card.className = 'member-card';
 
-                        const photo = document.createElement('img');
-                        photo.className = 'member-photo';
-                        photo.alt = member.nama;
-                        if (member.photo) {
-                            photo.src = `/storage/${member.photo}`;
-                        } else {
-                            photo.src = 'https://via.placeholder.com/140x110?text=No+Photo';
-                        }
-                        card.appendChild(photo);
+        const photo = document.createElement('img');
+        photo.className = 'member-photo';
+        photo.alt = member.nama;
+        if (member.photo) {
+            photo.src = `/storage/${member.photo}`;
+        } else {
+            photo.src = 'https://via.placeholder.com/140x110?text=No+Photo';
+        }
+        card.appendChild(photo);
 
-                        const name = document.createElement('div');
-                        name.className = 'member-name';
-                        name.textContent = member.nama;
-                        card.appendChild(name);
+        const name = document.createElement('div');
+        name.className = 'member-name';
+        name.textContent = member.nama;
+        card.appendChild(name);
 
-                        const desc = document.createElement('div');
-                        desc.className = 'member-desc';
-                        desc.innerHTML = `Jabatan: ${member.jabatan}<br>NIP: ${member.nip || '-'}`;
-                        card.appendChild(desc);
+        const desc = document.createElement('div');
+        desc.className = 'member-desc';
+        desc.innerHTML = `Jabatan: ${member.jabatan}<br>NIP: ${member.nip || '-'}`;
+        card.appendChild(desc);
 
-                        @auth
-                        @if (auth()->user()->is_admin)
-                            const crudDiv = document.createElement('div');
-                            crudDiv.className = 'crud-buttons';
+        @auth
+        @if (auth()->user()->is_admin)
+            const crudDiv = document.createElement('div');
+            crudDiv.className = 'crud-buttons';
 
-                            const editLink = document.createElement('a');
-                            editLink.href = `/organisasi/${member.id}/edit`;
-                            editLink.className = 'btn btn-warning';
-                            editLink.textContent = 'Edit';
-                            crudDiv.appendChild(editLink);
+            const editLink = document.createElement('a');
+            editLink.href = `/organisasi/${member.id}/edit`;
+            editLink.className = 'btn btn-warning';
+            editLink.textContent = 'Edit';
+            crudDiv.appendChild(editLink);
 
-                            const deleteForm = document.createElement('form');
-                            deleteForm.action = `/organisasi/${member.id}`;
-                            deleteForm.method = 'POST';
-                            deleteForm.style.display = 'inline';
+            const deleteForm = document.createElement('form');
+            deleteForm.action = `/organisasi/${member.id}`;
+            deleteForm.method = 'POST';
+            deleteForm.style.display = 'inline';
 
-                            const csrfInput = document.createElement('input');
-                            csrfInput.type = 'hidden';
-                            csrfInput.name = '_token';
-                            csrfInput.value = '{{ csrf_token() }}';
-                            deleteForm.appendChild(csrfInput);
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = '_token';
+            csrfInput.value = '{{ csrf_token() }}';
+            deleteForm.appendChild(csrfInput);
 
-                            const methodInput = document.createElement('input');
-                            methodInput.type = 'hidden';
-                            methodInput.name = '_method';
-                            methodInput.value = 'DELETE';
-                            deleteForm.appendChild(methodInput);
+            const methodInput = document.createElement('input');
+            methodInput.type = 'hidden';
+            methodInput.name = '_method';
+            methodInput.value = 'DELETE';
+            deleteForm.appendChild(methodInput);
 
-                            const deleteButton = document.createElement('button');
-                            deleteButton.type = 'submit';
-                            deleteButton.className = 'btn btn-danger';
-                            deleteButton.textContent = 'Hapus';
-                            deleteButton.onclick = function() {
-                                return confirm('Yakin ingin menghapus anggota ini?');
-                            };
-                            deleteForm.appendChild(deleteButton);
+            const deleteButton = document.createElement('button');
+            deleteButton.type = 'submit';
+            deleteButton.className = 'btn btn-danger';
+            deleteButton.textContent = 'Hapus';
+            deleteButton.onclick = function() {
+                return confirm('Yakin ingin menghapus anggota ini?');
+            };
+            deleteForm.appendChild(deleteButton);
 
-                            crudDiv.appendChild(deleteForm);
-                            card.appendChild(crudDiv);
-                        @endif
-                    @endauth
+            crudDiv.appendChild(deleteForm);
+            card.appendChild(crudDiv);
+        @endif
+    @endauth
 
-                    memberList.appendChild(card);
-                });
+    memberList.appendChild(card);
+    });
+}
         }
 
         prevBtn.addEventListener('click', () => {
