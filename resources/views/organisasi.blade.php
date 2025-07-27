@@ -253,14 +253,6 @@
                                 <div class="crud-buttons">
                                     <a href="{{ route('organisasi.edit', ['organisasi' => $anggota->id]) }}"
                                         class="btn btn-warning">Edit</a>
-                                    <form action="{{ route('organisasi.destroy', $anggota->id) }}" method="POST"
-                                        class="d-inline delete-form" data-nama="{{ $anggota->nama }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
                                 </div>
                             @endif
                         @endauth
@@ -307,6 +299,23 @@
             const memberList = document.getElementById('member-list');
             const prevBtn = document.getElementById('org-prev');
             const nextBtn = document.getElementById('org-next');
+
+            function confirmDelete(button) {
+                Swal.fire({
+                    title: 'Yakin ingin menghapus anggota organisasi?',
+                    text: "Tindakan ini tidak bisa dibatalkan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        button.closest('form').submit();
+                    }
+                });
+            }
 
             function renderOrg(index) {
                 const instansi = instansiKeys[index];
@@ -377,23 +386,12 @@
                             deleteButton.type = 'button'; // Jangan 'submit'
                             deleteButton.className = 'btn btn-danger';
                             deleteButton.textContent = 'Hapus';
+                            deleteButton.setAttribute('aria-label', 'Hapus anggota');
+                            deleteButton.setAttribute('title', 'Hapus anggota');
 
-                            deleteButton.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                Swal.fire({
-                                    title: 'Yakin ingin menghapus anggota ini?',
-                                    text: "Tindakan ini tidak dapat dibatalkan!",
-                                    icon: 'warning',
-                                    showCancelButton: true,
-                                    confirmButtonColor: '#d33',
-                                    cancelButtonColor: '#3085d6',
-                                    confirmButtonText: 'Ya, hapus!',
-                                    cancelButtonText: 'Batal'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        deleteForm.submit();
-                                    }
-                                });
+                            deleteButton.addEventListener('click', function(event) {
+                                event.preventDefault();
+                                confirmDelete(deleteButton);
                             });
 
                             deleteForm.appendChild(deleteButton);
