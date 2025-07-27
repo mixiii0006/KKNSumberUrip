@@ -471,84 +471,215 @@
 
         @if (count($instansiKeys) > 0)
             <!-- Bagian Instansi -->
-<div class="org-top" style="display: flex; align-items: center; justify-content: center; padding: 40px 0;">
+<div class="org-top" style="position: relative; display: flex; align-items: center; justify-content: center; padding: 40px 0;">
 
-    <!-- Card Utama -->
-    <div class="org-description-wrapper"
-        style="position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; background-color: white; border-radius: 12px; padding: 20px 60px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 1000px; width: 90%; gap: 20px;">
+  <!-- Card Utama -->
+  <div class="org-description-wrapper" style="width: 100%;">
 
-        <!-- Tombol Panah Kiri -->
-        <button class="org-nav-button org-nav-prev" id="org-prev"
-            style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); border: 1px solid #4CAF50; font-weight: bold; font-size: 1.5rem; color: #4CAF50; border-radius: 5px; width: 40px; height: 40px; background-color: white;">
-            &#10094;
-        </button>
-
-        <!-- Logo Instansi -->
-        <div class="org-logo-container" id="org-logo"
-            style="width: 300px; height: 300px; border-radius: 12px; overflow: hidden; flex-shrink: 0;">
-            <img id="instansi-photo" src="" alt=""
-                style="width: 100%; height: 100%; object-fit: cover; display: none;" />
-            <div id="instansi-photo-placeholder"
-                style="display: flex; justify-content: center; align-items: center; height: 100%; font-size: 2rem; color: white; font-weight: bold; background: linear-gradient(135deg, #2e7d32, #81c784);">
-            </div>
-        </div>
-
-        <!-- Deskripsi -->
-        <div style="flex: 1; text-align: justify; min-width: 250px;">
-            <h2 id="instansi-name" style="font-weight: bold; font-size: 1.2rem; text-align: center;">
-                <span style="color: green;">●</span>
-                <span style="margin-left: 5px;">Nama Instansi</span>
-            </h2>
-            <div id="instansi-description" style="margin-top: 10px;">
-                Deskripsi singkat instansi.
-            </div>
-
-            @auth
-                @if (auth()->user()->is_admin)
-                    <div style="margin-top: 15px; text-align: right;">
-                        <a href="#" id="instansi-edit-btn" class="btn btn-warning">Edit</a>
-                    </div>
-                @endif
-            @endauth
-        </div>
-
-        <!-- Tombol Panah Kanan -->
-        <button class="org-nav-button org-nav-next" id="org-next"
-            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: 1px solid #4CAF50; font-weight: bold; font-size: 1.5rem; color: #4CAF50; border-radius: 5px; width: 40px; height: 40px; background-color: white;">
-            &#10095;
-        </button>
+    <!-- Logo Instansi -->
+    <div class="org-logo-container" id="org-logo">
+      <img id="instansi-photo" src="" alt="Logo Instansi" />
+      <div id="instansi-photo-placeholder">Logo Instansi</div>
     </div>
+
+    <!-- Deskripsi -->
+    <div class="org-text">
+      <h2 id="instansi-name">
+        <span style="color: green;">●</span>
+        <span style="margin-left: 5px;">Nama Instansi</span>
+      </h2>
+      <div id="instansi-description">
+        Deskripsi singkat instansi.
+      </div>
+      <!-- Tombol Panah Kiri -->
+  <button class="org-nav-button org-nav-prev" id="org-prev">&#10094;</button>
+  <!-- Tombol Panah Kanan -->
+  <button class="org-nav-button org-nav-next" id="org-next">&#10095;</button>
+
+      @auth
+        @if (auth()->user()->is_admin)
+          <div class="org-edit">
+            <a href="#" id="instansi-edit-btn" class="btn btn-warning">Edit</a>
+          </div>
+        @endif
+      @endauth
+    </div>
+  </div>
 </div>
 
-<!-- RESPONSIVE STYLE -->
+<!-- Gaya CSS -->
 <style>
-    @media (max-width: 768px) {
-        .org-description-wrapper {
-            flex-direction: column;
-            text-align: center !important;
-        }
-        .org-description-wrapper > div:last-child {
-            text-align: justify !important;
-        }
+#org-prev, #org-next {
+    position: center;
+}
+  .org-description-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px 60px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    width: 90%;
+    gap: 20px;
+    box-sizing: border-box;
+  }
+
+  .org-logo-container {
+    width: 300px;
+    height: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .org-logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+  }
+
+  #instansi-photo-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 2rem;
+    color: white;
+    font-weight: bold;
+    background: linear-gradient(135deg, #2e7d32, #81c784);
+  }
+
+  .org-text {
+    flex: 1;
+    min-width: 250px;
+    text-align: justify;
+  }
+
+  .org-text h2 {
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .org-edit {
+    margin-top: 15px;
+    text-align: right;
+  }
+
+  .org-nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 1px solid #4CAF50;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #4CAF50;
+    border-radius: 5px;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    z-index: 2;
+  }
+
+  .org-nav-prev {
+    left: 10px;
+  }
+
+  .org-nav-next {
+    right: 10px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .org-description-wrapper {
+      flex-direction: column;
+      padding: 20px;
     }
+
+    .org-logo-container {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+    }
+
+    .org-nav-button {
+      position: relative !important;
+      transform: none !important;
+      top: auto !important;
+      left: auto !important;
+      right: auto !important;
+      margin: 10px 5px 0 5px;
+    }
+    
+    .org-description-wrapper {
+      text-align: center;
+    }
+
+    .org-text {
+      text-align: justify;
+      width: 100%;
+    }
+  }
 </style>
 
-
             <!-- Bagian Anggota -->
-            <div class="anggota-section" style="position: relative; margin-top: 60px;">
-                <div class="anggota-title">Anggota</div>
-                <button class="org-nav-button org-nav-prev" id="member-prev"
-                    style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 10; border: 1px solid #4CAF50; font-weight: bold; font-size: 1.5rem; color: #4CAF50; border-radius: 5px; width: 40px; height: 40px;">
-                    &#10094;
-                </button>
-                <div class="member-list" id="member-list" style="scroll-behavior: smooth; margin: 0 40px;">
-                    <!-- Member cards will be rendered dynamically -->
-                </div>
-                <button class="org-nav-button org-nav-next" id="member-next"
-                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10; border: 1px solid #4CAF50; font-weight: bold; font-size: 1.5rem; color: #4CAF50; border-radius: 5px; width: 40px; height: 40px;">
-                    &#10095;
-                </button>
-            </div>
+<div class="anggota-section" style="padding-bottom: 20px;">
+  <div class="anggota-title" style="font-weight: bold; font-size: 1.5rem;">Anggota</div>
+
+  <!-- Wrapper Flex untuk tombol dan daftar anggota -->
+  <div class="anggota-wrapper" style="position: relative; display: flex; align-items: center;">
+    
+    <!-- Tombol Panah Kiri -->
+    <button
+      id="member-prev"
+      style="
+        position: absolute;
+        top: 50%;
+        left: -20px;
+        transform: translateY(-50%);
+        border: 2px solid green;
+        background: white;
+        padding: 5px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        z-index: 10;
+      "
+    >
+      &#10094;
+    </button>
+
+    <!-- Daftar Member -->
+    <div id="member-list" style="display: flex; overflow-x: auto; gap: 16px; padding-left: 40px; padding-right: 40px; padding-top: 10px; padding-bottom: 20px;">
+      <!-- Member cards will be rendered dynamically -->
+    </div>
+
+    <!-- Tombol Panah Kanan -->
+    <button
+      id="member-next"
+      style="
+        position: absolute;
+        top: 50%;
+        right: -20px;
+        transform: translateY(-50%);
+        border: 2px solid green;
+        background: white;
+        padding: 5px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        z-index: 10;
+      "
+    >
+      &#10095;
+    </button>
+  </div>
+</div>
+
 
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
