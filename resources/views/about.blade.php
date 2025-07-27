@@ -52,7 +52,6 @@
         }
         p {
             font-size: 1rem;
-            color: #555;
             line-height: 1.6;
         }
         /* SDA Cards */

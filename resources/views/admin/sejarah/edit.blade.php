@@ -134,4 +134,17 @@
             <a href="{{ route('sejarah.public') }}" class="btn-cancel">Batal</a>
         </form>
     </div>
+
+    @if(session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: 'Sejarah berhasil diperbarui',
+                confirmButtonText: 'OK'
+            });
+        });
+    </script>
+    @endif
 </x-guest-layout>
