@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrganisasiController;
 use App\Http\Controllers\InstansiController;
 use App\Http\Controllers\ArtikelController;
-use App\Http\Controllers\CKEditorController;    
+use App\Http\Controllers\CKEditorController;   
+use \App\Http\Controllers\Auth\RegisteredUserController;
 
 use App\Models\Artikel;
 
@@ -31,16 +32,22 @@ Route::get('/artikels/{slug}', [ArtikelController::class, 'show'])->name('artike
 Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
 
 
+
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->group(function () {
+ 
+    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+    Route::post('/register', [RegisteredUserController::class, 'store']);
+    Route::delete('/admin/{id}', [RegisteredUserController::class, 'destroy'])->name('admin.destroy');
+    // Route::delete('/register/{id}', [RegisteredUserController::class, 'destroy'])->name('register.destroy');
 
     Route::resource('organisasi', OrganisasiController::class)->except(['index']);
-
     Route::resource('sejarah', SejarahController::class)->except(['show', 'index']);
-
     Route::resource('instansi', InstansiController::class);
 
     // Removed 'create' and 'store' from resource route to define explicitly with middleware above
     Route::resource('artikels', ArtikelController::class)->except(['index', 'show', 'create', 'store']);
+
+
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

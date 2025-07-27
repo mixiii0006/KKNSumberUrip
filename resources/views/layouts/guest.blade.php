@@ -50,7 +50,7 @@
         <div class="container-fluid px-4 d-flex justify-content-between align-items-center">
             <!-- Logo dan Judul -->
             <a href="/" class="navbar-brand d-flex align-items-center m-0">
-                <img src="{{ asset('assets/img/about.jpg') }}" alt="Logo"
+                <img src="{{ asset('assets/img/sumberurip.png') }}" alt="Logo"
                     style="width: 50px; height: 50px; margin-right: 10px; border-radius: 50%; object-fit: cover;">
                 <h1 class="m-0 text-white" style="font-size: 1.75rem;">
                     Desa Wisata Sumber Urip
@@ -80,6 +80,25 @@
                         <a href="/organisasi" class="nav-link">Organisasi</a>
                     </li>
                     @auth
+                        @if (auth()->user()->is_admin)
+                            <li class="nav-item">
+                                <a href="{{ route('register') }}" class="nav-link">Tambah Admin</a>
+                            </li>
+                        @endif
+
+                        <li class="nav-item">
+                            <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                                @csrf
+                                <button type="submit" class="nav-link btn" style="text-decoration: none;">Logout</button>
+                            </form>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a href="{{ route('login') }}" class="nav-link">Login</a>
+                        </li>
+                    @endauth
+
+                    {{-- @auth
                         <li class="nav-item">
                             <form method="POST" action="{{ route('logout') }}" class="d-inline">
                                 @csrf
@@ -93,7 +112,7 @@
                         <li class="nav-item">
                             <a href="{{ route('register') }}" class="nav-link">Register</a>
                         </li>
-                    @endauth
+                    @endauth --}}
                 </ul>
             </div>
         </div>
