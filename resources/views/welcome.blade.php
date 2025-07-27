@@ -457,13 +457,13 @@
                                     <div class="d-flex justify-content-end gap-2">
                                         <a href="{{ route('artikels.edit', $artikel->id) }}"
                                             class="btn btn-sm btn-warning">Edit</a>
-                                        <form action="{{ route('artikels.destroy', $artikel->id) }}" method="POST"
+                                        {{-- <form action="{{ route('artikels.destroy', $artikel->id) }}" method="POST"
                                             onsubmit="return confirm('Yakin ingin menghapus artikel ini?');"
                                             class="m-0">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
-                                        </form>
+                                        </form> --}}
                                     </div>
                                 @endif
                             </div>

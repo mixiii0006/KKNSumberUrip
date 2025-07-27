@@ -18,24 +18,24 @@ class OrganisasiController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-{
-    $organisasi = Organisasi::with('instansi')->get()->groupBy('instansi_id');
-    $instansis = \App\Models\Instansi::all()->keyBy('id');
+    {
+        $organisasi = Organisasi::with('instansi')->get()->groupBy('instansi_id');
+        $instansis = \App\Models\Instansi::all()->keyBy('id');
 
-    // Pastikan setiap instansi memiliki entry meskipun tidak punya anggota
-    foreach ($instansis as $id => $instansi) {
-        if (!isset($organisasi[$id])) {
-            $organisasi[$id] = collect(); // atau [] kalau kamu pakai json langsung
+        // Pastikan setiap instansi memiliki entry meskipun tidak punya anggota
+        foreach ($instansis as $id => $instansi) {
+            if (!isset($organisasi[$id])) {
+                $organisasi[$id] = collect(); // atau [] kalau kamu pakai json langsung
+            }
         }
+
+        return view('organisasi_updated', [
+            'organisasiGrouped' => $organisasi,
+            'instansis' => $instansis
+        ]);
     }
 
-    return view('organisasi_updated', [
-        'organisasiGrouped' => $organisasi,
-        'instansis' => $instansis
-    ]);
-}
 
-    
     // public function index()
     // {
     //     $organisasi = Organisasi::with('instansi')->get()->groupBy('instansi_id');
@@ -57,23 +57,28 @@ class OrganisasiController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'instansi_id' => 'required|exists:instansis,id',
-            'jabatan' => 'required|string|max:255',
-            'nip' => 'nullable|string|max:255',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+        try {
+            $validated = $request->validate([
+                'nama' => 'required|string|max:255',
+                'instansi_id' => 'required|exists:instansis,id',
+                'jabatan' => 'required|string|max:255',
+                'nip' => 'nullable|string|max:255',
+                'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
 
-        if ($request->hasFile('photo')) {
-            $path = $request->file('photo')->store('organisasi_photos', 'public');
-            $validated['photo'] = $path;
+            if ($request->hasFile('photo')) {
+                $path = $request->file('photo')->store('organisasi_photos', 'public');
+                $validated['photo'] = $path;
+            }
+
+            Organisasi::create($validated);
+
+            return redirect()->route('organisasi.index')->with('success', 'Anggota berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan anggota.')->withInput();
         }
-
-        Organisasi::create($validated);
-
-        return redirect()->route('organisasi.index')->with('success', 'Anggota berhasil ditambahkan.');
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -88,38 +93,46 @@ class OrganisasiController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Organisasi $organisasi)
-{
-    $validated = $request->validate([
-        'nama' => 'required|string|max:255',
-        'instansi_id' => 'required|exists:instansis,id',
-        'jabatan' => 'required|string|max:255',
-        'nip' => 'nullable|string|max:255',
-        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    ]);
+    {
+        try {
+            $validated = $request->validate([
+                'nama' => 'required|string|max:255',
+                'instansi_id' => 'required|exists:instansis,id',
+                'jabatan' => 'required|string|max:255',
+                'nip' => 'nullable|string|max:255',
+                'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
 
-    if ($request->hasFile('photo')) {
-        // Hapus file lama jika ada
-        if ($organisasi->photo && \Storage::disk('public')->exists($organisasi->photo)) {
-            \Storage::disk('public')->delete($organisasi->photo);
+            if ($request->hasFile('photo')) {
+                if ($organisasi->photo && \Storage::disk('public')->exists($organisasi->photo)) {
+                    \Storage::disk('public')->delete($organisasi->photo);
+                }
+
+                $path = $request->file('photo')->store('organisasi_photos', 'public');
+                $validated['photo'] = $path;
+            }
+
+            $organisasi->update($validated);
+
+            return redirect()->route('organisasi.index')->with('success', 'Anggota berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui anggota.')->withInput();
         }
-
-        $path = $request->file('photo')->store('organisasi_photos', 'public');
-        $validated['photo'] = $path;
     }
 
-    $organisasi->update($validated);
-
-    return redirect()->route('organisasi.index')->with('success', 'Anggota berhasil diperbarui.');
-}
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Organisasi $organisasi)
+    public function destroy($id)
     {
-        $organisasi->delete();
-
-        return redirect()->route('organisasi.index')->with('success', 'Anggota berhasil dihapus.');
+        try {
+            $organisasi = Organisasi::findOrFail($id);
+            $organisasi->delete();
+            return redirect()->back()->with('success', 'Data organisasi berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menghapus data organisasi.');
+        }
     }
 }

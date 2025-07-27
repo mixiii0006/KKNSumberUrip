@@ -2,7 +2,8 @@
     <div class="max-w-4xl mx-auto py-10 sm:px-6 lg:px-8">
         <h2 class="text-2xl font-semibold text-center mb-6">Tambah Instansi Baru</h2>
 
-        <form method="POST" action="{{ route('instansi.store') }}" enctype="multipart/form-data" class="bg-white p-6 rounded shadow-md">
+        <form method="POST" action="{{ route('instansi.store') }}" enctype="multipart/form-data"
+            class="bg-white p-6 rounded shadow-md">
             @csrf
 
             <!-- Nama Instansi -->
@@ -46,4 +47,29 @@
             </div>
         </form>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: @json(session('success')),
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan!',
+                text: @json(session('error')),
+                showConfirmButton: true
+            });
+        </script>
+    @endif
+
 </x-guest-layout>

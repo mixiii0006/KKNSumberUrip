@@ -144,5 +144,29 @@
                 <button type="submit" class="btn-submit">Update</button>
             </div>
         </form>
+
+        {{-- SweetAlert --}}
+        @if (session('success'))
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: "{{ session('success') }}",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            </script>
+        @elseif (session('error'))
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: "{{ session('error') }}",
+                    showConfirmButton: true
+                });
+            </script>
+        @endif
     </div>
 </x-guest-layout>

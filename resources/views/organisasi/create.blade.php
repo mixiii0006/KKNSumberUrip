@@ -7,7 +7,8 @@
 
                 <div class="mb-4">
                     <label for="nama" class="block font-medium text-sm text-gray-700">Nama</label>
-                    <input id="nama" name="nama" type="text" value="{{ old('nama') }}" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
+                    <input id="nama" name="nama" type="text" value="{{ old('nama') }}" required
+                        class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
                     @error('nama')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -15,10 +16,12 @@
 
                 <div class="mb-4">
                     <label for="instansi_id" class="block font-medium text-sm text-gray-700">Instansi</label>
-                    <select id="instansi_id" name="instansi_id" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
+                    <select id="instansi_id" name="instansi_id" required
+                        class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">
                         <option value="">-- Pilih Instansi --</option>
                         @foreach ($instansis as $instansi)
-                            <option value="{{ $instansi->id }}" {{ old('instansi_id') == $instansi->id ? 'selected' : '' }}>
+                            <option value="{{ $instansi->id }}"
+                                {{ old('instansi_id') == $instansi->id ? 'selected' : '' }}>
                                 {{ $instansi->name }}
                             </option>
                         @endforeach
@@ -30,7 +33,8 @@
 
                 <div class="mb-4">
                     <label for="jabatan" class="block font-medium text-sm text-gray-700">Jabatan</label>
-                    <input id="jabatan" name="jabatan" type="text" value="{{ old('jabatan') }}" required class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
+                    <input id="jabatan" name="jabatan" type="text" value="{{ old('jabatan') }}" required
+                        class="block mt-1 w-full border-gray-300 rounded-md shadow-sm" />
                     @error('jabatan')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
@@ -58,4 +62,28 @@
             </form>
         </div>
     </div>
+
+    {{-- SweetAlert --}}
+    @if (session('success'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: "{{ session('success') }}",
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    @elseif (session('error'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: "{{ session('error') }}",
+                showConfirmButton: true
+            });
+        </script>
+    @endif
 </x-guest-layout>

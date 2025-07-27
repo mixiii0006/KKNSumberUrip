@@ -253,12 +253,13 @@
                                 <div class="crud-buttons">
                                     <a href="{{ route('organisasi.edit', ['organisasi' => $anggota->id]) }}"
                                         class="btn btn-warning">Edit</a>
-                                    <form action="{{ route('organisasi.destroy', ['organisasi' => $anggota->id]) }}"
-                                        method="POST" style="display:inline;">
+                                    <form action="{{ route('organisasi.destroy', $anggota->id) }}" method="POST"
+                                        class="d-inline delete-form" data-nama="{{ $anggota->nama }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger"
-                                            onclick="return confirm('Yakin ingin menghapus anggota ini?')">Hapus</button>
+                                        <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </form>
                                 </div>
                             @endif
@@ -270,6 +271,31 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: @json(session('success')),
+                showConfirmButton: false,
+                timer: 2000
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: @json(session('error')),
+                showConfirmButton: true
+            });
+        </script>
+    @endif
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -300,7 +326,7 @@
                     memberList.innerHTML = '<div class="text-muted">Belum ada anggota untuk instansi ini.</div>';
                     return;
                 }
-                
+
                 anggota[instansi].forEach(member => {
                         const card = document.createElement('div');
                         card.className = 'member-card';
@@ -348,12 +374,28 @@
                             deleteForm.appendChild(methodInput);
 
                             const deleteButton = document.createElement('button');
-                            deleteButton.type = 'submit';
+                            deleteButton.type = 'button'; // Jangan 'submit'
                             deleteButton.className = 'btn btn-danger';
                             deleteButton.textContent = 'Hapus';
-                            deleteButton.onclick = function() {
-                                return confirm('Yakin ingin menghapus anggota ini?');
-                            };
+
+                            deleteButton.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                Swal.fire({
+                                    title: 'Yakin ingin menghapus anggota ini?',
+                                    text: "Tindakan ini tidak dapat dibatalkan!",
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#d33',
+                                    cancelButtonColor: '#3085d6',
+                                    confirmButtonText: 'Ya, hapus!',
+                                    cancelButtonText: 'Batal'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        deleteForm.submit();
+                                    }
+                                });
+                            });
+
                             deleteForm.appendChild(deleteButton);
 
                             crudDiv.appendChild(deleteForm);

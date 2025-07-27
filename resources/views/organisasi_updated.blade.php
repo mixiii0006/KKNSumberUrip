@@ -336,12 +336,12 @@
 
         @auth
             @if (Auth::user()->is_admin)
-            <div class="org-top d-flex justify-content-end">
-                <div>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahOrganisasiModal">+
-                        Tambah Instansi</button>
+                <div class="org-top d-flex justify-content-end">
+                    <div>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahOrganisasiModal">+
+                            Tambah Instansi</button>
+                    </div>
                 </div>
-            </div>
                 <div class="form-wrapper">
 
                     <!-- Modal Tambah Instansi -->
@@ -441,7 +441,7 @@
                                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
-{{-- 
+                            {{-- 
                             <div class="mb-4">
                                 <label for="nip">NIP</label>
                                 <input id="nip" name="nip" type="text" value="{{ old('nip') }}">
@@ -611,12 +611,28 @@
                                             deleteForm.appendChild(methodInput);
 
                                             const deleteButton = document.createElement('button');
-                                            deleteButton.type = 'submit';
+                                            deleteButton.type = 'button'; // Jangan 'submit'
                                             deleteButton.className = 'btn btn-danger';
                                             deleteButton.textContent = 'Hapus';
-                                            deleteButton.onclick = function() {
-                                                return confirm('Yakin ingin menghapus anggota ini?');
-                                            };
+
+                                            deleteButton.addEventListener('click', function(e) {
+                                                e.preventDefault();
+                                                Swal.fire({
+                                                    title: 'Yakin ingin menghapus anggota ini?',
+                                                    text: "Tindakan ini tidak dapat dibatalkan!",
+                                                    icon: 'warning',
+                                                    showCancelButton: true,
+                                                    confirmButtonColor: '#d33',
+                                                    cancelButtonColor: '#3085d6',
+                                                    confirmButtonText: 'Ya, hapus!',
+                                                    cancelButtonText: 'Batal'
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        deleteForm.submit();
+                                                    }
+                                                });
+                                            });
+
                                             deleteForm.appendChild(deleteButton);
 
                                             crudDiv.appendChild(deleteForm);
@@ -684,6 +700,29 @@
 
     </div>
 
+    @if (session('success') || session('error'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: @json(session('success')),
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            @endif
+            @if (session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: @json(session('error')),
+                    showConfirmButton: true
+                });
+            @endif
+        </script>
+    @endif
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const instansiKeys = @json($instansiKeys);
@@ -728,84 +767,84 @@
                     instansiPhotoPlaceholder.textContent = instansi.name.charAt(0).toUpperCase();
                 }
 
-const anggotaSection = document.querySelector('.anggota-section');
+                const anggotaSection = document.querySelector('.anggota-section');
 
-// Clear member list
-memberList.innerHTML = '';
+                // Clear member list
+                memberList.innerHTML = '';
 
-if (!anggota[instansiId] || anggota[instansiId].length === 0) {
-    anggotaSection.style.display = 'none';
-} else {
-    anggotaSection.style.display = 'block';
-    anggota[instansiId].forEach(member => {
-        const card = document.createElement('div');
-        card.className = 'member-card';
+                if (!anggota[instansiId] || anggota[instansiId].length === 0) {
+                    anggotaSection.style.display = 'none';
+                } else {
+                    anggotaSection.style.display = 'block';
+                    anggota[instansiId].forEach(member => {
+                            const card = document.createElement('div');
+                            card.className = 'member-card';
 
-        const photo = document.createElement('img');
-        photo.className = 'member-photo';
-        photo.alt = member.nama;
-        if (member.photo) {
-            photo.src = `/storage/${member.photo}`;
-        } else {
-            photo.src = 'https://via.placeholder.com/140x110?text=No+Photo';
-        }
-        card.appendChild(photo);
+                            const photo = document.createElement('img');
+                            photo.className = 'member-photo';
+                            photo.alt = member.nama;
+                            if (member.photo) {
+                                photo.src = `/storage/${member.photo}`;
+                            } else {
+                                photo.src = 'https://via.placeholder.com/140x110?text=No+Photo';
+                            }
+                            card.appendChild(photo);
 
-        const name = document.createElement('div');
-        name.className = 'member-name';
-        name.textContent = member.nama;
-        card.appendChild(name);
+                            const name = document.createElement('div');
+                            name.className = 'member-name';
+                            name.textContent = member.nama;
+                            card.appendChild(name);
 
-        const desc = document.createElement('div');
-        desc.className = 'member-desc';
-        desc.innerHTML = `Jabatan: ${member.jabatan}<br>NIP: ${member.nip || '-'}`;
-        card.appendChild(desc);
+                            const desc = document.createElement('div');
+                            desc.className = 'member-desc';
+                            desc.innerHTML = `Jabatan: ${member.jabatan}<br>NIP: ${member.nip || '-'}`;
+                            card.appendChild(desc);
 
-        @auth
-        @if (auth()->user()->is_admin)
-            const crudDiv = document.createElement('div');
-            crudDiv.className = 'crud-buttons';
+                            @auth
+                            @if (auth()->user()->is_admin)
+                                const crudDiv = document.createElement('div');
+                                crudDiv.className = 'crud-buttons';
 
-            const editLink = document.createElement('a');
-            editLink.href = `/organisasi/${member.id}/edit`;
-            editLink.className = 'btn btn-warning';
-            editLink.textContent = 'Edit';
-            crudDiv.appendChild(editLink);
+                                const editLink = document.createElement('a');
+                                editLink.href = `/organisasi/${member.id}/edit`;
+                                editLink.className = 'btn btn-warning';
+                                editLink.textContent = 'Edit';
+                                crudDiv.appendChild(editLink);
 
-            const deleteForm = document.createElement('form');
-            deleteForm.action = `/organisasi/${member.id}`;
-            deleteForm.method = 'POST';
-            deleteForm.style.display = 'inline';
+                                const deleteForm = document.createElement('form');
+                                deleteForm.action = `/organisasi/${member.id}`;
+                                deleteForm.method = 'POST';
+                                deleteForm.style.display = 'inline';
 
-            const csrfInput = document.createElement('input');
-            csrfInput.type = 'hidden';
-            csrfInput.name = '_token';
-            csrfInput.value = '{{ csrf_token() }}';
-            deleteForm.appendChild(csrfInput);
+                                const csrfInput = document.createElement('input');
+                                csrfInput.type = 'hidden';
+                                csrfInput.name = '_token';
+                                csrfInput.value = '{{ csrf_token() }}';
+                                deleteForm.appendChild(csrfInput);
 
-            const methodInput = document.createElement('input');
-            methodInput.type = 'hidden';
-            methodInput.name = '_method';
-            methodInput.value = 'DELETE';
-            deleteForm.appendChild(methodInput);
+                                const methodInput = document.createElement('input');
+                                methodInput.type = 'hidden';
+                                methodInput.name = '_method';
+                                methodInput.value = 'DELETE';
+                                deleteForm.appendChild(methodInput);
 
-            const deleteButton = document.createElement('button');
-            deleteButton.type = 'submit';
-            deleteButton.className = 'btn btn-danger';
-            deleteButton.textContent = 'Hapus';
-            deleteButton.onclick = function() {
-                return confirm('Yakin ingin menghapus anggota ini?');
-            };
-            deleteForm.appendChild(deleteButton);
+                                const deleteButton = document.createElement('button');
+                                deleteButton.type = 'submit';
+                                deleteButton.className = 'btn btn-danger';
+                                deleteButton.textContent = 'Hapus';
+                                deleteButton.onclick = function() {
+                                    return confirm('Yakin ingin menghapus anggota ini?');
+                                };
+                                deleteForm.appendChild(deleteButton);
 
-            crudDiv.appendChild(deleteForm);
-            card.appendChild(crudDiv);
-        @endif
-    @endauth
+                                crudDiv.appendChild(deleteForm);
+                                card.appendChild(crudDiv);
+                            @endif
+                        @endauth
 
-    memberList.appendChild(card);
-    });
-}
+                        memberList.appendChild(card);
+                    });
+            }
         }
 
         prevBtn.addEventListener('click', () => {
