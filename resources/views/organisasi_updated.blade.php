@@ -470,230 +470,269 @@
         @endauth
 
         @if (count($instansiKeys) > 0)
-            <div class="org-top"
-                style="position: relative; display: flex; align-items: center; justify-content: flex-start; gap: 20px;">
-                <button class="org-nav-button org-nav-prev" id="org-prev"
-                    style="border: 1px solid #4CAF50; color: #4CAF50; font-weight: bold; font-size: 1.5rem; width: 40px; height: 40px; border-radius: 5px; margin-right: 10px; z-index: 20; position: relative;">&#10094;</button>
-                <div class="org-description" id="org-description"
-                    style="flex: 1; position: relative; padding-left: 50px; padding-right: 50px;">
-                    <h2 id="instansi-name"></h2>
-                    <div id="instansi-description" style="margin-top: 10px;"></div>
-                    @auth
-                        <div id="instansi-admin-actions" style="margin-top: 10px;">
-                            @auth
-                                @if (auth()->user()->is_admin)
-                                    <a href="#" id="instansi-edit-btn" class="btn btn-warning mr-2">Edit</a>
-                                @endif
-                            @endauth
-                        </div>
-                    @endauth
-                </div>
+            <!-- Bagian Instansi -->
+<div class="org-top" style="display: flex; align-items: center; justify-content: center; padding: 40px 0;">
 
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        const instansiKeys = @json($instansiKeys);
-                        const instansiData = @json($instansiData);
-                        let currentIndex = 0;
+    <!-- Card Utama -->
+    <div class="org-description-wrapper"
+        style="position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; background-color: white; border-radius: 12px; padding: 20px 60px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 1000px; width: 90%; gap: 20px;">
 
-                        function renderOrg(index) {
-                            if (!instansiKeys || instansiKeys.length === 0) {
-                                // No instansi keys available, skip rendering
-                                return;
-                            }
-                            if (index < 0 || index >= instansiKeys.length) {
-                                // Index out of bounds, skip rendering
-                                return;
-                            }
-                            const instansiId = instansiKeys[index];
-                            const instansi = instansiData[instansiId];
-                            const anggota = @json($organisasiGrouped);
+        <!-- Tombol Panah Kiri -->
+        <button class="org-nav-button org-nav-prev" id="org-prev"
+            style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); border: 1px solid #4CAF50; font-weight: bold; font-size: 1.5rem; color: #4CAF50; border-radius: 5px; width: 40px; height: 40px; background-color: white;">
+            &#10094;
+        </button>
 
-                            if (!instansi || typeof instansi === 'undefined' || instansi === null) {
-                                // If instansi data is undefined or null, skip rendering
-                                console.warn('Instansi data undefined for index:', index, 'instansiId:', instansiId);
-                                // Try to find a valid instansi to render instead
-                                for (let i = 0; i < instansiKeys.length; i++) {
-                                    const altInstansi = instansiData[instansiKeys[i]];
-                                    if (altInstansi && altInstansi.name) {
-                                        currentIndex = i;
-                                        renderOrg(i);
-                                        updateEditLink(i);
-                                        return;
-                                    }
-                                }
-                                return;
-                            }
+        <!-- Logo Instansi -->
+        <div class="org-logo-container" id="org-logo"
+            style="width: 300px; height: 300px; border-radius: 12px; overflow: hidden; flex-shrink: 0;">
+            <img id="instansi-photo" src="" alt=""
+                style="width: 100%; height: 100%; object-fit: cover; display: none;" />
+            <div id="instansi-photo-placeholder"
+                style="display: flex; justify-content: center; align-items: center; height: 100%; font-size: 2rem; color: white; font-weight: bold; background: linear-gradient(135deg, #2e7d32, #81c784);">
+            </div>
+        </div>
 
-                            // Update instansi name and description
-                            document.getElementById('instansi-name').textContent = instansi.name;
-                            document.getElementById('instansi-description').textContent = instansi.description ||
-                                'Deskripsi tidak tersedia.';
-
-                            // Update instansi photo or placeholder
-                            const instansiPhotoElem = document.getElementById('instansi-photo');
-                            const instansiPhotoPlaceholder = document.getElementById('instansi-photo-placeholder');
-                            if (instansi.photo) {
-                                instansiPhotoElem.src = instansi.photo;
-                                instansiPhotoElem.style.display = 'block';
-                                instansiPhotoPlaceholder.style.display = 'none';
-                            } else {
-                                instansiPhotoElem.style.display = 'none';
-                                instansiPhotoPlaceholder.style.display = 'flex';
-                                instansiPhotoPlaceholder.textContent = instansi.name.charAt(0).toUpperCase();
-                            }
-
-                            // Clear member list
-                            const memberList = document.getElementById('member-list');
-                            memberList.innerHTML = '';
-
-                            // Add anggota cards
-                            const anggotaList = anggota[instansiId] || [];
-
-                            if (anggotaList.length === 0) {
-                                const emptyMsg = document.createElement('div');
-                                emptyMsg.className = 'text-muted';
-                                emptyMsg.textContent = 'Belum ada anggota untuk instansi ini.';
-                                memberList.appendChild(emptyMsg);
-                            } else {
-                                anggotaList.forEach(member => {
-                                        if (!member.nama) return;
-
-                                        const card = document.createElement('div');
-                                        card.className = 'member-card';
-
-                                        const photo = document.createElement('img');
-                                        photo.className = 'member-photo';
-                                        photo.alt = member.nama;
-                                        if (member.photo) {
-                                            photo.src = member.photo.startsWith('http') ? member.photo :
-                                                `/storage/${member.photo}`;
-                                        } else {
-                                            photo.src = 'https://via.placeholder.com/140x110?text=No+Photo';
-                                        }
-                                        card.appendChild(photo);
-
-                                        const name = document.createElement('div');
-                                        name.className = 'member-name';
-                                        name.textContent = member.nama;
-                                        card.appendChild(name);
-
-                                        const desc = document.createElement('div');
-                                        desc.className = 'member-desc';
-                                        desc.innerHTML = `Jabatan: ${member.jabatan}`;
-                                        card.appendChild(desc);
-
-                                        @auth
-                                        @if (auth()->user()->is_admin)
-                                            const crudDiv = document.createElement('div');
-                                            crudDiv.className = 'crud-buttons';
-
-                                            const editLink = document.createElement('a');
-                                            editLink.href = `/organisasi/${member.id}/edit`;
-                                            editLink.className = 'btn btn-warning';
-                                            editLink.textContent = 'Edit';
-                                            crudDiv.appendChild(editLink);
-
-                                            const deleteForm = document.createElement('form');
-                                            deleteForm.action = `/organisasi/${member.id}`;
-                                            deleteForm.method = 'POST';
-                                            deleteForm.style.display = 'inline';
-
-                                            const csrfInput = document.createElement('input');
-                                            csrfInput.type = 'hidden';
-                                            csrfInput.name = '_token';
-                                            csrfInput.value = '{{ csrf_token() }}';
-                                            deleteForm.appendChild(csrfInput);
-
-                                            const methodInput = document.createElement('input');
-                                            methodInput.type = 'hidden';
-                                            methodInput.name = '_method';
-                                            methodInput.value = 'DELETE';
-                                            deleteForm.appendChild(methodInput);
-
-                                            const deleteButton = document.createElement('button');
-                                            deleteButton.type = 'button'; // Jangan 'submit'
-                                            deleteButton.className = 'btn btn-danger';
-                                            deleteButton.textContent = 'Hapus';
-
-                                            deleteButton.addEventListener('click', function(e) {
-                                                e.preventDefault();
-                                                Swal.fire({
-                                                    title: 'Yakin ingin menghapus anggota ini?',
-                                                    text: "Tindakan ini tidak dapat dibatalkan!",
-                                                    icon: 'warning',
-                                                    showCancelButton: true,
-                                                    confirmButtonColor: '#d33',
-                                                    cancelButtonColor: '#3085d6',
-                                                    confirmButtonText: 'Ya, hapus!',
-                                                    cancelButtonText: 'Batal'
-                                                }).then((result) => {
-                                                    if (result.isConfirmed) {
-                                                        deleteForm.submit();
-                                                    }
-                                                });
-                                            });
-
-                                            deleteForm.appendChild(deleteButton);
-
-                                            crudDiv.appendChild(deleteForm);
-                                            card.appendChild(crudDiv);
-                                        @endif
-                                    @endauth
-
-                                    memberList.appendChild(card);
-                                });
-                        }
-
-                    }
-
-                    // Navigation buttons
-                    document.getElementById('org-prev').addEventListener('click', () => {
-                        currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
-                        renderOrg(currentIndex);
-                        updateEditLink(currentIndex);
-                    });
-
-                    document.getElementById('org-next').addEventListener('click', () => {
-                        currentIndex = (currentIndex + 1) % instansiKeys.length;
-                        renderOrg(currentIndex);
-                        updateEditLink(currentIndex);
-                    });
-
-                    // Update edit link
-                    const instansiEditBtn = document.getElementById('instansi-edit-btn');
-
-                    function updateEditLink(index) {
-                        if (instansiEditBtn) {
-                            instansiEditBtn.href = `/instansi/${instansiKeys[index]}/edit`;
-                        }
-                    }
-
-                    // Initial render
-                    renderOrg(currentIndex); updateEditLink(currentIndex);
-                    });
-                </script>
-                <div class="org-logo-container" id="org-logo"
-                    style="width: 300px; height: 300px; position: relative;">
-                    <img id="instansi-photo" src="" alt=""
-                        style="width: 100%; height: 100%; border-radius: 12px; object-fit: cover; display: none;" />
-                    <div id="instansi-photo-placeholder"
-                        style="color: white; font-weight: bold; font-size: 1.5rem; display: flex; justify-content: center; align-items: center; height: 100%; border-radius: 12px; background: linear-gradient(135deg, #2e7d32, #81c784);">
-                    </div>
-                </div>
-                <button class="org-nav-button org-nav-next" id="org-next"
-                    style="border: 1px solid #4CAF50; color: #4CAF50; font-weight: bold; font-size: 1.5rem; width: 40px; height: 40px; border-radius: 5px; margin-left: 10px; z-index: 20; position: relative;">&#10095;</button>
+        <!-- Deskripsi -->
+        <div style="flex: 1; text-align: justify; min-width: 250px;">
+            <h2 id="instansi-name" style="font-weight: bold; font-size: 1.2rem; text-align: center;">
+                <span style="color: green;">●</span>
+                <span style="margin-left: 5px;">Nama Instansi</span>
+            </h2>
+            <div id="instansi-description" style="margin-top: 10px;">
+                Deskripsi singkat instansi.
             </div>
 
-            <div class="anggota-section">
+            @auth
+                @if (auth()->user()->is_admin)
+                    <div style="margin-top: 15px; text-align: right;">
+                        <a href="#" id="instansi-edit-btn" class="btn btn-warning">Edit</a>
+                    </div>
+                @endif
+            @endauth
+        </div>
+
+        <!-- Tombol Panah Kanan -->
+        <button class="org-nav-button org-nav-next" id="org-next"
+            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: 1px solid #4CAF50; font-weight: bold; font-size: 1.5rem; color: #4CAF50; border-radius: 5px; width: 40px; height: 40px; background-color: white;">
+            &#10095;
+        </button>
+    </div>
+</div>
+
+<!-- RESPONSIVE STYLE -->
+<style>
+    @media (max-width: 768px) {
+        .org-description-wrapper {
+            flex-direction: column;
+            text-align: center !important;
+        }
+        .org-description-wrapper > div:last-child {
+            text-align: justify !important;
+        }
+    }
+</style>
+
+
+            <!-- Bagian Anggota -->
+            <div class="anggota-section" style="position: relative; margin-top: 60px;">
                 <div class="anggota-title">Anggota</div>
                 <button class="org-nav-button org-nav-prev" id="member-prev"
-                    style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 10;border: 1px solid #4CAF50;font-weight: bold; font-size: 1.5rem; color: #4CAF50;  border-radius: 5px; width: 40px; height: 40px; ">&#10094;</button>
+                    style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 10; border: 1px solid #4CAF50; font-weight: bold; font-size: 1.5rem; color: #4CAF50; border-radius: 5px; width: 40px; height: 40px;">
+                    &#10094;
+                </button>
                 <div class="member-list" id="member-list" style="scroll-behavior: smooth; margin: 0 40px;">
                     <!-- Member cards will be rendered dynamically -->
                 </div>
                 <button class="org-nav-button org-nav-next" id="member-next"
-                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10; border: 1px solid #4CAF50;font-weight: bold; font-size: 1.5rem; color: #4CAF50;  border-radius: 5px; width: 40px; height: 40px; ">&#10095;</button>
+                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10; border: 1px solid #4CAF50; font-weight: bold; font-size: 1.5rem; color: #4CAF50; border-radius: 5px; width: 40px; height: 40px;">
+                    &#10095;
+                </button>
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const instansiKeys = @json($instansiKeys);
+                    const instansiData = @json($instansiData);
+                    let currentIndex = 0;
+
+                    function renderOrg(index) {
+                        if (!instansiKeys || instansiKeys.length === 0) {
+                            // No instansi keys available, skip rendering
+                            return;
+                        }
+                        if (index < 0 || index >= instansiKeys.length) {
+                            // Index out of bounds, skip rendering
+                            return;
+                        }
+                        const instansiId = instansiKeys[index];
+                        const instansi = instansiData[instansiId];
+                        const anggota = @json($organisasiGrouped);
+
+                        if (!instansi || typeof instansi === 'undefined' || instansi === null) {
+                            // If instansi data is undefined or null, skip rendering
+                            console.warn('Instansi data undefined for index:', index, 'instansiId:', instansiId);
+                            // Try to find a valid instansi to render instead
+                            for (let i = 0; i < instansiKeys.length; i++) {
+                                const altInstansi = instansiData[instansiKeys[i]];
+                                if (altInstansi && altInstansi.name) {
+                                    currentIndex = i;
+                                    renderOrg(i);
+                                    updateEditLink(i);
+                                    return;
+                                }
+                            }
+                            return;
+                        }
+
+                        // Update instansi name and description
+                        document.getElementById('instansi-name').textContent = instansi.name;
+                        document.getElementById('instansi-description').textContent = instansi.description ||
+                            'Deskripsi tidak tersedia.';
+
+                        // Update instansi photo or placeholder
+                        const instansiPhotoElem = document.getElementById('instansi-photo');
+                        const instansiPhotoPlaceholder = document.getElementById('instansi-photo-placeholder');
+                        if (instansi.photo) {
+                            instansiPhotoElem.src = instansi.photo;
+                            instansiPhotoElem.style.display = 'block';
+                            instansiPhotoPlaceholder.style.display = 'none';
+                        } else {
+                            instansiPhotoElem.style.display = 'none';
+                            instansiPhotoPlaceholder.style.display = 'flex';
+                            instansiPhotoPlaceholder.textContent = instansi.name.charAt(0).toUpperCase();
+                        }
+
+                        // Clear member list
+                        const memberList = document.getElementById('member-list');
+                        memberList.innerHTML = '';
+
+                        // Add anggota cards
+                        const anggotaList = anggota[instansiId] || [];
+
+                        if (anggotaList.length === 0) {
+                            const emptyMsg = document.createElement('div');
+                            emptyMsg.className = 'text-muted';
+                            emptyMsg.textContent = 'Belum ada anggota untuk instansi ini.';
+                            memberList.appendChild(emptyMsg);
+                        } else {
+                            anggotaList.forEach(member => {
+                                    if (!member.nama) return;
+
+                                    const card = document.createElement('div');
+                                    card.className = 'member-card';
+
+                                    const photo = document.createElement('img');
+                                    photo.className = 'member-photo';
+                                    photo.alt = member.nama;
+                                    if (member.photo) {
+                                        photo.src = member.photo.startsWith('http') ? member.photo :
+                                            /storage/${member.photo};
+                                    } else {
+                                        photo.src = 'https://via.placeholder.com/140x110?text=No+Photo';
+                                    }
+                                    card.appendChild(photo);
+
+                                    const name = document.createElement('div');
+                                    name.className = 'member-name';
+                                    name.textContent = member.nama;
+                                    card.appendChild(name);
+
+                                    const desc = document.createElement('div');
+                                    desc.className = 'member-desc';
+                                    desc.innerHTML = Jabatan: ${member.jabatan};
+                                    card.appendChild(desc);
+
+                                    @auth
+                                    @if (auth()->user()->is_admin)
+                                        const crudDiv = document.createElement('div');
+                                        crudDiv.className = 'crud-buttons';
+
+                                        const editLink = document.createElement('a');
+                                        editLink.href = /organisasi/${member.id}/edit;
+                                        editLink.className = 'btn btn-warning';
+                                        editLink.textContent = 'Edit';
+                                        crudDiv.appendChild(editLink);
+
+                                        const deleteForm = document.createElement('form');
+                                        deleteForm.action = /organisasi/${member.id};
+                                        deleteForm.method = 'POST';
+                                        deleteForm.style.display = 'inline';
+
+                                        const csrfInput = document.createElement('input');
+                                        csrfInput.type = 'hidden';
+                                        csrfInput.name = '_token';
+                                        csrfInput.value = '{{ csrf_token() }}';
+                                        deleteForm.appendChild(csrfInput);
+
+                                        const methodInput = document.createElement('input');
+                                        methodInput.type = 'hidden';
+                                        methodInput.name = '_method';
+                                        methodInput.value = 'DELETE';
+                                        deleteForm.appendChild(methodInput);
+
+                                        const deleteButton = document.createElement('button');
+                                        deleteButton.type = 'button'; // Jangan 'submit'
+                                        deleteButton.className = 'btn btn-danger';
+                                        deleteButton.textContent = 'Hapus';
+
+                                        deleteButton.addEventListener('click', function(e) {
+                                            e.preventDefault();
+                                            Swal.fire({
+                                                title: 'Yakin ingin menghapus anggota ini?',
+                                                text: "Tindakan ini tidak dapat dibatalkan!",
+                                                icon: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonColor: '#d33',
+                                                cancelButtonColor: '#3085d6',
+                                                confirmButtonText: 'Ya, hapus!',
+                                                cancelButtonText: 'Batal'
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    deleteForm.submit();
+                                                }
+                                            });
+                                        });
+
+                                        deleteForm.appendChild(deleteButton);
+
+                                        crudDiv.appendChild(deleteForm);
+                                        card.appendChild(crudDiv);
+                                    @endif
+                                @endauth
+
+                                memberList.appendChild(card);
+                            });
+                    }
+
+                }
+
+                // Navigation buttons
+                document.getElementById('org-prev').addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + instansiKeys.length) % instansiKeys.length;
+                    renderOrg(currentIndex);
+                    updateEditLink(currentIndex);
+                });
+
+                document.getElementById('org-next').addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % instansiKeys.length;
+                    renderOrg(currentIndex);
+                    updateEditLink(currentIndex);
+                });
+
+                // Update edit link
+                const instansiEditBtn = document.getElementById('instansi-edit-btn');
+
+                function updateEditLink(index) {
+                    if (instansiEditBtn) {
+                        instansiEditBtn.href = /instansi/${instansiKeys[index]}/edit;
+                    }
+                }
+
+                // Initial render
+                renderOrg(currentIndex); updateEditLink(currentIndex);
+                });
+            </script>
         @else
             <p>Tidak ada data organisasi yang tersedia.</p>
         @endif
