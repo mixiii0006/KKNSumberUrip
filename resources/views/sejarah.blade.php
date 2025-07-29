@@ -203,10 +203,10 @@
     @if(session('success'))
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            Swal.fire({ma
+            Swal.fire({
                 icon: 'success',
-                title: 'Sukses',
-                text: 'Data berhasil disimpan!',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
                 timer: 3000,
                 timerProgressBar: true,
                 showConfirmButton: false

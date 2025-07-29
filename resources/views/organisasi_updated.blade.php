@@ -471,15 +471,15 @@
 
         @if (count($instansiKeys) > 0)
             <!-- Bagian Instansi -->
-<div class="org-top" style="display: flex; align-items: center; justify-content: center; padding: 40px 0;">
+<div class="org-top" style="position: relative; display: flex; align-items: center; justify-content: center; padding: 40px 0;">
+
   <!-- Card Utama -->
-  <div class="org-description-wrapper">
+  <div class="org-description-wrapper" style="width: 100%;">
+
     <!-- Logo Instansi -->
     <div class="org-logo-container" id="org-logo">
       <img id="instansi-photo" src="" alt="Logo Instansi" />
-      <div id="instansi-photo-placeholder">
-        <!-- Placeholder -->
-      </div>
+      <div id="instansi-photo-placeholder">Logo Instansi</div>
     </div>
 
     <!-- Deskripsi -->
@@ -491,12 +491,10 @@
       <div id="instansi-description">
         Deskripsi singkat instansi.
       </div>
-
-       <!-- Tombol Panah Kiri -->
-    <button class="org-nav-button org-nav-prev" id="org-prev">&#10094;</button>
-    <!-- Tombol Panah Kanan -->
-    <button class="org-nav-button org-nav-next" id="org-next">&#10095;</button>
-
+      <!-- Tombol Panah Kiri -->
+  <button class="org-nav-button org-nav-prev" id="org-prev">&#10094;</button>
+  <!-- Tombol Panah Kanan -->
+  <button class="org-nav-button org-nav-next" id="org-next">&#10095;</button>
 
       @auth
         @if (auth()->user()->is_admin)
@@ -524,7 +522,7 @@
     border-radius: 12px;
     padding: 20px 60px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 1000px;
+    width: 100%;
     width: 90%;
     gap: 20px;
     box-sizing: border-box;
@@ -631,7 +629,7 @@
 </style>
 
             <!-- Bagian Anggota -->
-<div class="anggota-section" style="padding-bottom: 40px;">
+<div class="anggota-section" style="padding-bottom: 20px;">
   <div class="anggota-title" style="font-weight: bold; font-size: 1.5rem;">Anggota</div>
 
   <!-- Wrapper Flex untuk tombol dan daftar anggota -->
@@ -657,7 +655,7 @@
     </button>
 
     <!-- Daftar Member -->
-    <div id="member-list" style="display: flex; overflow-x: auto; gap: 16px; padding: 16px 0;">
+    <div id="member-list" style="display: flex; overflow-x: auto; gap: 16px; padding-left: 40px; padding-right: 40px; padding-top: 10px; padding-bottom: 20px;">
       <!-- Member cards will be rendered dynamically -->
     </div>
 
@@ -1004,9 +1002,24 @@
                                 deleteButton.type = 'submit';
                                 deleteButton.className = 'btn btn-danger';
                                 deleteButton.textContent = 'Hapus';
-                                deleteButton.onclick = function() {
-                                    return confirm('Yakin ingin menghapus anggota ini?');
-                                };
+                                deleteButton.type = 'button';
+                                deleteButton.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    Swal.fire({
+                                        title: 'Yakin ingin menghapus anggota ini?',
+                                        text: "Tindakan ini tidak dapat dibatalkan!",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#d33',
+                                        cancelButtonColor: '#3085d6',
+                                        confirmButtonText: 'Ya, hapus!',
+                                        cancelButtonText: 'Batal'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            deleteForm.submit();
+                                        }
+                                    });
+                                });
                                 deleteForm.appendChild(deleteButton);
 
                                 crudDiv.appendChild(deleteForm);

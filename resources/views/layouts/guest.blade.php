@@ -37,7 +37,19 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 
-<body>
+<style>
+    @media (max-width: 768px) {
+        .test {
+            margin-top: 10px;
+        }
+
+    }
+</style>
+
+<!-- ========== KODE BARU: Menambahkan class untuk sticky footer ========== -->
+
+<body class="d-flex flex-column min-vh-100">
+    <!-- ========== END KODE BARU ========== -->
     <!-- Spinner Start -->
     <div id="spinner"
         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -119,24 +131,20 @@
     </nav>
     <!-- Navbar End -->
 
-    <!-- Optional Responsive Styling -->
-    <style>
-        @media (max-width: 576px) {
-            .navbar-brand h1 {
-                font-size: 1rem !important;
-            }
-        }
-    </style>
-
-    <div>
+    <!-- ========== KODE BARU: Main Content Area dengan flex-grow ========== -->
+    <!-- Main Content Area - Flex grow to push footer down -->
+    <main class="flex-grow-1">
         {{ $slot }}
-    </div>
+    </main>
+    <!-- ========== END KODE BARU ========== -->
 
+    <!-- ========== KODE BARU: Menambahkan class mt-auto pada footer ========== -->
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer mt-3 py-3 wow fadeIn" data-wow-delay="0.1s">
+    <footer class="container-fluid bg-dark text-light footer mt-auto py-3 wow fadeIn" data-wow-delay="0.1s">
+        <!-- ========== END KODE BARU ========== -->
         <div class="container py-3">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
+            <div class="row">
+                <div class="test col-lg-3 col-md-6">
                     <h4 class="text-white mb-4">Kantor Desa</h4>
                     <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Dusun IV Desa Sumber Urip</p>
                     <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+736 123456</p>
@@ -152,7 +160,6 @@
                             <i class="fab fa-instagram"></i>
                         </a>
                     </div>
-
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-white mb-4">Pelayanan</h4>
@@ -162,16 +169,15 @@
                     <a class="btn btn-link">Hari Anak Nasional</a>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    {{-- <h4 class="text-white mb-4">Newsletter</h4>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative w-100">
-                        <input class="form-control bg-light border-light w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
-                    </div> --}}
+                    <!-- Empty or placeholder for third box -->
+                </div>
+                <div class="col-lg-3 col-md-6 d-flex justify-content-center align-items-center">
+                    <img src="{{ asset('assets/img/logo-desa.png') }}" alt="Logo Desa"
+                        style="max-width: 70%; height: auto;">
                 </div>
             </div>
         </div>
-    </div>
+    </footer>
     <!-- Footer End -->
 
     <!-- Copyright Start -->
@@ -192,6 +198,40 @@
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i
             class="bi bi-arrow-up"></i></a>
+
+    <!-- Optional Responsive Styling -->
+    <style>
+        @media (max-width: 576px) {
+            .navbar-brand h1 {
+                font-size: 1rem !important;
+            }
+            /* Add margin 10px to footer columns on mobile */
+            footer .col-lg-3.col-md-6 {
+                margin: 10px 0;
+            }
+        }
+
+        /* ========== KODE BARU: Sticky Footer CSS ========== */
+        html,
+        body {
+            height: 100%;
+        }
+
+        .min-vh-100 {
+            min-height: 100vh !important;
+        }
+
+        .flex-grow-1 {
+            flex: 1 0 auto !important;
+        }
+
+        /* Ensure footer sticks to bottom */
+        .footer {
+            flex-shrink: 0;
+        }
+
+        /* ========== END KODE BARU STICKY FOOTER CSS ========== */
+    </style>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

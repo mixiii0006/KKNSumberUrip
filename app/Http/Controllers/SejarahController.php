@@ -49,7 +49,7 @@ class SejarahController extends Controller
 
         Sejarah::create($request->all());
 
-        return redirect()->route('sejarah.public')->with('success', 'Sejarah entry created successfully.');
+        return redirect()->route('sejarah.public')->with('success', 'Data sejarah berhasil ditambahkan.');
     }
 
     /**
@@ -72,7 +72,7 @@ class SejarahController extends Controller
 
         $sejarah->update($request->all());
 
-        return redirect()->route('sejarah.public')->with('success', 'Sejarah entry updated successfully.');
+        return redirect()->route('sejarah.public')->with('success', 'Data sejarah berhasil diperbarui.');
     }
 
     /**
@@ -82,6 +82,6 @@ class SejarahController extends Controller
     {
         $sejarah->delete();
 
-        return redirect()->route('sejarah.public')->with('success', 'Sejarah entry deleted successfully.');
+        return redirect()->route('sejarah.public')->with('success', 'Data sejarah berhasil dihapus.');
     }
 }
