@@ -124,10 +124,6 @@
             <div class="section-content">
                 <h2>Tentang Desa</h2>
                 <p>Desa Sumber Urip merupakan salah satu desa di Kecamatan Selupu Rejang, Kabupaten Rejang Lebong, Provinsi Bengkulu. Desa ini memiliki luas wilayah 1.077 hektar dengan kontur wilayah yang sebagian besar berupa perbukitan dan lahan pertanian. Jaraknya sekitar 7 km dari pusat kecamatan dan 18 km dari ibu kota kabupaten. Sebagian besar masyarakatnya bermata pencaharian sebagai petani, dan kehidupan sosial desa masih sangat kental dengan nilai-nilai gotong royong dan musyawarah.</p>
-                <div class="buttons">
-                    <button class="btn-custom">SDA</button>
-                    <button class="btn-custom">SDM</button>
-                </div>
             </div>
                 <div class="section-image">
                     <img src="{{ asset('assets/img/beranda1.jpg') }}" alt="Profil Desa">
@@ -170,7 +166,7 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="service-item rounded d-flex h-100">
                         <div class="service-img rounded">
-                            <img class="img-fluid" src="{{ asset('assets/img/service-2.jpg') }}" alt="">
+                            <img class="img-fluid" src="{{ asset('assets/img/beranda1.jpg') }}" alt="">
                         </div>
                         <div class="service-text rounded p-5">
                             <div class="btn-square rounded-circle mx-auto mb-3">
@@ -185,7 +181,7 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="service-item rounded d-flex h-100">
                         <div class="service-img rounded">
-                            <img class="img-fluid" src="{{ asset('assets/img/service-3.jpg') }}" alt="">
+                            <img class="img-fluid" src="{{ asset('assets/img/grojokanSewu.jpg') }}" alt="">
                         </div>
                         <div class="service-text rounded p-5">
                             <div class="btn-square rounded-circle mx-auto mb-3">
@@ -197,7 +193,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                {{-- <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="service-item rounded d-flex h-100">
                         <div class="service-img rounded">
                             <img class="img-fluid" src="{{ asset('assets/img/service-4.jpg') }}" alt="">
@@ -241,7 +237,7 @@
                            
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
                 {{-- <div class="sda-cards">
                     <div class="sda-card">

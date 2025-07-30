@@ -115,15 +115,18 @@
                         <div class="col-12 col-sm-6 col-lg-12">
                             <div class="border-start ps-4">
                                 <i class="fa fa-award fa-3x text-primary mb-3"></i>
-                                <h4 class="mb-3">Award Winning</h4>
-                                <span>Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna</span>
+                                <h4 class="mb-3">Potensi Desa</h4>
+                                <span>Kunjungan menuju tempat wisata Bukit Kaba yang selalu ramai, terutama pada
+                                    hari-hari besar</span>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-12">
                             <div class="border-start ps-4">
                                 <i class="fa fa-users fa-3x text-primary mb-3"></i>
-                                <h4 class="mb-3">Dedicated Team</h4>
-                                <span>Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna</span>
+                                <h4 class="mb-3">Masyarakat Desa</h4>
+                                <span>Sumber
+                                    Urip merupakan salah satu produsen sayuran, dan memiliki iklim sejuk khas
+                                    pegunungan</span>
                             </div>
                         </div>
                     </div>
@@ -139,20 +142,20 @@
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
-                    <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 fw-semi-bold text-light">Happy Clients</span>
+                    <h1 class="display-4 text-white" data-toggle="counter-up">2019</h1>
+                    <span class="fs-5 fw-semi-bold text-light">Bumdes Inovative</span>
                 </div>
                 <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
-                    <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 fw-semi-bold text-light">Garden Complated</span>
+                    <h1 class="display-4 text-white" data-toggle="counter-up">2021</h1>
+                    <span class="fs-5 fw-semi-bold text-light">Anugrah Konservasi Alam </span>
                 </div>
                 <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.5s">
-                    <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 fw-semi-bold text-light">Dedicated Staff</span>
+                    <h1 class="display-4 text-white" data-toggle="counter-up">2021</h1>
+                    <span class="fs-5 fw-semi-bold text-light">10 Desa Wisata Terbaik</span>
                 </div>
                 <div class="col-sm-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.7s">
-                    <h1 class="display-4 text-white" data-toggle="counter-up">1234</h1>
-                    <span class="fs-5 fw-semi-bold text-light">Awards Achieved</span>
+                    <h1 class="display-4 text-white" data-toggle="counter-up">2022</h1>
+                    <span class="fs-5 fw-semi-bold text-light">peringkat 8 Lomba Desa Wisata Provinsi</span>
                 </div>
             </div>
         </div>
@@ -183,8 +186,8 @@
                             <div data-bs-toggle="modal" data-bs-target="#modalSedekahBumi"
                                 class="cursor-pointer text-center rounded py-5 px-4"
                                 style="box-shadow: 0 0 45px rgba(0,0,0,.08); width: 100%;">
-                                <img src="{{ asset('assets/img/beranda2.jpg') }}" alt="Sedekah Bumi"
-                                    class="mb-3 img-fluid rounded">
+                                <img src="{{ asset('assets/img/sedekahBumi.jpg') }}" alt="Sedekah Bumi"
+                                    class="mb-3 img-fluid rounded" style="max-height: 300px; object-fit: contain;">
                                 <h4 class="mb-0">Sedekah Bumi</h4>
                                 <p>
                                     Sedekah Bumi merupakan tradisi tahunan sebagai ungkapan syukur kepada Tuhan
@@ -206,7 +209,7 @@
                                                 aria-label="Tutup"></button>
                                         </div>
                                         <div class="modal-body text-center">
-                                            <img src="{{ asset('assets/img/beranda2.jpg') }}" alt="Sedekah Bumi"
+                                            <img src="{{ asset('assets/img/sedekahBumi.jpg') }}" alt="Sedekah Bumi"
                                                 class="img-fluid rounded mb-4"
                                                 style="max-height: 300px; object-fit: contain;">
                                             <p>Sedekah Bumi merupakan tradisi tahunan sebagai ungkapan syukur kepada
@@ -223,8 +226,8 @@
                             <div data-bs-toggle="modal" data-bs-target="#modalKudaKepang"
                                 class="cursor-pointer text-center rounded py-5 px-4"
                                 style="box-shadow: 0 0 45px rgba(0,0,0,.08); width: 100%;">
-                                <img src="{{ asset('assets/img/beranda2.jpg') }}" alt="Kuda Kepang"
-                                    class="mb-3 img-fluid rounded">
+                                <img src="{{ asset('assets/img/kudakepang.jpg') }}" alt="Kuda Kepang"
+                                    class="mb-3 img-fluid rounded" style="max-height: 300px; object-fit: contain;">
                                 <h4 class="mb-0">Kuda Kepang</h4>
                                 <p>Kuda kepang adalah tarian tradisional khas Jawa yang dimainkan oleh pemuda desa
                                     dengan iringan gamelan.....
@@ -245,7 +248,7 @@
                                                 aria-label="Tutup"></button>
                                         </div>
                                         <div class="modal-body text-center">
-                                            <img src="{{ asset('assets/img/beranda2.jpg') }}" alt="Kuda Kepang"
+                                            <img src="{{ asset('assets/img/kudaKepang.jpg') }}" alt="Kuda Kepang"
                                                 class="img-fluid rounded mb-4"
                                                 style="max-height: 300px; object-fit: contain;">
                                             <p>Kuda kepang adalah tarian tradisional khas Jawa yang dimainkan oleh
@@ -303,12 +306,12 @@
                 <div class="col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="service-item rounded d-flex h-100">
                         <div class="service-img rounded">
-                            <img class="img-fluid" src="{{ asset('assets/img/service-2.jpg') }}"
+                            <img class="img-fluid" src="{{ asset('assets/img/grojokanSewu.jpg') }}"
                                 alt="Pemandian Air Panas">
                         </div>
                         <div class="service-text rounded p-5">
                             <div class="btn-square rounded-circle mx-auto mb-3">
-                                <img class="img-fluid" src="{{ asset('assets/img/icon/icon-6.png') }}"
+                                <img class="img-fluid" src="{{ asset('assets/img/icon/icon-5.png') }}"
                                     alt="Icon">
                             </div>
                             <h4 class="mb-3">Pemandian Air Panas</h4>
@@ -518,8 +521,8 @@
         }
     </style>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -563,7 +566,7 @@
                 [-3.463136, 102.641553],
                 [-3.468801, 102.643769],
                 [-3.490773, 102.636194],
-                
+
             ];
             L.polygon(boundary, {
                 color: '#ff7800',
