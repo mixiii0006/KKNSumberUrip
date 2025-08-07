@@ -967,7 +967,7 @@
 
                             const desc = document.createElement('div');
                             desc.className = 'member-desc';
-                            desc.innerHTML = `Jabatan: ${member.jabatan}<br>NIP: ${member.nip || '-'}`;
+                            desc.innerHTML = `${member.jabatan}`;
                             card.appendChild(desc);
 
                             @auth
